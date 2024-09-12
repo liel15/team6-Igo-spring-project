@@ -1,5 +1,5 @@
 <template>
-  <h1>홈페이지</h1>
+  <h1>홈페이지2222222222</h1>
   <button ref="btnRef">테스트페이지로 이동하기</button>
 </template>
 
