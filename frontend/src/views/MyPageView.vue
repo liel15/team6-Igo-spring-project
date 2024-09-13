@@ -84,14 +84,14 @@
             <div class="d-flex p-3 me-5 mt-3">
             
             <input class="form-control" placeholder="검색어 입력" />
-            <i type="submit" class="bi bi-search ms-2 mt-1" ></i>
+            <i type="submit" class="bi bi-search ms-2 mt-4" ></i>
             </div>
         </div>
 
-        <div class="main align-items-center">
-            <div class="d-flex flex-row align-items-center justify-content-center gap-5 mb-5 mt-4">
+        <div class="main align-items-center ms-10">
+            <div class="d-flex flex-row align-items-center justify-content-start gap-15 mb-5 mt-4 flex-wrap">
               <div v-for="(card, index) in cards" :key="index" >
-              <div v-if="showCard(card)" class="card elevate-card" style="width: 18rem">
+              <div v-if="showCard(card)" class="card elevate-card" style="cursor: pointer; width: 18rem">
                 <img :src="'/assets/images/' + card.img" class="card-img-top" alt="..." />
                 <div class="card-body">
                 <p class="card-text">
@@ -102,34 +102,7 @@
               </div>
             </div>
 
-            </div>
-
-            <div class="d-flex flex-row align-items-center justify-content-center gap-5 mb-5 mt-2">
-            <div class="card elevate-card" style="width: 18rem">
-                <img src="../assets/images/1.PNG" class="card-img-top" alt="..." />
-                <div class="card-body">
-                <p class="card-text">
-                    Some quick example text to build on the card title and make up the bulk of
-                    the card's content.
-                </p>
-                <i class="bi":class="[isHeartFilled ? 'bi-heart-fill' : 'bi-heart']" @click="toggleHeart" style="position: absolute; bottom: 10px; right: 10px; font-size: 1.5rem; cursor: pointer;"></i>
-                </div>
-            </div>
-
-            </div>
-
-            <div class="d-flex flex-row align-items-center justify-content-center gap-5 mb-5 mt-2">
-            <div class="card elevate-card" style="width: 18rem">
-                <img src="https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileImageView.do?wrtSn=9046601&filePath=L2Rpc2sxL25ld2RhdGEvMjAxNC8yMS9DTFM2L2FzYWRhbFBob3RvXzI0MTRfMjAxNDA0MTY=&thumbAt=Y&thumbSe=b_tbumb&wrtTy=10004" class="card-img-top" alt="..." />
-                <div class="card-body">
-                <p class="card-text">
-                    Some quick example text to build on the card title and make up the bulk of
-                    the card's content.
-                </p>
-                <i class="bi":class="[isHeartFilled ? 'bi-heart-fill' : 'bi-heart']" @click="toggleHeart" style="position: absolute; bottom: 10px; right: 10px; font-size: 1.5rem; cursor: pointer;"></i>
-                </div>
-            </div>
-            </div>
+          </div>
 
         </div>
 
@@ -158,6 +131,36 @@ const cards = ref([
   {
     img: '2.PNG',
     content: '내 두 번째 글입니다.',
+    isLiked: true, // 좋아요 여부
+    isMyPost: true, // 내 글 여부
+  },
+  {
+    img: '2.PNG',
+    content: '내 세 번째 글입니다.',
+    isLiked: true, // 좋아요 여부
+    isMyPost: true, // 내 글 여부
+  },
+  {
+    img: '2.PNG',
+    content: '내 네 번째 글입니다.',
+    isLiked: true, // 좋아요 여부
+    isMyPost: true, // 내 글 여부
+  },
+  {
+    img: '2.PNG',
+    content: '내 다섯 번째 글입니다.',
+    isLiked: true, // 좋아요 여부
+    isMyPost: true, // 내 글 여부
+  },
+  {
+    img: '2.PNG',
+    content: '내 여섯 번째 글입니다.',
+    isLiked: true, // 좋아요 여부
+    isMyPost: true, // 내 글 여부
+  },
+  {
+    img: '2.PNG',
+    content: '내 일곱 번째 글입니다.',
     isLiked: true, // 좋아요 여부
     isMyPost: true, // 내 글 여부
   },
@@ -201,9 +204,6 @@ const toggleLike = (card) => {
 
 <style scoped>
 
-.main {
-  cursor: pointer;
-}
 
 .elevate-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 전환 효과 */
