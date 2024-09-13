@@ -2,14 +2,27 @@ import { apiInstance } from "./index.js";
 
 const api = apiInstance();
 
-async function getTestList() {
+async function getTestList(id, password) {
   try {
-    const response = await api.get('/test');
+    const response = await api.get('/auth/login.do');
     return response.data;
   } catch (err) {
     console.error(err);
   }
 }
+
+//post들 가져오기 요청
+export async function getPostList() {
+  try {
+    const response = await api.post('/auth/postlist');
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    console.error(err); // 에러를 콘솔에 출력
+  }
+}
+
+
 
 // params 예시
 async function getTestListById(params) {

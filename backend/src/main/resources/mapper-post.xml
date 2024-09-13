@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper-test">
+<mapper namespace="mapper-post">
 	
-	<select id="getListTest" resultType="lx.team6.vo.TestVO">
-			select employee_id employeeId, first_name firstName, salary
-			from employees
+	<select id="getPostList" resultType="lx.team6.vo.PostVO">
+			select post_no postNo
+				, post_title postTitle
+				, post_content postContent
+				, post_date postDate
+			from post
 	</select>
 	
 	<select id="getTestById"  parameterType="int" resultType="lx.team6.vo.TestVO">
