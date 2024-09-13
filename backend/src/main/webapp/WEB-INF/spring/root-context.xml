@@ -7,7 +7,7 @@
   <!-- db, sqlsession -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-		<property name="url" value="jdbc:mysql://localhost:3306/hr"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/spring"/>
 		<property name="username" value="root"/>
 		<property name="password" value="rootroot"/>
 	</bean>
