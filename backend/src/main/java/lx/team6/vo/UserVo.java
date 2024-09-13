@@ -1,71 +1,80 @@
 package lx.team6.vo;
 
 public class UserVo {
-
-	public String abId;
-	public String abPw;
-	public String abName;
-	public String abEmail;
-	public String abTel;
-	public String abBirth;
-	public String abComdept;
-	public String abMemo;
 	
+	public String userNumber;
+	public String userId;
+	public String userPw;
+	public String userName;
+	public String userEmail;
+	public String userTel;
+	public String userBirth;
+	public String userGender;
+	public String userImage;
 	
-	
-	public String getAbMemo() {
-		return abMemo;
+	public String getUserNumber() {
+		return userNumber;
 	}
-	public void setAbMemo(String abMemo) {
-		this.abMemo = abMemo;
+	public void setUserNumber(String userNumber) {
+		this.userNumber = userNumber;
 	}
-	public String getAbName() {
-		return abName;
+	public String getUserId() {
+		return userId;
 	}
-	public void setAbName(String abName) {
-		this.abName = abName;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-	public String getAbEmail() {
-		return abEmail;
+	public String getUserPw() {
+		return userPw;
 	}
-	public void setAbEmail(String abEmail) {
-		this.abEmail = abEmail;
+	public void setUserPw(String userPw) {
+		this.userPw = userPw;
 	}
-	public String getAbTel() {
-		return abTel;
+	public String getUserName() {
+		return userName;
 	}
-	public void setAbTel(String abTel) {
-		this.abTel = abTel;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
-	public String getAbBirth() {
-		return abBirth;
+	public String getUserEmail() {
+		return userEmail;
 	}
-	public void setAbBirth(String abBirth) {
-		this.abBirth = abBirth;
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
-	public String getAbComdept() {
-		return abComdept;
+	public String getUserTel() {
+		return userTel;
 	}
-	public void setAbComdept(String abComdept) {
-		this.abComdept = abComdept;
+	public void setUserTel(String userTel) {
+		this.userTel = userTel;
 	}
-	public String getAbId() {
-		return abId;
+	public String getUserBirth() {
+		return userBirth;
 	}
-	public void setAbId(String abId) {
-		this.abId = abId;
+	public void setUserBirth(String userBirth) {
+		this.userBirth = userBirth;
 	}
-	public String getAbPw() {
-		return abPw;
+	public String getUserGender() {
+		return userGender;
 	}
-	public void setAbPw(String abPw) {
-		this.abPw = abPw;
+	public void setUserGender(String userGender) {
+		this.userGender = userGender;
+	}
+	public String getUserImage() {
+		return userImage;
+	}
+	public void setUserImage(String userImage) {
+		this.userImage = userImage;
 	}
 	@Override
 	public String toString() {
-		return "AddrbookVo [abId=" + abId + ", abPw=" + abPw + ", abName=" + abName + ", abEmail=" + abEmail
-				+ ", abTel=" + abTel + ", abBirth=" + abBirth + ", abComdept=" + abComdept + ", abMemo=" + abMemo + "]";
+		return "UserVo [userNumber=" + userNumber + ", userId=" + userId + ", userPw=" + userPw + ", userName="
+				+ userName + ", userEmail=" + userEmail + ", userTel=" + userTel + ", userBirth=" + userBirth
+				+ ", userGender=" + userGender + ", userImage=" + userImage + "]";
 	}
+	
+	
+	
 	
 	
 

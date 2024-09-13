@@ -4,10 +4,7 @@ const api = apiInstance();
 
 async function getTestList(id, password) {
   try {
-    const response = await api.post('/auth/login', {
-      abId: this.id,
-      abPw: this.password,
-    });
+    const response = await api.get('/auth/login.do');
     return response.data;
   } catch (err) {
     console.error(err);
