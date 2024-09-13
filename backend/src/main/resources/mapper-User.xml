@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper-addrbook">
+
+	<insert id="createAddrbook" parameterType="lx.team6.vo.UserVo">
+		insert into addrbook(ab_name, ab_email, ab_tel, ab_birth, ab_comdept, ab_memo)
+		values(#{abName}, #{abEmail}, #{abTel}, #{abBirth}, #{abComdept}, #{abMemo})
+	</insert>
+	
+	<select id="showAddrbookList" resultType="lx.team6.vo.UserVo"> 
+		select ab_id abId
+		 	 , ab_name abName
+		 	 , ab_email abEmail
+		 	 , ab_tel 
+		 	 , ab_birth abBirth
+		 	 , ab_comdept abComdept
+		 	 , ab_memo abMemo
+		from addrbook
+	</select>
+	
+	<select id="getAddrbookById" parameterType="int" resultType="lx.team6.vo.UserVo"> 
+		select ab_id abId
+		 	 , ab_name abName
+		 	 , ab_email abEmail
+		 	 , ab_tel abTel
+		 	 , ab_birth abBirth
+		 	 , ab_comdept abComdept
+		 	 , ab_memo abMemo
+		from addrbook
+		where ab_id = #{abId}
+	</select>
+	
+	<delete id="deleteAddrbookList" parameterType="int">
+		delete from addrbook where ab_id = #{abId}
+	</delete>
+	
+	<update id="updateAddrbookList" parameterType="lx.team6.vo.UserVo">
+		update addrbook set ab_name = #{abName}
+		 	 , ab_email = #{abEmail}
+		 	 , ab_tel = #{abTel}
+		 	 , ab_birth = #{abBirth}
+		 	 , ab_comdept = #{abComdept}
+		 	 , ab_memo = #{abMemo}
+		 where ab_id = #{abId}
+	</update>
+	
+	<!-- 아이디 찾기 -->
+	<select id="findById" parameterType="String" resultType="lx.team6.vo.UserVo"> 
+		select id userId
+			 , password userPw
+			 , user_no userNumber
+			 , name userName
+			 , email userEmail
+			 , tel_num userTel
+			 , birth_date userBirth
+			 , img userImage
+			 , gender userGender 
+		from user
+		where id = #{userId}
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="createUser" parameterType="lx.team6.vo.UserVo">
+		insert into user(id, password, name, email, tel_num, birth_date, img, gender)
+		values(#{userId}, #{userPw}, #{userName}, #{userEmail}, #{userTel}, #{userBirth}, #{userImage}, #{userGender})
+	</insert>
+</mapper>
