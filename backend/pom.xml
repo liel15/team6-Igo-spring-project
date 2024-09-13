@@ -5,8 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>lx</groupId>
-  <artifactId>edu_eleventh</artifactId>
-  <name>edu_eleventh</name>
+  <artifactId>backend</artifactId>
+  <name>backend</name>
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
 
