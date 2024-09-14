@@ -12,7 +12,9 @@ export const useTestStore = defineStore("test", () => {
     try {
       const response = await login(id, password); // 로그인 함수 호출(import)
       data.value = response; // 입력받은 아이디와 비밀번호에 해당하는 값 저장(vo에 있는 것들..?)
+      console.log(response);
       error.value = null; // 에러 초기화
+      sessionStorage.setItem("userNo", response.userNumber);
       alert("로그인 성공");
       console.log(data.value);
       router.push({ path: "/about"});

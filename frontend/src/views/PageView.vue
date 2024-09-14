@@ -117,7 +117,9 @@
                     <!--end::Text-->
                   </div>
                   <!--end::Description-->
-
+                  <div class="d-flex flex-center">
+                    <button type="button" class="btn btn-primary fs-5 p-2 me-2">좋아요</button>
+                  </div>
                   <button id="updateButton" @click="showUpdatePostModal(postone.postNo)"
                     class="btn btn-primary fs-6 p-1 me-2">수정</button>
                   <button id="deleteButton" @click="deletePost(postone.postNo)"
@@ -256,8 +258,7 @@
                   </i>
                 </span>
               </label>
-              <input type="text" class="form-control form-control-solid" name="target_title"
-                v-model="titleInput" />
+              <input type="text" class="form-control form-control-solid" name="target_title" v-model="titleInput" />
             </div>
             <!--end::이름 입력상자-->
             <!--begin::내용 입력상자-->
@@ -272,11 +273,10 @@
                   </i>
                 </span>
               </label>
-              <textarea class="form-control form-control-solid" name="target_content"
-                v-model="contentInput" rows="5"></textarea>
+              <textarea class="form-control form-control-solid" name="target_content" v-model="contentInput"
+                rows="5"></textarea>
             </div>
             <!--end::내용 입력상자-->
-
             <!--begin::하단버튼-->
             <div class="text-center">
               <button type="button" class="btn btn-primary" @click.prevent="updatePost(postone.postNo)">저장</button>
@@ -308,7 +308,7 @@ import { Modal } from 'bootstrap';
 
 // 글 정보 가져오기 관련 함수, 변수
 const poststore = usePostStore();
-const {postone} = storeToRefs(poststore);
+const { postone } = storeToRefs(poststore);
 
 console.log("Current post data:", postone);
 console.log("글번호 : ", postone.value.postNo);
@@ -328,7 +328,7 @@ function deletePost(postNo) {
   console.log("삭제할 번호 : ", postNo);
   if (confirm("정말 삭제하시겠습니까??") == true) {
     deletePostByNo(postNo);
-    router.replace({path:'/mainpage'});
+    router.replace({ path: '/mainpage' });
   } else {
     return false;
   }
@@ -360,7 +360,7 @@ function showUpdatePostModal(itemId) {
 
 // 글 업데이트 함수
 function updatePost(postNo) {
-  console.log("수정할 글번호 : ",postNo);
+  console.log("수정할 글번호 : ", postNo);
   const data = {
     postNo: postNo,
     postTitle: titleInput.value,

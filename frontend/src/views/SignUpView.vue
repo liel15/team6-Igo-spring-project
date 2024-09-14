@@ -149,10 +149,10 @@
  
                      <!--begin::성별-->
                      <div>
-                        <input type="radio" id="male" value="남성" v-model="selectedgender" />
+                        <input type="radio" id="male" value="M" v-model="selectedgender" />
                         <label for="male">남성</label>
                         
-                        <input type="radio" id="female" value="여성" v-model="selectedgender" class="ms-10" />
+                        <input type="radio" id="female" value="W" v-model="selectedgender" class="ms-10" />
                         <label for="female">여성</label>
                       </div>
 

@@ -1,5 +1,8 @@
 package lx.team6.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -16,12 +19,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import lx.team6.service.PostService;
 import lx.team6.vo.AddrbookVo;
 import lx.team6.vo.PostVO;
+import lx.team6.vo.UserVo;
 import lx.team6.vo.UserVo;
 
 @RestController
@@ -41,6 +46,30 @@ public class PostController {
 			return ResponseEntity.ok(isgetpost);
 		} else {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+	}
+	
+	// 이미지 저장하기
+	private static final String UPLOAD_DIR = "C:/lx/team6-spring-project/frontend/public/images/";
+
+    @PostMapping("/upload-image")
+    public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile file) {
+        try {
+            // 파일 저장 경로 설정
+            Path filePath = Paths.get(UPLOAD_DIR + file.getOriginalFilename());
+
+            // 파일 저장
+            Files.write(filePath, file.getBytes());
+
+            // 성공 메시지 반환
+            return ResponseEntity.ok("이미지가 성공적으로 저장되었습니다: " + file.getOriginalFilename());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 업로드 실패");
+        }
+    }
+
+	// 게시글 한개 불러오기
 		}
 	}
 	
@@ -67,12 +96,12 @@ public class PostController {
 	}
 
 	// 게시글 추가
-	@PutMapping("/addpost")
-
-	public ResponseEntity<String> insertPost(PostVO post) {
+	@PostMapping("/insert")
+	public ResponseEntity<String> insertPost(@RequestBody PostVO post) {
 		try {
+			System.out.println("받은 게시물 정보 : " + post);
 			postservice.insertPost(post);
-			return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 성공적으로 등록되었습니다.");
+			return ResponseEntity.ok("게시글이 성공적으로 등록되었습니다.");
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}

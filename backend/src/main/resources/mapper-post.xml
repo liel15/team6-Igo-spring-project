@@ -9,6 +9,8 @@
 		p.post_title postTitle
 		, p.content content
 		, p.created_at createdAt
+		, p.updated_at updatedAt
+		, p.img img
 		, p.user_user_no userNo
 		, u.id userId
 		from post p join USER u 
@@ -29,8 +31,8 @@
 	<!-- 게시글 추가 -->
 	<insert id="insertPost" parameterType="lx.team6.vo.PostVO"> 
 		insert into post
-		(post_title, content, created_at) values (#{postTitle},
-		#{content}, now())
+		(post_title, content, created_at, updated_at) values (#{postTitle},
+		#{content}, now(), now())
 	</insert>
 	
 	<!-- 게시글 삭제 -->
@@ -62,18 +64,5 @@
 		ab_id = #{abId}
 	</delete>
 
-	<!-- 아이디 찾기 -->
-	<select id="findById" parameterType="String"
-		resultType="lx.team6.vo.AddrbookVo">
-		select id abId
-		, password abPw
-		, name abName
-		, email abEmail
-		,
-		tel_num abTel
-		, birth_date abBirth
-		from user
-		where id = #{abId}
-	</select>
 
 </mapper>
