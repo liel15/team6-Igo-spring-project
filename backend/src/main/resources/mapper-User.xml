@@ -18,31 +18,11 @@
 		from addrbook
 	</select>
 	
-	<select id="getAddrbookById" parameterType="int" resultType="lx.team6.vo.UserVo"> 
-		select ab_id abId
-		 	 , ab_name abName
-		 	 , ab_email abEmail
-		 	 , ab_tel abTel
-		 	 , ab_birth abBirth
-		 	 , ab_comdept abComdept
-		 	 , ab_memo abMemo
-		from addrbook
-		where ab_id = #{abId}
-	</select>
 	
-	<delete id="deleteAddrbookList" parameterType="int">
-		delete from addrbook where ab_id = #{abId}
+	<!-- 유저삭제 -->
+	<delete id="deleteUser" parameterType="int">
+		delete from user where ab_id = #{user_bo}
 	</delete>
-	
-	<update id="updateAddrbookList" parameterType="lx.team6.vo.UserVo">
-		update addrbook set ab_name = #{abName}
-		 	 , ab_email = #{abEmail}
-		 	 , ab_tel = #{abTel}
-		 	 , ab_birth = #{abBirth}
-		 	 , ab_comdept = #{abComdept}
-		 	 , ab_memo = #{abMemo}
-		 where ab_id = #{abId}
-	</update>
 	
 	<!-- 아이디 찾기 -->
 	<select id="findById" parameterType="String" resultType="lx.team6.vo.UserVo"> 
