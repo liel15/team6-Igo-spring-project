@@ -25,11 +25,7 @@ public class UserDAO {
 		return session.selectList("showAddrbookList");
 	}
 
-	public UserVo getAddrbookById(int abId) {
 
-		return session.selectOne("getAddrbookById", abId);
-	}
-	
 	public void deleteAddrbookList(int abId) {
 		session.delete("deleteAddrbookList",abId);
 	}
