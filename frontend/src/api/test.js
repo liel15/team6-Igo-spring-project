@@ -54,7 +54,30 @@ export async function updatePostByNo(postNo, data) {
   }
 }
 
+// 글 작성 요청 - PUT 요청
+export async function insertPost(data) {
+  try {
+    const response = await api.post('/auth/insert', data);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
 
+// 이미지 저장요청
+export async function saveImage(formData) {
+  try {
+    const response = await api.post('/auth/upload-image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log('서버 응답:', response.data);
+    return response.data;
+  } catch (err) {
+    console.error('이미지 업로드 중 오류 발생:', err); // 에러를 콘솔에 출력
+  }
+}
 
 // params 예시
 async function getTestListById(params) {

@@ -18,7 +18,7 @@ public class PostService {
     public List<PostVO> getPostList() {
         List<PostVO> postList = dao.getPostList();
         return postList;
-    }
+    };
     
     
     // 포스트 검색하는 메서드
