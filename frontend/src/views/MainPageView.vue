@@ -268,7 +268,7 @@
               alt="..."
             />
             <div class="card-body">
-              <a class="text-gray-700 fw-bold ">글작성자 - {{ card.postNo }}</a>
+              <a class="text-gray-700 fw-bold ">{{ card.userId }} - {{ card.postNo }}</a>
               <p class="card-text">{{ card.postTitle }}</p>
               <i
                 class="bi"
@@ -328,16 +328,17 @@ async function init () {
 const { postlist } = storeToRefs(store);
 
 // 포스트 번호에따라 포스트 정보 받아오기
-//const poststore = usePostStore();
-//const postone = storeToRefs(poststore);
-const result = ref({});
+const poststore = usePostStore();
+const postone = storeToRefs(poststore);
+//const result = ref({});
 
 async function getpostid(id) {
   console.log("Clicked post ID:", id);
-  result.value = await getPostByNo(id);
-  //await poststore.fetchPostone(id);
-  console.log("Fetched post data:", result.value);
-  router.replace({path:'/page', query: { postNo: result.value.postNo, postTitle: result.value.postTitle, postContent: result.value.postContent }});
+  //result.value = await getPostByNo(id);
+  await poststore.fetchPostone(id);
+  console.log("Fetched post data:", postone);
+  router.replace({path:'/page'});
+  //router.replace({path:'/page', query: { postNo: result.value.postNo, postTitle: result.value.postTitle, content: result.value.content }});
 }
 
 

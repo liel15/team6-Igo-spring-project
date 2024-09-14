@@ -23,7 +23,7 @@ export const useTestStore = defineStore("test", () => {
   return { data, error, handleLogin };
 });
 
-export const usePostListStore = defineStore('test', () => {
+export const usePostListStore = defineStore('postlist', () => {
   const postlist = ref([]);
   async function fetchPost() {
     console.log("Fetching postlist -- 화이팅");
@@ -34,7 +34,7 @@ export const usePostListStore = defineStore('test', () => {
   return { postlist, fetchPost }
 })
 
-export const usePostStore = defineStore('test', () => {
+export const usePostStore = defineStore('postByNo', () => {
   const postone = ref({});
   async function fetchPostone(postNo) {
     console.log("Fetching post with ID:", postNo);

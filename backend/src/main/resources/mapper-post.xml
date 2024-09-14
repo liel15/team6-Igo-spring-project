@@ -2,23 +2,53 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper-post">
 
+	<!-- 게시글리스트 불러오기 -->
 	<select id="getPostList" resultType="lx.team6.vo.PostVO">
-		select post_no postNo
-		, post_title postTitle
-		, post_content postContent
-		, post_date postDate
-		from post
+		select p.post_no postNo
+		,
+		p.post_title postTitle
+		, p.content content
+		, p.created_at createdAt
+		, p.user_user_no userNo
+		, u.id userId
+		from post p join USER u 
+		on p.user_user_no=u.user_no;
 	</select>
 
+	<!-- 게시글 한개 불러오기 -->
 	<select id="getPostByNo" parameterType="int"
 		resultType="lx.team6.vo.PostVO">
 		select post_no postNo
 		, post_title postTitle
-		, post_content postContent
-		, post_date postDate
+		, content content
+		, created_at createdAt
 		from post
 		where post_no = #{postNo}
 	</select>
+
+	<!-- 게시글 추가 -->
+	<insert id="insertPost" parameterType="lx.team6.vo.PostVO"> 
+		insert into post
+		(post_title, content, created_at) values (#{postTitle},
+		#{content}, now())
+	</insert>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="deletePost" parameterType="int"> 
+		delete from post 
+		where post_no = #{postNo} 
+	</delete>
+	
+	<!-- 게시글 수정 -->
+	<update id="updatePost" parameterType="lx.team6.vo.PostVO"> 
+		update post set
+		post_title = #{postTitle}, content = #{content}, updated_at = now() 
+		where post_no = #{postNo} 
+	</update>
+
+
+
+
 
 	<select id="getTestById" parameterType="int"
 		resultType="lx.team6.vo.TestVO">
@@ -39,7 +69,8 @@
 		, password abPw
 		, name abName
 		, email abEmail
-		, tel_num abTel
+		,
+		tel_num abTel
 		, birth_date abBirth
 		from user
 		where id = #{abId}
