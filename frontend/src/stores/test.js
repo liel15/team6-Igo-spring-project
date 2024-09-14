@@ -2,7 +2,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import { login } from "@/api/user";
 import router from "@/router/index.js";
-import { getTestList, getPostList } from '../api/test'
+import { getTestList, getPostList, getPostByNo } from '@/api/test'
 
 export const useTestStore = defineStore("test", () => {
   const data = ref(null);  // 로그인 후 데이터를 저장할 상태?
@@ -22,12 +22,23 @@ export const useTestStore = defineStore("test", () => {
   return { data, error, handleLogin };
 });
 
-export const usePostStore = defineStore('test', () => {
+export const usePostListStore = defineStore('test', () => {
   const postlist = ref([]);
   async function fetchPost() {
+    console.log("Fetching postlist -- 화이팅");
     postlist.value = await getPostList();
-    console.log(postlist.value);
+    console.log("postlist--",postlist.value);
   }
 
   return { postlist, fetchPost }
+})
+
+export const usePostStore = defineStore('test', () => {
+  const postone = ref({});
+  async function fetchPostone(postNo) {
+    console.log("Fetching post with ID:", postNo);
+    postone.value = await getPostByNo(postNo);
+  }
+
+  return { postone, fetchPostone }
 })

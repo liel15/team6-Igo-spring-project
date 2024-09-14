@@ -52,6 +52,11 @@ const router = createRouter({
       path: '/page',
       name: 'page',
       component: () => import("../views/PageView.vue")
+    },
+    {
+      path: '/mainpage',
+      name: 'mainpage',
+      component: () => import("../views/MainPageView.vue")
     }
   ]
 })

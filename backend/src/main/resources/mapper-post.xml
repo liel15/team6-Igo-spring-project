@@ -1,35 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper-post">
-	
+
 	<select id="getPostList" resultType="lx.team6.vo.PostVO">
-			select post_no postNo
-				, post_title postTitle
-				, post_content postContent
-				, post_date postDate
-			from post
+		select post_no postNo
+		, post_title postTitle
+		, post_content postContent
+		, post_date postDate
+		from post
 	</select>
-	
-	<select id="getTestById"  parameterType="int" resultType="lx.team6.vo.TestVO">
-			select employee_id employeeId, first_name firstName, salary
-			from employees
-			where employeeId = #{employeeId}
+
+	<select id="getPostByNo" parameterType="int"
+		resultType="lx.team6.vo.PostVO">
+		select post_no postNo
+		, post_title postTitle
+		, post_content postContent
+		, post_date postDate
+		from post
+		where post_no = #{postNo}
 	</select>
-	
+
+	<select id="getTestById" parameterType="int"
+		resultType="lx.team6.vo.TestVO">
+		select employee_id employeeId, first_name firstName, salary
+		from employees
+		where employeeId = #{employeeId}
+	</select>
+
 	<delete id="deleteTest" parameterType="int">
-		delete from addrbook where ab_id = #{abId}
+		delete from addrbook where
+		ab_id = #{abId}
 	</delete>
-	
+
 	<!-- 아이디 찾기 -->
-	<select id="findById" parameterType="String" resultType="lx.team6.vo.AddrbookVo"> 
+	<select id="findById" parameterType="String"
+		resultType="lx.team6.vo.AddrbookVo">
 		select id abId
-			 , password abPw
-		 	 , name abName
-		 	 , email abEmail
-		 	 , tel_num abTel
-		 	 , birth_date abBirth
+		, password abPw
+		, name abName
+		, email abEmail
+		, tel_num abTel
+		, birth_date abBirth
 		from user
 		where id = #{abId}
 	</select>
-	
+
 </mapper>

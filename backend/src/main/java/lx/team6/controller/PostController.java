@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,11 +31,22 @@ public class PostController {
 	
 	@PostMapping("/postlist")
 	public ResponseEntity<List<PostVO>> signup() {
-		List<PostVO> isgetpost = postservice.getPost(); // 서비스에 넣을 함수 이름
+		List<PostVO> isgetpost = postservice.getPostList(); // 서비스에 넣을 함수 이름
 		if (isgetpost != null) {
 			return ResponseEntity.ok(isgetpost);
 		} else {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+	}
+	
+	@GetMapping("/post/{postNo}")
+	public ResponseEntity<PostVO> getpost(@PathVariable("postNo") Integer postNo) {
+		System.out.println(postNo);
+		PostVO post = postservice.getPostByNo(postNo); // 서비스에 넣을 함수 이름
+		if (post != null) {
+			return ResponseEntity.ok(post);
+		} else {
+			return ResponseEntity.notFound().build();
 		}
 	}
 	

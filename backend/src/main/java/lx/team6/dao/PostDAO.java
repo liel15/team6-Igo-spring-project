@@ -18,7 +18,7 @@ public class PostDAO {
 		return session.selectList("getPostList"); 
 	}
 	
-	public PostVO getPostByNo(int postNo) {
+	public PostVO getPostByNo(Integer postNo) {
 		return session.selectOne("getPostByNo", postNo);
 	}
 	

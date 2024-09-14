@@ -11,11 +11,23 @@ async function getTestList(id, password) {
   }
 }
 
-//post들 가져오기 요청
+//postlist를 가져오기 요청
 export async function getPostList() {
   try {
     const response = await api.post('/auth/postlist');
-    console.log(response.data);
+    console.log("you can use getPostList",response.data);
+    return response.data;
+  } catch (err) {
+    console.error(err); // 에러를 콘솔에 출력
+  }
+}
+
+//post_no에 따른 post한개 가져오기 요청
+export async function getPostByNo(postNo) {
+  try {
+    console.log("Sending post request with postNo:", postNo);
+    const response = await api.get(`/auth/post/${postNo}`);
+    console.log("API response:", response);
     return response.data;
   } catch (err) {
     console.error(err); // 에러를 콘솔에 출력
