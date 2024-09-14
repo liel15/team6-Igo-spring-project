@@ -33,7 +33,7 @@
       <!--begin::Content container-->
       <div id="kt_app_content_container" class="app-container container-xxl">
         <!--begin::Post card-->
-        <div class="card">
+        <div v-for="item in postlist" class="card">
           <!--begin::Body-->
           <div class="card-body p-lg-20 pb-lg-0">
             <!--begin::Layout-->
@@ -91,8 +91,8 @@
                     </div>
                     <!--end::Info-->
                     <!--begin::Title-->
-                    <span class="fw-bold text-muted fs-5 ps-1 me-4">유저 아이디 자리{{ post.postNo }}</span>
-                    <span class="text-gray-900 fs-1 fw-bold">{{ post.postTitle }}</span>
+                    <span class="fw-bold text-muted fs-5 ps-1 me-4">유저 아이디 자리</span>
+                    <span class="text-gray-900 fs-1 fw-bold">{{ item.postTitle }}</span>
                     <!--end::Title-->
                     <!--begin::Container-->
                     <div class="overlay mt-8">
@@ -113,7 +113,7 @@
                   <!--begin::Description-->
                   <div class="fs-5 fw-semibold text-gray-600">
                     <!--begin::Text-->
-                    <p class="mb-8">{{ post.postContent }}</p>
+                    <p class="mb-8">{{ item.postContent }}</p>
                     <!--end::Text-->
                   </div>
                   <!--end::Description-->
@@ -211,17 +211,19 @@
 <script setup>
 
 import { ref, onMounted } from 'vue';
-import { usePostStore } from '@/stores/test';
 import { storeToRefs } from 'pinia';
-import { useRoute } from 'vue-router';
 
-const route = useRoute();
-const post = ref(route.query);
+// db에서 posts들 데이터 가져오기
+onMounted(() => {
+  init();
+})
 
-//const poststore = usePostStore();
-//const post = storeToRefs(poststore);
-
-console.log("Current post data:", post.value);
+const store = usePostStore();
+async function init () {
+  store.fetchPost();
+  console.log(postlist);
+}
+const { postlist } = storeToRefs(store);
 // 반응형 변수 선언 (isHeartFilled는 하트가 채워졌는지 여부를 저장)
 const isHeartFilled = ref(false);
 

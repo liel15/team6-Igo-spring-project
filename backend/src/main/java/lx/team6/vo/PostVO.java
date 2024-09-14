@@ -3,7 +3,7 @@ package lx.team6.vo;
 import java.util.Date;
 
 public class PostVO {
-	int postNo;
+	Integer postNo;
 	String postTitle;
 	String postContent;
 	String postDate;
@@ -14,10 +14,10 @@ public class PostVO {
 				+ postDate + "]";
 	}
 	
-	public int getPostNo() {
+	public Integer getPostNo() {
 		return postNo;
 	}
-	public void setPostNo(int postNo) {
+	public void setPostNo(Integer postNo) {
 		this.postNo = postNo;
 	}
 	public String getPostTitle() {
