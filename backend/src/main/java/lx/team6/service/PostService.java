@@ -20,6 +20,14 @@ public class PostService {
         return postList;
     }
     
+    
+    // 포스트 검색하는 메서드
+    public List<PostVO> serchPostList(String keyword) {
+    	List<PostVO> resultPost = dao.serchPostList(keyword);
+    	return resultPost;
+    }
+       
+
     // 게시글 한개 불러오기
     public PostVO getPostByNo(Integer postNo) {
         PostVO post = dao.getPostByNo(postNo);
