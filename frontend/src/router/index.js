@@ -10,38 +10,14 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/signup',
-      name: 'signup',
-     
-      component: () => import('../views/SignUpView.vue')
-    },
-    {
-      path: '/login',
-      name: 'login',
-     
-      component: () => import('../views/LoginTestView.vue')
-    },
-    {
       path: '/test',
       name: 'test',
-     
-      component: () => import('../views/TestView.vue')
-    },
-    {
-      path: '/about',
-      name: 'about',
-     
-      component: () => import('../views/AboutView.vue')
+      component: () => import("../views/TestView.vue"),
     },
     {
       path: '/mypage',
       name: 'mypage',
       component: () => import('../views/MypageView.vue')
-    },
-    {
-      path: '/main',
-      name: 'main',
-      component: () => import("../views/MainView.vue")
     },
     {
       path: '/logined',
@@ -57,9 +33,23 @@ const router = createRouter({
       path: '/mainpage',
       name: 'mainpage',
       component: () => import("../views/MainPageView.vue")
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: () => import("../views/SignUpView.vue")
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import("../views/LoginTestView.vue")
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: () => import("../views/AboutView.vue")
     }
   ]
 })
-
 
 export default router

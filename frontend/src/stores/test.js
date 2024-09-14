@@ -14,6 +14,7 @@ export const useTestStore = defineStore("test", () => {
       data.value = response; // 입력받은 아이디와 비밀번호에 해당하는 값 저장(vo에 있는 것들..?)
       error.value = null; // 에러 초기화
       alert("로그인 성공");
+      console.log(data.value);
       router.push({ path: "/about"});
     } catch (err) {
       error.value = err.message; // 에러 메시지를 상태에 저장

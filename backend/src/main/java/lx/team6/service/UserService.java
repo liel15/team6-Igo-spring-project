@@ -2,37 +2,38 @@ package lx.team6.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 import lx.team6.dao.UserDAO;
+import lx.team6.vo.KeywordVo;
 import lx.team6.vo.UserVo;
 
 @Service
 public class UserService {
 
     @Autowired
-    UserDAO dao;
+    private UserDAO userDAO;
 
-    // 로그인
-    public UserVo login(String userId, String userPw) {
-        UserVo vo = dao.findById(userId);
-        if (vo != null && vo.getUserId().equals(userId) && vo.getUserPw().equals(userPw)) {
-            return vo;
-        } else {
-            return null;
-        }
+    // 회원가입 및 키워드 저장을 트랜잭션으로 처리
+    @Transactional
+    public int createUserAndKeyword(UserVo userVo, KeywordVo keywordVo) {
+        // 1. User 테이블에 데이터 삽입
+        int userInsertResult = userDAO.createUser(userVo);  // userVo의 userNo 필드에 자동으로 PK가 들어감
+
+        // 2. Keyword 테이블에 데이터 삽입 (User의 PK를 FK로 사용)
+        keywordVo.setKeywordUserNumber(userVo.getUserNumber());  // User 테이블의 PK를 FK로 설정
+        int keywordInsertResult = userDAO.createKeyword(keywordVo);
+
+        // 삽입 결과 반환
+        return userInsertResult + keywordInsertResult;  // 두 테이블 삽입 결과를 더한 값 반환 (성공한 삽입 수)
     }
 
-    // 회원가입
-    public UserVo signup(UserVo reqVo) {
-        UserVo newId = dao.findById(reqVo.getUserId());
-        if (newId != null) {
-            return null;  // 이미 존재하는 ID일 경우 회원가입 실패
-        } else {
-            dao.createUser(reqVo);  // 신규 사용자 등록
-            return reqVo;  // 성공적으로 등록된 사용자 정보 반환
+    // 로그인 처리
+    public UserVo login(String userId, String userPw) {
+        UserVo user = userDAO.findById(userId);
+        if (user != null && user.getUserPw().equals(userPw)) {
+            return user;
         }
+        return null;
     }
 }
-
-
