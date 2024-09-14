@@ -1,56 +1,14 @@
 <template>
+  <Header>
+   
+  </Header>
   <div class="d-flex flex-column" style="background-color: #f6f6f6">
-    <!-- 헤더 시작 -->
-    <div class="header" style="height: 8vh; background-color: #3abef9">
-      <!-- 네비바 -->
-      <nav class="navbar navbar-expand-lg navbar-dark w-100 h-100">
-        <div class="container-fluid">
-          <div class="d-flex align-items-center">
-            <img
-              width="50"
-              height="50"
-              src="https://img.icons8.com/stickers/50/airplane-take-off.png"
-              alt="airplane-take-off"
-            />
-            <a class="navbar-brand ms-2 fw-bold" style="font-size: 30px" href="#"
-              >I.GO!</a
-            >
-          </div>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
+   
+   
 
-          <div
-            class="collapse navbar-collapse justify-content-end"
-            id="navbarNavAltMarkup"
-          >
-            <div class="navbar-nav justify-content-center align-items-center">
-              <a class="nav-link" href="#serch">여행지</a>
-
-              <a class="nav-link" href="#">계획 등록</a>
-
-              <a class="nav-link" href="#">마이페이지</a>
-
-              <button @click="log()" class="btn btn-primary ms-2">{{ startBt }}</button>
-            </div>
-          </div>
-        </div>
-      </nav>
-      <!-- 네비바 -->
-    </div>
-    <!-- 헤더 끝 -->
-    <!-- 헤더 끝 -->
-
-    <!-- 몸 1-->
     <div class="d-flex flex-row mt-5" style="height: 400px">
+
+    <!-- 몸 1 : 로그인 전-->
       <div
         v-if="startBt == '로그인'"
         class="card shadow d-flex justify-content-center align-items-start m-2 ms-3"
@@ -61,56 +19,58 @@
           <span>막막했던 여행? I,Go와 함께 가요!</span>
         </div>
       </div>
+      <!-- 몸 1 : 로그인 전 끝-->
 
+      <!-- 몸1 : 로그인 후 -->
       <div
-  v-if="startBt == '로그아웃'"
-  class="card shadow d-flex justify-content-center align-items-start m-2 ms-3"
-  style="width: 900px"
->
-  <div class="d-flex flex-row ms-2 p-5 w-100">
-    <!-- 사진 컨테이너: Flexbox를 사용해 좌측 중앙에 고정 -->
-    <div
-      class="d-flex justify-content-center align-items-center rounded-circle overflow-hidden shadow"
-      style="width: 200px; height: 200px"
-    >
-      <img
-        src="https://dcimg1.dcinside.com/viewimage.php?id=23b2de21e1d335a161b2&no=24b0d769e1d32ca73dea81fa11d028311869dac7d33bec80aa651ee0dd05d26f31aa190ab157783060f4f76fa59e2635ad3463abbc4bac0bc7f0edc4feada421976851ef383b38252aebfd5a9ef121e854"
-        class="w-100 h-100"
-      />
-    </div>
-
-    <!-- 카드 내용 -->
-    <div
-      class="d-flex flex-column justify-content-center align-items-start flex-grow-1 ms-4"
-    >
-      <h2 class="fw-bold">{{ user.name }}님!</h2>
-      <p style="font-size: 12px; color: gray">{{ user.id }}</p>
-      <div class="d-flex align-items-center mt-2">
-        <p class="me-2 mb-0">나의 여행:</p>
-        <p class="mb-0">{{ user.post }} 개</p>
-      </div>
-
-      <div class="mt-4">
-        <div class="d-flex flex-wrap justify-content-start">
-          <p
-            v-for="(value, key) in type"
-            :key="key"
-            class="badge rounded-pill text-dark me-2 mb-3"
-            style="
-              font-size: 0.9em;
-              padding: 8px 15px;
-              background-color: #a7e6ff;
-              flex-basis: calc(33.33% - 10px);
-            "
+        v-if="startBt == '로그아웃'"
+        class="card shadow d-flex justify-content-center align-items-start m-2 ms-3"
+        style="width: 900px"
+      >
+        <div class="d-flex flex-row ms-2 p-5 w-100">
+          <!-- 사진 컨테이너: Flexbox를 사용해 좌측 중앙에 고정 -->
+          <div
+            class="d-flex justify-content-center align-items-center rounded-circle overflow-hidden shadow"
+            style="width: 200px; height: 200px"
           >
-            {{ value }}
-          </p>
+            <img
+              src="https://dcimg1.dcinside.com/viewimage.php?id=23b2de21e1d335a161b2&no=24b0d769e1d32ca73dea81fa11d028311869dac7d33bec80aa651ee0dd05d26f31aa190ab157783060f4f76fa59e2635ad3463abbc4bac0bc7f0edc4feada421976851ef383b38252aebfd5a9ef121e854"
+              class="w-100 h-100"
+            />
+          </div>
+
+          <div
+       
+            class="d-flex flex-column justify-content-center align-items-start flex-grow-1 ms-4"
+          >
+            <h2 class="fw-bold">{{ user.name }}님!</h2>
+            <p style="font-size: 12px; color: gray">{{ user.id }}</p>
+            <div class="d-flex align-items-center mt-2">
+              <p class="me-2 mb-0">나의 여행:</p>
+              <p class="mb-0">{{ user.post }} 개</p>
+            </div>
+
+            <div class="mt-4">
+              <div class="d-flex flex-wrap justify-content-start">
+                <p
+                  v-for="(value, key) in type"
+                  :key="key"
+                  class="badge rounded-pill text-dark me-2 mb-3"
+                  style="
+                    font-size: 0.9em;
+                    padding: 8px 15px;
+                    background-color: #a7e6ff;
+                    flex-basis: calc(33.33% - 10px);
+                  "
+                >
+                  {{ value }}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-
+      <!-- 몸1 : 로그인 후 끝 -->
 
       <!-- 상단 몸 -->
       <div
@@ -222,7 +182,7 @@
       </div>
       <!-- 상단 몸2 -->
     </div>
-    <!-- 몸1 -->
+    <!-- 몸1 끝-->
 
     <!-- 몸2 : 영상 -->
     <div
@@ -443,53 +403,42 @@
       <!-- v-for -->
     </div>
 
-    <div
-      class="footer d-flex flex-column justify-content-center align-items-star mt-5"
-      style="background-color: #eaeaea; height: 150px; color: gray"
-    >
-      <div class="container">
-        <p class="mb-1">Igo 사업자 정보</p>
-        <p class="mb-1 mt-3" style="font-size: 12px">팀 6조 | 대표 김세훈</p>
-        <p class="mb-1" style="font-size: 12px">이규태 박정은 최수환 함지수</p>
-        <p class="mb-1" style="font-size: 12px">
-          서울특별시 강남구 언주로 603 LX공간정보아카데미
-        </p>
-        <p class="mb-1" style="font-size: 12px">끝나고 여행가요~</p>
-      </div>
-    </div>
+    <Footer></Footer>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import axios from 'axios';
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+import { useTestStore, useTestData } from "@/stores/user"; //pinia store가져오기
+import { storeToRefs } from "pinia"; //store 상태
 
 const isHeartFilled = ref(false);
+const storeLog = useTestStore(); //저장소에서 빼내온 것
+const storeData = useTestData();
 
-const startBt = ref("로그인"); //초기값
+//저장소에서 빼내온 걸 인식시킨다. 
+const { startBt } = storeToRefs(storeLog);
+const { user, type } = storeToRefs(storeData); 
 
-function log() {
-  if (startBt.value == "로그인") {
-    startBt.value = "로그아웃";
-  } else {
-    startBt.value = "로그인";
-  }
+
+//db에서 데이터 가져오기 
+onMounted(() => {
+  init();
+})
+
+const init = async() => {
+  await storeData.useTestData;
 }
+
+
 
 function toggleHeart() {
   isHeartFilled.value = !isHeartFilled.value;
 }
 
-const user = ref({ id: 'dididi', name: "회원1", mbit: "tttt", post: "5" });
-
-const type = ref({
-  mbit: "tttt",
-  num: "num",
-  location: "서울",
-  type: "익스트림",
-  mobility: "대중교통",
-  house: "호캉스",
-  house: "hotel",
-});
 </script>
 
 <style scoped>

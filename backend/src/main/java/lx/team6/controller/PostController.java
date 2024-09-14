@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lx.team6.service.PostService;
 import lx.team6.vo.AddrbookVo;
 import lx.team6.vo.PostVO;
+import lx.team6.vo.UserVo;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -42,8 +43,18 @@ public class PostController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
-
-	// 게시글 한개 불러오기
+	
+	//post 검색기능
+	@PostMapping("/serch")
+	public ResponseEntity<String> serch(@RequestBody String keyword) { 
+		List<PostVO> postList = postservice.serchPostList(keyword);
+		if(postList != null) {
+			return ResponseEntity.ok(keyword);
+		}else {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+	}
+	
 	@GetMapping("/post/{postNo}")
 	public ResponseEntity<PostVO> getpost(@PathVariable("postNo") Integer postNo) {
 		System.out.println(postNo);

@@ -24,6 +24,9 @@ public class PostDAO {
 		return session.selectOne("getPostByNo", postNo);
 	}
 
+	public List<PostVO> serchPostList(String keyword) {
+		return session.selectList("serchPostList", keyword);
+	}
 	// 게시글 등록
 	public void insertPost(PostVO post) {
 		session.insert("insertPost", post);
