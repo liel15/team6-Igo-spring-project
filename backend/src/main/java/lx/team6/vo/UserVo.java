@@ -2,7 +2,7 @@ package lx.team6.vo;
 
 public class UserVo {
 	
-	public String userNumber;
+	public int userNumber;
 	public String userId;
 	public String userPw;
 	public String userName;
@@ -12,10 +12,10 @@ public class UserVo {
 	public String userGender;
 	public String userImage;
 	
-	public String getUserNumber() {
+	public int getUserNumber() {
 		return userNumber;
 	}
-	public void setUserNumber(String userNumber) {
+	public void setUserNumber(int userNumber) {
 		this.userNumber = userNumber;
 	}
 	public String getUserId() {
@@ -72,6 +72,8 @@ public class UserVo {
 				+ userName + ", userEmail=" + userEmail + ", userTel=" + userTel + ", userBirth=" + userBirth
 				+ ", userGender=" + userGender + ", userImage=" + userImage + "]";
 	}
+	
+	
 	
 	
 	

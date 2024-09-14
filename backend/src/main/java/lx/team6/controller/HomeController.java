@@ -3,8 +3,6 @@ package lx.team6.controller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,11 +13,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import lx.team6.service.UserService;
+import lx.team6.vo.KeywordVo;
 import lx.team6.vo.UserVo;
 
 @RestController
@@ -51,52 +50,45 @@ public class HomeController {
 		return "redirect:/login_form.do";
 	}
 	
-	// 회원가입
-	@PostMapping("/signup.do")
-	public ResponseEntity<String> signup(@RequestBody UserVo reqVo) {
-		UserVo isSignUp = userservice.signup(reqVo); // 서비스에 넣을 함수 이름
-	        if (isSignUp != null) {
-	        	return ResponseEntity.ok().build();
-	        } else {
-	        	 return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	 @PostMapping(value = "/signup.do", consumes = {"multipart/form-data"})
+	    public ResponseEntity<String> createUserAndService(
+	            @RequestPart("user") UserVo userVo,  // User 관련 데이터
+	            @RequestPart("keyword") KeywordVo keywordVo,  // Keyword 관련 데이터
+	            @RequestPart(value = "userImage", required = false) MultipartFile image) {
+
+	        try {
+	            // 1. 이미지 파일 처리 (선택 사항)
+	            if (image != null && !image.isEmpty()) {
+	                String uploadDirectory = "C:/images/";
+	                String fileName = image.getOriginalFilename();
+	                String filePath = Paths.get(uploadDirectory, fileName).toString();
+
+	                // 디렉토리 생성
+	                File directory = new File(uploadDirectory);
+	                if (!directory.exists()) {
+	                    directory.mkdirs();
+	                }
+
+	                // 이미지 파일 저장
+	                File file = new File(filePath);
+	                image.transferTo(file);
+
+	                // 이미지 경로 설정
+	                userVo.setUserImage("/images/" + fileName);
+	            }
+
+	            // 2. 회원 정보와 키워드 정보를 트랜잭션으로 저장
+	            userservice.createUserAndKeyword(userVo, keywordVo);
+
+	            return ResponseEntity.ok("회원가입 성공");
+
+	        } catch (IOException e) {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 처리 중 오류가 발생했습니다.");
 	        }
 	    }
-	
-	// 이미지 업로드 (FormData로 이미지 전송)
-    @PostMapping("/uploadImage.do")
-    public Map<String, String> uploadImage(@RequestParam("userImage") MultipartFile image) throws IOException {
-        // 이미지 파일 저장 경로 설정 (예: 로컬 경로)
-        String uploadDirectory = "C:/images/";
-        String fileName = image.getOriginalFilename();
-        
-        // 파일 타입 체크 (예: 이미지 파일만 허용)
-        if (!image.getContentType().startsWith("image/")) {
-            throw new IOException("이미지 파일만 업로드할 수 있습니다.");
-        }
-        
-        // 파일 크기 제한 (예: 5MB 이하)
-        long maxFileSize = 5 * 1024 * 1024; // 5MB
-        if (image.getSize() > maxFileSize) {
-            throw new IOException("파일 크기는 5MB 이하로 제한됩니다.");
-        }
 
-        String filePath = Paths.get(uploadDirectory, fileName).toString();
-
-        // 파일을 저장할 디렉토리가 없으면 생성
-        File directory = new File(uploadDirectory);
-        if (!directory.exists()) {
-            directory.mkdirs(); // 폴더가 없으면 폴더 생성
-        }
-
-        // 파일을 서버에 저장
-        File file = new File(filePath);
-        image.transferTo(file);
-
-        // 이미지 파일 경로를 반환
-        Map<String, String> result = new HashMap<>();
-        result.put("filePath", "/images/" + fileName);
-        return result;
-    }
-	
 
 }
+	
+
+

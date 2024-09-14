@@ -55,13 +55,26 @@
 			 , birth_date userBirth
 			 , img userImage
 			 , gender userGender 
-		from user
+		from User
 		where id = #{userId}
 	</select>
 	
-	<!-- 회원가입 -->
+	<!-- 회원가입 
 	<insert id="createUser" parameterType="lx.team6.vo.UserVo">
-		insert into user(id, password, name, email, tel_num, birth_date, img, gender)
+		insert into User(id, password, name, email, tel_num, birth_date, img, gender)
+		values(#{userId}, #{userPw}, #{userName}, #{userEmail}, #{userTel}, #{userBirth}, #{userImage}, #{userGender})
+	</insert>-->
+	
+	<!-- 회원가입 1(user)-->
+	<insert id="createUser"  useGeneratedKeys="true" keyProperty="userNumber" parameterType="lx.team6.vo.UserVo">
+		insert into User(id, password, name, email, tel_num, birth_date, img, gender)
 		values(#{userId}, #{userPw}, #{userName}, #{userEmail}, #{userTel}, #{userBirth}, #{userImage}, #{userGender})
 	</insert>
+	
+	<!-- 회원가입 2(keyword) -->
+	<insert id="createKeyword" parameterType="lx.team6.vo.KeywordVo">
+		 insert into keyword (key_no, mbti, key_sort, key_location, key_type, mobility, house, user_user_no)
+    	 values(#{keywordNumber}, #{keywordMbti}, #{keywordSort}, #{keywordLocation}, #{keywordType}, #{keywordMobility}, #{keywordHouse}, #{keywordUserNumber})
+	</insert>
+	
 </mapper>

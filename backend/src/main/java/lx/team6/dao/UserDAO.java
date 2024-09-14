@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import lx.team6.vo.KeywordVo;
 import lx.team6.vo.UserVo;
 
 @Component
@@ -46,4 +47,9 @@ public class UserDAO {
 	public int createUser(UserVo vo) {
 		return session.insert("createUser", vo);
 		}
+	
+	// Keyword 테이블에 데이터 삽입
+    public int createKeyword(KeywordVo keywordVo) {
+        return session.insert("createKeyword", keywordVo);  // Keyword 테이블에 삽입 후 삽입된 행 수 반환
+    }
 }

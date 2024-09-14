@@ -7,7 +7,7 @@
   <!-- db, sqlsession -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-		<property name="url" value="jdbc:mysql://localhost:3306/spring"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/team6_igo"/>
 		<property name="username" value="root"/>
 		<property name="password" value="rootroot"/>
 	</bean>
@@ -20,4 +20,5 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
 	</bean>
+	
 </beans>
