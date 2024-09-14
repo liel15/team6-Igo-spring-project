@@ -5,14 +5,12 @@ import java.util.Date;
 public class PostVO {
 	Integer postNo;
 	String postTitle;
-	String postContent;
-	String postDate;
-	
-	@Override
-	public String toString() {
-		return "PostVO [postNo=" + postNo + ", postTitle=" + postTitle + ", postContent=" + postContent + ", postDate="
-				+ postDate + "]";
-	}
+	String content;
+	String createdAt;
+	String updatedAt;
+	String img;
+	int userNo;
+	String userId;
 	
 	public Integer getPostNo() {
 		return postNo;
@@ -26,17 +24,49 @@ public class PostVO {
 	public void setPostTitle(String postTitle) {
 		this.postTitle = postTitle;
 	}
-	public String getPostContent() {
-		return postContent;
+	public String getContent() {
+		return content;
 	}
-	public void setPostContent(String postContent) {
-		this.postContent = postContent;
+	public void setContent(String content) {
+		this.content = content;
 	}
-	public String getPostDate() {
-		return postDate;
+	public String getCreatedAt() {
+		return createdAt;
 	}
-	public void setPostDate(String postDate) {
-		this.postDate = postDate;
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
 	}
+	public String getUpdatedAt() {
+		return updatedAt;
+	}
+	public void setUpdatedAt(String updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
+	}
+	public int getUserNo() {
+		return userNo;
+	}
+	public void setUserNo(int userNo) {
+		this.userNo = userNo;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	@Override
+	public String toString() {
+		return "PostVO [postNo=" + postNo + ", postTitle=" + postTitle + ", content=" + content + ", createdAt="
+				+ createdAt + ", updatedAt=" + updatedAt + ", img=" + img + ", userNo=" + userNo + ", userId=" + userId
+				+ "]";
+	}
+	
+	
 	
 }

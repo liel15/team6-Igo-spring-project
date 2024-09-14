@@ -91,8 +91,8 @@
                     </div>
                     <!--end::Info-->
                     <!--begin::Title-->
-                    <span class="fw-bold text-muted fs-5 ps-1 me-4">유저 아이디 자리{{ post.postNo }}</span>
-                    <span class="text-gray-900 fs-1 fw-bold">{{ post.postTitle }}</span>
+                    <span class="fw-bold text-muted fs-5 ps-1 me-4">유저 아이디 자리{{ postone.postNo }}</span>
+                    <span class="text-gray-900 fs-1 fw-bold">{{ postone.postTitle }}</span>
                     <!--end::Title-->
                     <!--begin::Container-->
                     <div class="overlay mt-8">
@@ -102,7 +102,7 @@
                       <!--end::Image-->
                       <!--begin::Links-->
                       <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
-                        <a href="pages/about.html" class="btn btn-primary">About Us</a>
+                        <a @click="goHome()" class="btn btn-primary">홈으로</a>
                         <a href="pages/careers/apply.html" class="btn btn-light-primary ms-3">일정보기</a>
                       </div>
                       <!--end::Links-->
@@ -113,17 +113,22 @@
                   <!--begin::Description-->
                   <div class="fs-5 fw-semibold text-gray-600">
                     <!--begin::Text-->
-                    <p class="mb-8">{{ post.postContent }}</p>
+                    <p class="mb-8">{{ postone.content }}</p>
                     <!--end::Text-->
                   </div>
                   <!--end::Description-->
 
+                  <button id="updateButton" @click="showUpdatePostModal(postone.postNo)"
+                    class="btn btn-primary fs-6 p-1 me-2">수정</button>
+                  <button id="deleteButton" @click="deletePost(postone.postNo)"
+                    class="btn btn-primary fs-6 p-1">삭제</button>
                 </div>
                 <!--end::Post content-->
               </div>
               <!--end::Content-->
             </div>
             <!--end::Layout-->
+
             <!-- 댓글 내용 START -->
             <!--begin::Section-->
             <div class="mb-17">
@@ -189,7 +194,7 @@
               <!--end::Block-->
               <!-- 댓글 2 END -->
               <!-- 댓글 작성 END -->
-            
+
             </div>
             <!--end::Section-->
           </div>
@@ -206,6 +211,89 @@
   </div>
 
   <!-- 몸1 -->
+
+  <!-- 글 수정 모달 START -->
+  <!--begin::대화상자 - 검사일정수정 -->
+  <div class="modal fade" id="kt_modal_new_target" tabindex="-1" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+
+      <div class="modal-content rounded">
+
+        <div class="modal-header pb-0 border-0 justify-content-end">
+          <!--begin::닫기 아이콘-->
+          <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+            <i class="ki-duotone ki-cross fs-1">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>
+          </div>
+          <!--end::닫기 아이콘-->
+        </div>
+
+        <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+          <form id="kt_modal_new_target_form" class="form" action="#">
+            <!--begin::제목-->
+            <div class="mb-13 text-center">
+              <!--begin::Title-->
+              <h1 class="mb-3">후기 글 수정</h1>
+              <!--end::Title-->
+              <!--begin::Description-->
+              <div class="text-muted fw-semibold fs-5">글의 제목, 이미지, 내용을 수정해보세요.</div>
+              <!--end::Description-->
+            </div>
+            <!--end::제목-->
+
+            <!--begin::이름 입력상자-->
+            <div class="d-flex flex-column mb-8 fv-row">
+              <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                <span class="required">제목</span>
+                <span class="ms-1" data-bs-toggle="tooltip" title="제목을 입력하세요. 필수랍니다~">
+                  <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                    <span class="path3"></span>
+                  </i>
+                </span>
+              </label>
+              <input type="text" class="form-control form-control-solid" name="target_title"
+                v-model="titleInput" />
+            </div>
+            <!--end::이름 입력상자-->
+            <!--begin::내용 입력상자-->
+            <div class="d-flex flex-column mb-8 fv-row">
+              <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                <span class="required">내용</span>
+                <span class="ms-1" data-bs-toggle="tooltip" title="내용을 입력하세요. 필수랍니다~">
+                  <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                    <span class="path3"></span>
+                  </i>
+                </span>
+              </label>
+              <textarea class="form-control form-control-solid" name="target_content"
+                v-model="contentInput" rows="5"></textarea>
+            </div>
+            <!--end::내용 입력상자-->
+
+            <!--begin::하단버튼-->
+            <div class="text-center">
+              <button type="button" class="btn btn-primary" @click.prevent="updatePost(postone.postNo)">저장</button>
+              <button type="reset" class="btn btn-light ms-3" @click="clearAll()">모두 지우기</button>
+            </div>
+            <!--end::하단버튼-->
+          </form>
+          <!--end:Form-->
+        </div>
+        <!--end::Modal body-->
+      </div>
+      <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+  </div>
+  <!--end::대화상자 - 검사일정수정-->
+  <!-- 글 수정 모달 END -->
 </template>
 
 <script setup>
@@ -214,20 +302,89 @@ import { ref, onMounted } from 'vue';
 import { usePostStore } from '@/stores/test';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
+import router from '@/router/index.js';
+import { deletePostByNo, updatePostByNo } from '@/api/test';
+import { Modal } from 'bootstrap';
 
-const route = useRoute();
-const post = ref(route.query);
+// 글 정보 가져오기 관련 함수, 변수
+const poststore = usePostStore();
+const {postone} = storeToRefs(poststore);
 
-//const poststore = usePostStore();
-//const post = storeToRefs(poststore);
+console.log("Current post data:", postone);
+console.log("글번호 : ", postone.value.postNo);
 
-console.log("Current post data:", post.value);
+onMounted(() => {
+  window.scrollTo(0, 0);
+})
+
+// 글 삭제하기 버튼 함수
+//const deleteButton = document.querySelector('#deleteButton');
+//deleteButton.addEventListener("click", function (postNo) {
+//console.log("삭제할 번호 : ", postNo);
+//deletePostByNo(postNo);
+//})
+
+function deletePost(postNo) {
+  console.log("삭제할 번호 : ", postNo);
+  if (confirm("정말 삭제하시겠습니까??") == true) {
+    deletePostByNo(postNo);
+    router.replace({path:'/mainpage'});
+  } else {
+    return false;
+  }
+}
+
+// 글 업데이트하기 버튼 - 모달 함수
+let titleInput = ref('');
+let contentInput = ref('');
+
+let updatePostModal;
+
+// 수정 모달 만들기
+function showUpdatePostModal(itemId) {
+  console.log(`showUpdate 호출됨 - 아이디 : ${itemId}`);
+
+  // 대화상자의 입력값 넣어주기
+  titleInput.value = postone.value.postTitle;
+  contentInput.value = postone.value.content;
+
+  // 선택한 아이템의 아이디
+  //selected.value = itemId;
+
+  // 대화상자 띄우기
+  const elem = document.querySelector('#kt_modal_new_target');
+  updatePostModal = new Modal(elem);
+  updatePostModal.show();
+
+}
+
+// 글 업데이트 함수
+function updatePost(postNo) {
+  console.log("수정할 글번호 : ",postNo);
+  const data = {
+    postNo: postNo,
+    postTitle: titleInput.value,
+    content: contentInput.value
+  }
+  console.log("수정한 글제목 : " + titleInput.value);
+  postone.value.postTitle = titleInput.value;
+  postone.value.content = contentInput.value;
+  console.log("전달할 내용 : " + data);
+  updatePostByNo(postNo, data);
+  updatePostModal.hide();
+}
+
 // 반응형 변수 선언 (isHeartFilled는 하트가 채워졌는지 여부를 저장)
 const isHeartFilled = ref(false);
 
 // 하트를 클릭했을 때 상태를 토글하는 함수
 function toggleHeart() {
   isHeartFilled.value = !isHeartFilled.value;
+}
+
+// 메인페이지로 돌아가기 버튼 함수
+function goHome() {
+  router.replace({ path: '/mainpage' });
 }
 
 </script>

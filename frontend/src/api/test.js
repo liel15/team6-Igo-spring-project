@@ -34,6 +34,26 @@ export async function getPostByNo(postNo) {
   }
 }
 
+// DELETE 요청
+export async function deletePostByNo(postNo) {
+  try {
+    const response = await api.delete(`/auth/delete/${postNo}`);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// PATCH 요청 - 후기글 업데이트
+export async function updatePostByNo(postNo, data) {
+  try {
+    const response = await api.patch(`/auth/update/${postNo}`, data);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 
 
 // params 예시
