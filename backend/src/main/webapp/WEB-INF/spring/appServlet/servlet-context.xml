@@ -22,16 +22,24 @@
   <context:component-scan base-package="lx.team6" />
   <aop:aspectj-autoproxy  proxy-target-class="true"></aop:aspectj-autoproxy>
   
-  <beans:bean id="LoginInterceptor" class="lx.team6.interceptor.LoginInterceptor"/>
+<!--    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/login" />
+            <beans:bean class="lx.team6.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors> -->
+  
+   <beans:bean id="LoginInterceptor" class="lx.team6.interceptor.LoginInterceptor" />
   <interceptors>
   		<interceptor>
-  			<mapping path="/list.do"/>
+  			<mapping path="/mainpage"/>
   			<mapping path="/register.do"/>
   			<mapping path="/abform.do"/>
   			<mapping path="/edit_form.do"/>
   			<beans:ref bean="LoginInterceptor"/>
   		</interceptor>
   </interceptors>
-
+ 
 
 </beans:beans>

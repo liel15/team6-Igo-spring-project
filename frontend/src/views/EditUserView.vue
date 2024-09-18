@@ -12,7 +12,7 @@
             <!--begin::Form-->
             <form
               class="form w-100"
-              @submit.prevent="signup"
+              @submit.prevent="edituser"
               novalidate="novalidate"
               id="kt_sign_up_form"
               data-kt-redirect-url="authentication/layouts/corporate/sign-in.html"
@@ -21,7 +21,7 @@
               <!--begin::Heading-->
               <div class="text-center mb-11">
                 <!--begin::Title-->
-                <h1 class="text-gray-900 fw-bolder mb-3">회원가입</h1>
+                <h1 class="text-gray-900 fw-bolder mb-3">회원정보수정</h1>
                 <!--end::Title-->
                 <!--begin::Subtitle-->
                 <div class="text-gray-500 fw-semibold fs-6">Igo</div>
@@ -32,21 +32,21 @@
               <div class="row g-3 mb-9">
                 <!--begin::Col-->
                 <div class="col-md-6">
-                  <h2>프로필사진</h2>           
+                  <h2>프로필사진</h2>
                   <!-- 이미지 파일 선택 -->
                   <div>
                     <input type="file" id="image" @change="getFileName" style="display: none;"/>
                     <label for="image">
                       <!-- 파일을 선택하면 이 부분이 갱신 -->
                       <img
-                        :src="previewUrl || '/images/user.png'"
+                        :src="previewUrl || img || '/images/user.png'"
                         alt="Selected Image"
-                        class="profile-image"
-                        style="cursor:pointer; margin-left:10px"
+                        class="profile-image"                      
                       />
                     </label>
                   </div>
                 </div>
+
                 <!--end::Col-->
                 <!--begin::Col-->
                 <div class="col-md-6">
@@ -86,21 +86,9 @@
                   autocomplete="off"
                   class="form-control bg-transparent"
                   v-model="id"
+                  readonly="readonly"
                 />
-                <!--end::아이디-->
-
-                <!-- 아이디 중복확인 버튼 -->
-                <div class="d-flex">
-                <button
-                  type="button"
-                  class="btn btn-secondary mt-2"
-                  @click="checkIdDuplicate()"
-                >
-                  아이디 중복 확인
-                </button>
-                <p class="align-items-center mt-6 ms-3">{{ idCheckResult }}</p>
-                </div>
-                <!-- 중복 확인 결과 -->
+                <!--end::아이디-->           
 
               </div>
               <!--begin::Input group-->
@@ -237,7 +225,7 @@
 
                     <!--begin::성별-->
                     <div>
-                      <input type="radio" id="male" value="M" v-model="selectedgender" style="cursor:pointer" />
+                      <input type="radio" id="male" value="M" v-model="selectedgender" style="cursor:pointer"/>
                       <label for="male">남성</label>
 
                       <input
@@ -270,7 +258,7 @@
                         <option value="ESFP">ESFP</option>
                         <option value="ENFP">ENFP</option>
                         <option value="ENTP">ENTP</option>
-                        <option value="ESTJ">ESTJ</option>
+                        <option value="ESTJ" >ESTJ</option>
                         <option value="ESFJ">ESFJ</option>
                         <option value="ENFJ">ENFJ</option>
                         <option value="ENTJ">ENTJ</option>
@@ -285,7 +273,7 @@
                         id="number"
                         name="number"
                         class="form-control"
-                        style="cursor:pointer"
+                         style="cursor:pointer"
                       >
                         <option value="" disabled>선택하기</option>
                         <option value="개인">개인</option>
@@ -300,7 +288,7 @@
                         id="location"
                         name="location"
                         class="form-control"
-                        style="cursor:pointer"
+                         style="cursor:pointer"
                       >
                         <option value="" disabled>선택하기</option>
                         <option value="서울특별시">서울특별시</option>
@@ -315,7 +303,7 @@
                       </select>
                     </div>
 
-                    <div class="form-group mt-3" >
+                    <div class="form-group mt-3">
                       <label for="preference">여행 취향:</label>
                       <select v-model="type" id="type" name="type" class="form-control" style="cursor:pointer">
                         <option value="" disabled>선택하기</option>
@@ -331,7 +319,7 @@
                         id="mobility"
                         name="mobility"
                         class="form-control"
-                        style="cursor:pointer"
+                         style="cursor:pointer"
                       >
                         <option value="" disabled>선택하기</option>
                         <option value="뚜벅이">뚜벅이</option>
@@ -347,7 +335,7 @@
                         id="house"
                         name="house"
                         class="form-control"
-                        style="cursor:pointer"
+                         style="cursor:pointer"
                       >
                         <option value="" disabled>선택하기</option>
                         <option value="게스트하우스">게스트하우스</option>
@@ -367,7 +355,7 @@
               <div class="d-grid mb-10">
                 <button type="submit" id="kt_sign_up_submit" class="btn btn-primary">
                   <!--begin::Indicator label-->
-                  <span class="indicator-label">회원가입하기</span>
+                  <span class="indicator-label">수정하기</span>
                   <!--end::Indicator label-->
                 </button>
               </div>
@@ -375,8 +363,8 @@
               <!--end::Submit button-->
               <!--begin::Sign up-->
               <div class="text-gray-500 text-center fw-semibold fs-6">
-                이미 계정이 있나요?
-                <a @click="goToLogin()" class="link-primary fw-semibold" style="cursor:pointer">로그인하기</a>
+                우리와의 여행을 끝내고 싶은신가요?
+                <a @click="" class="link-primary fw-semibold" style="cursor:pointer">탈퇴하기</a>
               </div>
               <!--end::Sign up-->
             </form>
@@ -390,53 +378,6 @@
         <!--end::Footer-->
       </div>
       <!--end::Body-->
-
- <!--begin::Aside-->
- <div
-        class="d-flex flex-lg-row-fluid bgi-size-cover bgi-position-center order-1 order-lg-2"
-        style="background-image: url('/images/trip.jpg'); width: 100%"
-      >
-        <!--begin::Content-->
-        <div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">
-          <!--begin::Logo-->
-          <a href="index.html" class="mb-0 mb-lg-12">
-            <img alt="Logo" src="" class="h-60px h-lg-75px" />
-          </a>
-          <!--end::Logo-->
-          <!--begin::Image-->
-          <img
-            class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20"
-            src=""
-            alt=""
-          />
-          <!--end::Image-->
-          <!--begin::Title-->
-          <h1
-            class="d-none d-lg-block fs-2qx fw-bolder text-center mb-7"
-            style="color: black"
-          >
-            Fast, Efficient and Productive
-          </h1>
-          <!--end::Title-->
-          <!--begin::Text-->
-          <div class="d-none d-lg-block fs-base text-center" style="color: black">
-            In this kind of post,
-            <a href="#" class="opacity-75-hover text-warning fw-bold me-1">the blogger</a>
-            introduces a person they’ve interviewed <br />
-            and provides some background information about
-            <a href="#" class="opacity-75-hover text-warning fw-bold me-1"
-              >the interviewee</a
-            >
-            and their <br />
-            work following this is a transcript of the interview.
-          </div>
-          <!--end::Text-->
-        </div>
-        <!--end::Content-->
-      </div>
-
-      <!--end::Aside-->
-      
     </div>
     <!--end::Authentication - Sign-up-->
   </div>
@@ -470,32 +411,35 @@ export default {
       idCheckResult: ref('')
     };
   },
+  
+  mounted() {
+    this.loadUserData();
+  },
 
   methods: {
-    async checkIdDuplicate() {
-      try {
-        // this.id 값을 서버로 보냄
-        const response = await axios.get(
-          "http://localhost:9000/backend/api/auth/checkId",
-          {
-            params: { userId: this.id }, // params로 this.id 전달
-          }
-        );
-        this.idCheckResult = response.data; // 서버로부터 받은 메시지 표시
-      } catch (error) {
-        this.idCheckResult = "아이디 중복 확인에 실패했습니다.";
-        alert(this.idCheckResult);
-      }
+    loadUserData() {
+      const userData = JSON.parse(sessionStorage.getItem("userData"));
+    if (userData) {
+      console.log("가져온 데이터 : ", userData);
+      
+      this.img = userData.userImage;
+      this.id = userData.userId;
+      this.name = userData.userName;
+      this.email = userData.userEmail;
+      this.tel = userData.userTel;
+      this.birth = userData.userBitrh;
+      this.selectedgender = userData.userGender;
+      this.mbti = userData.keywordMbti;
+      this.number = userData.keywordSort;
+      this.location = userData.keywordLocation;
+      this.type = userData.keywordType;
+      this.mobility = userData.keywordMobility;
+      this.house = userData.keywordHouse;
+   }
     },
 
-    async signup() {
+    async edituser() {
       try {
-        //비밀번호 확인
-
-        if (!this.id) {
-          alert("아이디를 입력해주세요.");
-          return;
-        }
 
         if (!this.password) {
           alert("비밀번호를 입력해주세요.");
@@ -560,8 +504,8 @@ export default {
         // FormData를 사용하여 JSON 데이터와 이미지 데이터를 함께 전송
         const formData = new FormData();
 
-        // 1. user JSON 데이터를 FormData에 추가
-        const signupData = {
+        
+        const userKeywordData = {
           userId: this.id,
           userPw: this.password,
           userName: this.name,
@@ -569,10 +513,6 @@ export default {
           userTel: this.tel,
           userBirth: this.birth,
           userGender: this.selectedgender,
-        };
-
-        // 1. keyword JSON 데이터를 FormData에 추가
-        const keywordData = {
           keywordMbti: this.mbti,
           keywordSort: this.number,
           keywordLocation: this.location,
@@ -583,14 +523,10 @@ export default {
 
         // Blob으로 변환하여 JSON 데이터를 추가
         formData.append(
-          "user",
-          new Blob([JSON.stringify(signupData)], { type: "application/json" })
+          "userKeyword",
+          new Blob([JSON.stringify(userKeywordData)], { type: "application/json" })
         );
-        formData.append(
-          "keyword",
-          new Blob([JSON.stringify(keywordData)], { type: "application/json" })
-        );
-
+  
         // 2. 이미지 파일이 선택된 경우 FormData에 이미지 추가
         if (this.img) {
           formData.append("userImage", this.img); // 이미지 파일 추가
@@ -606,13 +542,11 @@ export default {
           console.log("파일 크기:", this.img.size);
           console.log("파일 타입:", this.img.type);
         }
-
-        console.log("회원가입정보: ", formData);
-        
+        console.log("편집정보 잘 넘어가는 지 확인 : ", formData);
 
         // 서버로 회원가입 정보 및 이미지 파일 전송
         const response = await axios.post(
-          "http://localhost:9000/backend/api/auth/signup",
+          "http://localhost:9000/backend/api/auth/updateuser",
           formData,
           {
             headers: {
@@ -620,9 +554,13 @@ export default {
             },
           }
         );
+        const updateUserData = response.data;
+        sessionStorage.setItem("userData", JSON.stringify(updateUserData));
 
-        alert("회원가입 성공!");
-        this.$router.push({ name: "login" });
+        alert("회원정보 수정 성공!");
+        // 수정코드가 화면에 반영되게 설정
+        this.loadUserData();
+       
       } catch (error) {
         this.error = "회원가입 실패: " + error.message;
       }
@@ -652,5 +590,7 @@ export default {
   object-fit: cover; 
   border-radius: 50%;
   margin-top: 30px; 
+  cursor:pointer;
+  margin-left: 10px;
 }
 </style>

@@ -1,60 +1,175 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper-addrbook">
+<mapper namespace="mapper-User">
 
 	<insert id="createAddrbook" parameterType="lx.team6.vo.UserVo">
-		insert into addrbook(ab_name, ab_email, ab_tel, ab_birth, ab_comdept, ab_memo)
-		values(#{abName}, #{abEmail}, #{abTel}, #{abBirth}, #{abComdept}, #{abMemo})
+		insert into
+		addrbook(ab_name, ab_email, ab_tel, ab_birth, ab_comdept, ab_memo)
+		values(#{abName}, #{abEmail}, #{abTel}, #{abBirth}, #{abComdept},
+		#{abMemo})
 	</insert>
-	
-	<select id="showAddrbookList" resultType="lx.team6.vo.UserVo"> 
+
+	<select id="showAddrbookList" resultType="lx.team6.vo.UserVo">
 		select ab_id abId
-		 	 , ab_name abName
-		 	 , ab_email abEmail
-		 	 , ab_tel 
-		 	 , ab_birth abBirth
-		 	 , ab_comdept abComdept
-		 	 , ab_memo abMemo
+		,
+		ab_name abName
+		, ab_email abEmail
+		, ab_tel
+		, ab_birth abBirth
+		, ab_comdept
+		abComdept
+		, ab_memo abMemo
 		from addrbook
 	</select>
-	
-	
-	<!-- 유저삭제 -->
-	<delete id="deleteUser" parameterType="int">
-		delete from user where ab_id = #{user_bo}
+
+	<select id="getAddrbookById" parameterType="int"
+		resultType="lx.team6.vo.UserVo">
+		select ab_id abId
+		, ab_name abName
+		, ab_email abEmail
+		, ab_tel
+		abTel
+		, ab_birth abBirth
+		, ab_comdept abComdept
+		, ab_memo abMemo
+		from
+		addrbook
+		where ab_id = #{abId}
+	</select>
+
+	<delete id="deleteAddrbookList" parameterType="int">
+		delete from
+		addrbook where ab_id = #{abId}
 	</delete>
-	
-	<!-- 아이디 찾기 -->
-	<select id="findById" parameterType="String" resultType="lx.team6.vo.UserVo"> 
+
+	<update id="updateAddrbookList"
+		parameterType="lx.team6.vo.UserVo">
+		update addrbook set ab_name = #{abName}
+		, ab_email =
+		#{abEmail}
+		, ab_tel = #{abTel}
+		, ab_birth = #{abBirth}
+		, ab_comdept =
+		#{abComdept}
+		, ab_memo = #{abMemo}
+		where ab_id = #{abId}
+	</update>
+
+	<!-- 로그인할 때 쓰는 아이디 이름 바꿔야할듯 -->
+	<select id="findById" parameterType="String"
+		resultType="lx.team6.vo.UserKeywordVo">
 		select id userId
-			 , password userPw
-			 , user_no userNumber
-			 , name userName
-			 , email userEmail
-			 , tel_num userTel
-			 , birth_date userBirth
-			 , img userImage
-			 , gender userGender 
-		from User
+		, password userPw
+		, user_no userNumber
+		, name userName
+		, email userEmail
+		, tel_num userTel
+		, birth_date userBirth
+		, img userImage
+		, gender userGender
+		, mbti keywordMbti
+		, key_sort keywordSort
+		, key_location keywordLocation
+		, key_type keywordType
+		, mobility keywordMobility
+		, house keywordHouse
+
+		from User u join user_keyword k on
+		u.user_no = k.user_user_no
 		where id = #{userId}
 	</select>
-	
-	<!-- 회원가입 
-	<insert id="createUser" parameterType="lx.team6.vo.UserVo">
-		insert into User(id, password, name, email, tel_num, birth_date, img, gender)
-		values(#{userId}, #{userPw}, #{userName}, #{userEmail}, #{userTel}, #{userBirth}, #{userImage}, #{userGender})
-	</insert>-->
-	
-	<!-- 회원가입 1(user)-->
-	<insert id="createUser"  useGeneratedKeys="true" keyProperty="userNumber" parameterType="lx.team6.vo.UserVo">
-		insert into User(id, password, name, email, tel_num, birth_date, img, gender)
-		values(#{userId}, #{userPw}, #{userName}, #{userEmail}, #{userTel}, #{userBirth}, #{userImage}, #{userGender})
+
+	<!-- 회원가입 <insert id="createUser" parameterType="lx.team6.vo.UserVo"> insert 
+		into User(id, password, name, email, tel_num, birth_date, img, gender) values(#{userId}, 
+		#{userPw}, #{userName}, #{userEmail}, #{userTel}, #{userBirth}, #{userImage}, 
+		#{userGender}) </insert> -->
+
+	<!-- 회원가입 1(user) -->
+	<insert id="createUser" useGeneratedKeys="true"
+		keyProperty="userNumber" parameterType="lx.team6.vo.UserVo">
+		insert into User(id, password,
+		name, email, tel_num, birth_date, img, gender)
+		values(#{userId},
+		#{userPw}, #{userName}, #{userEmail}, #{userTel}, #{userBirth},
+		#{userImage}, #{userGender})
 	</insert>
-	
+
 	<!-- 회원가입 2(keyword) -->
 	<insert id="createKeyword" parameterType="lx.team6.vo.KeywordVo">
-		 insert into keyword (key_no, mbti, key_sort, key_location, key_type, mobility, house, user_user_no)
-    	 values(#{keywordNumber}, #{keywordMbti}, #{keywordSort}, #{keywordLocation}, #{keywordType}, #{keywordMobility}, #{keywordHouse}, #{keywordUserNumber})
+		insert into
+		user_keyword (key_no, mbti, key_sort, key_location, key_type,
+		mobility, house, user_user_no)
+		values(#{keywordNumber}, #{keywordMbti},
+		#{keywordSort}, #{keywordLocation}, #{keywordType},
+		#{keywordMobility}, #{keywordHouse}, #{keywordUserNumber})
 	</insert>
+
+
+	<!-- 비밀번호 찾기 -->
+	<select id="findByPassword" parameterType="lx.team6.vo.UserVo"
+		resultType="lx.team6.vo.UserVo">
+		select id userId
+		, password userPw
+		, user_no userNumber
+		, name
+		userName
+		, email userEmail
+		, tel_num userTel
+		, birth_date userBirth
+		, img
+		userImage
+		, gender userGender
+		from User
+		where id = #{userId} and name =
+		#{userName} and email =
+		#{userEmail}
+	</select>
+
+	<!-- 아이디 찾기 -->
+	<select id="findUserId" parameterType="lx.team6.vo.UserVo"
+		resultType="lx.team6.vo.UserVo">
+		select id userId
+		, password userPw
+		, user_no userNumber
+		, name userName
+		, email userEmail
+		, tel_num userTel
+		, birth_date userBirth
+		, img userImage
+		, gender userGender
+		from User
+		where name = #{userName} and
+		email = #{userEmail}
+	</select>
+
+	<!-- 회원정보 수정 (User와 Keyword 테이블 동시 업데이트) -->
+	<update id="updateUserAndKeyword"
+		parameterType="lx.team6.vo.UserKeywordVo">
+		update User u
+		join user_keyword k on u.user_no = k.user_user_no
+		set
+		password = #{userPw},
+		name = #{userName},
+		email = #{userEmail},
+		tel_num = #{userTel},
+		birth_date = #{userBirth},
+		img = #{userImage},
+		gender = #{userGender},
+		mbti = #{keywordMbti},
+		key_sort = #{keywordSort},
+		key_location = #{keywordLocation},
+		key_type = #{keywordType},
+		mobility = #{keywordMobility},
+		house = #{keywordHouse}
+		where u.id = #{userId}
+	</update>
 	
+	<!-- 회원탈퇴 
+	<delete id="deleteAddrbookList" parameterType="int">
+		delete k.user_keyword, u.user 
+		from User u join user_keyword k on
+				u.user_no = k.user_user_no
+		where u.id = #{userId};
+	</delete>-->
+
 </mapper>
