@@ -20,7 +20,8 @@ export const useTestStore = defineStore("test", () => {
       sessionStorage.setItem("userData", JSON.stringify(data.value)) // 문자열 또는 객체는 JSON형태로 받아와야 한다고 함
       alert("로그인 성공");
       console.log(data.value);
-      router.push({ path: "/about"});
+      router.push({ path: "/main"});
+      const userId = sessionStorage.getItem(userId);
     } catch (err) {
       error.value = err.message;
       alert(error.value); 

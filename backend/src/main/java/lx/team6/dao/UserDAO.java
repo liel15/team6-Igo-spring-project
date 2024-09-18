@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import lx.team6.dto.UserInfoDTO;
 import lx.team6.vo.KeywordVo;
 import lx.team6.vo.UserKeywordVo;
 import lx.team6.vo.UserVo;
@@ -21,11 +22,10 @@ public class UserDAO {
 		session.insert("createAddrbook", vo);
 	}
 	
-	//저장된 정보를 보여줌
-	public List<UserVo> showAddrbookList() throws Exception {
-		return session.selectList("showAddrbookList");
+	//dto에 저장된 유저정보를 보여줌
+	public UserInfoDTO showUserInfo(String userId) {
+		return session.selectOne("showUserInfo", userId);
 	}
-
 
 	public void deleteAddrbookList(int abId) {
 		session.delete("deleteAddrbookList",abId);

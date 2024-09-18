@@ -426,7 +426,10 @@ const { user, type } = storeToRefs(storeData);
 
 //db에서 데이터 가져오기 
 onMounted(() => {
+  sessionStorage.setItem('userNo',1);
   init();
+  
+
 })
 
 const init = async() => {

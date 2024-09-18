@@ -22,6 +22,23 @@
 		from addrbook
 	</select>
 
+		
+	<!-- 유저정보 조회 : 정보 -->
+	<select id="showUserInfo" resultType="lx.team6.dto.UserInfoDTO"> 
+		select u.id id
+		 	 , u.name name
+		 	 , u.img img
+		 	 , uk.mbti keywordMbti
+		 	 , uk.key_sort keywordSort
+		 	 , uk.key_location keywordLocation
+		 	 , uk.key_type keywordType
+		 	 , uk.mobility keywordMobility
+		 	 , uk.house keywordHouse
+		from user u
+		Left join user_keyword uk
+		on u.user_no = uk.user_no
+	</select>
+
 	<select id="getAddrbookById" parameterType="int"
 		resultType="lx.team6.vo.UserVo">
 		select ab_id abId
