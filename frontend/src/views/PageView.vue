@@ -91,14 +91,15 @@
                     </div>
                     <!--end::Info-->
                     <!--begin::Title-->
-                    <span class="fw-bold text-muted fs-5 ps-1 me-4">유저 아이디 자리{{ postone.postNo }}</span>
+                    <span class="fw-bold text-muted fs-5 ps-1 me-4">글 넘버 : {{ postone.postNo }} 작성자 넘버 : {{ postone.userNo }} 작성자 아이디 : {{ postone.userId }}</span>
                     <span class="text-gray-900 fs-1 fw-bold">{{ postone.postTitle }}</span>
                     <!--end::Title-->
                     <!--begin::Container-->
                     <div class="overlay mt-8">
                       <!--begin::Image-->
-                      <div class="bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-400px"
-                        style="background-image: url(src/assets/img_trip.png);"></div>
+                      <div class="bgi-no-repeat bgi-position-center bgi-size-contain card-rounded min-h-400px"
+                      :style="{ backgroundImage: 'url(' + postone.img + ')', backgroundRepeat: 'no-repeat', width: '100%', height: 'auto' }">
+                      </div>
                       <!--end::Image-->
                       <!--begin::Links-->
                       <div class="overlay-layer card-rounded bg-dark bg-opacity-25">

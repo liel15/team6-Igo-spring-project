@@ -3,7 +3,7 @@
 <mapper namespace="mapper-addrbook">
 
 	<!-- 댓글 쓰기 -->
-	<insert id="createComment" parameterType="lx.team6.vo.PostVo">
+	<insert id="createComment" parameterType="lx.team6.vo.PostVO">
 		insert into comment(content)
 		values(#{content})
 	</insert>

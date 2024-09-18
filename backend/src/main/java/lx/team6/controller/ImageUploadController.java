@@ -1,35 +1,34 @@
 package lx.team6.controller;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.ResponseEntity;
+
+import java.io.File;
+import java.io.IOException;
 
 @RestController
+@RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:5173") // vue.js 주소
+
 public class ImageUploadController {
 
-    private static final String UPLOAD_DIR = "C:/lx/team6-spring-project/frontend/public/images/";
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        String folderPath = "C:/lx/team6-spring-project/frontend/public/images/";
+        String fileName = file.getOriginalFilename();
 
-    @PostMapping("/upload-image")
-    public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile file) {
+        File saveFile = new File(folderPath + fileName);
         try {
-            // 파일 저장 경로 설정
-            Path filePath = Paths.get(UPLOAD_DIR + file.getOriginalFilename());
-
-            // 파일 저장
-            Files.write(filePath, file.getBytes());
-
-            // 성공 메시지 반환
-            return ResponseEntity.ok("이미지가 성공적으로 저장되었습니다: " + file.getOriginalFilename());
-        } catch (Exception e) {
+            // 파일을 지정된 경로에 저장
+            file.transferTo(saveFile);
+            
+            // 저장된 파일 경로를 반환 (DB에 저장할 경로)
+            String imagePath = "/images/" + fileName;
+            return ResponseEntity.ok(imagePath);  // 클라이언트로 이미지 경로 반환
+        } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 업로드 실패");
+            return ResponseEntity.status(500).body("File upload failed");
         }
     }
 }
