@@ -38,13 +38,13 @@ public class LikeController {
 	    }
 	}
 	
-	// 게시글 번호에 다른 좋아요 수 가져오기
+	// 게시글 번호에 따른 좋아요 수 가져오기
 		@GetMapping("/like/{postNo}")
 		public ResponseEntity<Integer> getLikeByPostNo(@PathVariable("postNo") Integer postNo) {
 			System.out.println(postNo);
-			Integer like2Count = likeservice.getLikeByPostNo(postNo); 
-			System.out.printf("좋아요 수 : ", like2Count);
-			return ResponseEntity.ok(like2Count);
+			Integer likeCount = likeservice.getLikeByPostNo(postNo); 
+			System.out.printf("좋아요 수 : "+ likeCount);
+			return ResponseEntity.ok(likeCount);
 		}
 
 
