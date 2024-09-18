@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lx.team6.dao.UserDAO;
+import lx.team6.dto.UserInfoDTO;
 import lx.team6.vo.KeywordVo;
 import lx.team6.vo.UserKeywordVo;
 import lx.team6.vo.UserVo;
@@ -83,6 +84,11 @@ public class UserService {
     public UserKeywordVo updateUserAndKeyword(UserKeywordVo userKeywordVo) {
         userDAO.updateUserAndKeyword(userKeywordVo);
         return userDAO.findById(userKeywordVo.getUserId());
+    }
+
+    //유저 정보 가져오기
+    public UserInfoDTO showUserInfo(String userId) {
+    	return userDAO.showUserInfo(userId);
     }
 
 }
