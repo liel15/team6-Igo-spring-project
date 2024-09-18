@@ -1,7 +1,5 @@
 package lx.team6.vo;
 
-import java.util.Date;
-
 public class PostVO {
 	Integer postNo;
 	String postTitle;
@@ -14,15 +12,22 @@ public class PostVO {
 	
 	public Integer getPostNo() {
 		return postNo;
+
 	}
+
 	public void setPostNo(Integer postNo) {
 		this.postNo = postNo;
+
 	}
+
 	public String getPostTitle() {
 		return postTitle;
+
 	}
+
 	public void setPostTitle(String postTitle) {
 		this.postTitle = postTitle;
+
 	}
 	public String getContent() {
 		return content;

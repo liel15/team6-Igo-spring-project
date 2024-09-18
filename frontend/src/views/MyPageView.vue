@@ -1,47 +1,5 @@
 <template>
   <div class="d-flex flex-column">
-    <!-- 헤더 시작 -->
-    <div class="header" style="height: 8vh; background-color: #3abef9">
-      <!-- 네비바 -->
-      <nav class="navbar navbar-expand-lg navbar-dark w-100 h-100">
-        <div class="container-fluid">
-          <div class="d-flex align-items-center">
-            <img
-              width="50"
-              height="50"
-              src="https://img.icons8.com/stickers/50/airplane-take-off.png"
-              alt="airplane-take-off"
-            />
-            <a class="navbar-brand ms-2 fw-bold" style="font-size: 30px" href="#"
-              >I.GO!</a
-            >
-          </div>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div
-            class="collapse navbar-collapse justify-content-end"
-            id="navbarNavAltMarkup"
-          >
-            <div class="navbar-nav justify-content-center align-items-center">
-              <a class="nav-link" href="#">마이페이지</a>
-              <span>{{ name }}</span>
-            </div>
-          </div>
-        </div>
-      </nav>
-      <!-- 네비바 -->
-    </div>
-    <!-- 헤더 끝 -->
 
     <!-- 몸시작 -->
     <div class="d-flex flex-row mt-2" style="height: 1300px">
@@ -57,7 +15,7 @@
                     <p>아이디</p>
                 </p>
                 <div class="fixed-button">
-                    <button class="btn btn-primary">수정</button>
+                    <button class="btn btn-primary" @click="editPost(post.postNo)">수정</button>
                 </div>
             </div>
           </div>
@@ -90,14 +48,14 @@
 
         <div class="main align-items-center ms-10">
             <div class="d-flex flex-row align-items-center justify-content-start gap-15 mb-5 mt-4 flex-wrap">
-              <div v-for="(card, index) in cards" :key="index" >
-              <div v-if="showCard(card)" class="card elevate-card" style="cursor: pointer; width: 18rem">
-                <img :src="'/assets/images/' + card.img" class="card-img-top" alt="..." />
+              <div v-for="(post, index) in postlist" :key="index" >
+              <div class="card elevate-card" style="cursor: pointer; width: 18rem">
+                <img :src="'/images/' + post.img" class="card-img-top" alt="..." />
                 <div class="card-body">
                 <p class="card-text">
-                  {{ card.content }}
+                  {{ post.postTitle }}
                 </p>
-                <i class="bi":class="[card.isLiked ? 'bi-heart-fill' : 'bi-heart']" @click="toggleLike(card)" style="position: absolute; bottom: 10px; right: 10px; font-size: 1.5rem; cursor: pointer;"></i>
+                <i :class="{'bi-heart-fill': post.isLiked, 'bi-heart': !post.isLiked}"  @click="toggleLike(post)" style="position: absolute; bottom: 10px; right: 10px; font-size: 1.5rem; cursor: pointer;"></i>
                 </div>
               </div>
             </div>
@@ -116,89 +74,147 @@
 
 <script setup>
 
-import { ref } from 'vue';
+import { reactive , ref, onMounted } from 'vue';
+import { usePostListStore, usePostLikesListStore, useLikeStore } from '@/stores/test'; // Pinia store 가져오기
+import { storeToRefs } from 'pinia'; // store의 state 참조
+
+const postStore = usePostListStore();
+const likesStore = usePostLikesListStore();
+const likeStore = useLikeStore();
+
+const { postlist } = storeToRefs(postStore);
+const { postLikesList } = storeToRefs(likesStore); // Pinia 스토어의 posts 참조
 
 const selectedOption = ref('myPosts'); // 기본으로 '내 글 보기'
+const displayedPosts = ref([]); // 보여질 게시물 목록
 
-// 카드 데이터
-const cards = ref([
-  {
-    img: '1.PNG',
-    content: '내 첫 번째 글입니다.',
-    isLiked: false, // 좋아요 여부
-    isMyPost: true, // 내 글 여부
-  },
-  {
-    img: '2.PNG',
-    content: '내 두 번째 글입니다.',
-    isLiked: true, // 좋아요 여부
-    isMyPost: true, // 내 글 여부
-  },
-  {
-    img: '2.PNG',
-    content: '내 세 번째 글입니다.',
-    isLiked: true, // 좋아요 여부
-    isMyPost: true, // 내 글 여부
-  },
-  {
-    img: '2.PNG',
-    content: '내 네 번째 글입니다.',
-    isLiked: true, // 좋아요 여부
-    isMyPost: true, // 내 글 여부
-  },
-  {
-    img: '2.PNG',
-    content: '내 다섯 번째 글입니다.',
-    isLiked: true, // 좋아요 여부
-    isMyPost: true, // 내 글 여부
-  },
-  {
-    img: '2.PNG',
-    content: '내 여섯 번째 글입니다.',
-    isLiked: true, // 좋아요 여부
-    isMyPost: true, // 내 글 여부
-  },
-  {
-    img: '2.PNG',
-    content: '내 일곱 번째 글입니다.',
-    isLiked: true, // 좋아요 여부
-    isMyPost: true, // 내 글 여부
-  },
-  {
-    img: '3.PNG',
-    content: '다른 사용자의 글입니다.',
-    isLiked: true, // 좋아요 여부
-    isMyPost: false, // 내 글 여부
-  },
-]);
+
+
+// 기존 fetchPost 함수 대체
+async function fetchPost() {
+  // postlist.value를 가공해서 displayedPosts에 저장
+  displayedPosts.value = (postlist.value || []).map(post => ({
+    ...post,
+    isLiked: post.isLiked || false, // 기본값 false로 설정
+  }));
+}
+
+const post = reactive({
+  postTitle: '제목',
+  isLiked: false,
+});
+
+// 이후 객체 속성 변경 시 Vue가 이를 감지함
+post.isLiked = !post.isLiked;
+
+
+const init = async() => {
+  console.log(postlist.value);
+  await postStore.fetchPost();
+  // await fetchPost();
+  await filterContent();
+}
+
+
+// db에서 posts들 데이터 가져오기
+onMounted(() => {
+  sessionStorage.setItem('userNo', 1);  // 가라로 userNo를 세팅
+  init();
+});
 
 // 카드 목록 필터링 로직을 메서드로 정의
-const showCard = (card) => {
-  console.log(card);
+// const showPost = (post) => {
+//   if (selectedOption.value === 'myPosts') {
+//     return post.isMyPost; // 내 글만 표시
+//   } else if (selectedOption.value === 'likedPosts') {
+//     return post.isLiked; // 좋아요한 글만 표시
+//   }
+//   return true; // 기본적으로 모든 카드 표시
+// };
+
+// // 좋아요(하트) 토글 함수
+// const toggleLike = (post) => {
+//   post.isLiked = !post.isLiked;
+// };
+
+// 게시물 목록 필터링
+async function filterContent() {
   if (selectedOption.value === 'myPosts') {
-    return card.isMyPost; // 내 글만 표시
+    await postStore.fetchPost(); // 내 글 목록 가져오기
+    displayedPosts.value = postlist.value;
   } else if (selectedOption.value === 'likedPosts') {
-    return card.isLiked; // 좋아요한 글만 표시
+    await likesStore.fetchLikesPost(); // 좋아요한 글 목록 가져오기
+    displayedPosts.value = likesStore.postLikesList.value;
   }
-  return true; // 기본적으로 모든 카드 표시
-};
+}
 
-// 좋아요(하트) 토글 함수
-const toggleLike = (card) => {
-  card.isLiked = !card.isLiked;
-};
+// 좋아요 토글
+async function toggleLike(post) {
+  const userNo = sessionStorage.getItem('userNo');
+  if (!userNo) {
+    console.error('userNo is undefined or null');
+    return;
+  }
+
+  
+  try {
+    await likeStore.toggleLike(post);
+    post.isLiked = !post.isLiked; // isLiked 상태를 토글
+    console.log("After toggle, isLiked:", post.isLiked);
+  } catch (err) {
+    console.error('Error toggling like:', err);
+  }
+}
+
+
+// 게시물 클릭 시 상세페이지로 이동
+// async function getPostId(id) {
+//   console.log("Clicked post ID:", id);
+//   router.replace({ path: '/page', query: { postNo: id } });
+// }
+
+
+
+// async function init () {
+//   store.fetchPost();
+//   console.log(postlist);
+// }
+
+
+// const postList = ref(false);
+// const newPost = ref({
+//   postTitle: '',
+
+// });
+
+
+
+// 카드 데이터
+// const posts = ref([
+//   {
+//     img: '1.PNG',
+//     content: '내 첫 번째 글입니다.',
+//     isLiked: false, // 좋아요 여부
+//     isMyPost: true, // 내 글 여부
+//   },
+//   {
+//     img: '2.PNG',
+//     content: '내 두 번째 글입니다.',
+//     isLiked: true, // 좋아요 여부
+//     isMyPost: true, // 내 글 여부
+//   },
+//   {
+//     img: '3.PNG',
+//     content: '다른 사용자의 글입니다.',
+//     isLiked: true, // 좋아요 여부
+//     isMyPost: false, // 내 글 여부
+//   },
+// ]);
 
 
 
 
 
-//  // 반응형 변수 선언 (isHeartFilled는 하트가 채워졌는지 여부를 저장)
-//  const isHeartFilled = ref(false);
-
-//  // 하트를 클릭했을 때 상태를 토글하는 함수
-//  function toggleHeart() {
-//    isHeartFilled.value = !isHeartFilled.value;
-//  }
 
 </script>
 

@@ -211,6 +211,7 @@
 <script setup>
 
 import { ref, onMounted } from 'vue';
+import { usePostStore } from '@/stores/test';
 import { storeToRefs } from 'pinia';
 
 // db에서 posts들 데이터 가져오기
