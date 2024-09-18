@@ -12,6 +12,7 @@ async function getTestList(id, password) {
   }
 }
 
+
 //userNo에 따른 postlikeslist를 요청
 export async function getLikesPostList(userNo) {
   try {
@@ -20,6 +21,28 @@ export async function getLikesPostList(userNo) {
     return response.data;
   } catch (err) {
     console.error(err); // 에러를 콘솔에 출력
+  }
+}
+
+//post_no에 따른 좋아요수 가져오기 요청
+export async function getLikeByPostNo(postNo) {
+  try {
+    console.log("Sending post request with postNo:", postNo);
+    const response = await api.get(`/auth/like/${postNo}`);
+    console.log("API response:", response);
+    return response.data;
+  } catch (err) {
+    console.error(err); // 에러를 콘솔에 출력
+  }
+}
+
+// 좋아요 버튼누르면 추가하기
+export async function insertLike(data) {
+  try {
+    const response = await api.post('/auth/insertLike', data);
+    return response.data;
+  } catch (err) {
+    console.error(err);
   }
 }
 
@@ -36,7 +59,7 @@ export async function toggleLikePost(postNo, userNo) {
 
 //postlist를 가져오기 요청
 export async function getPostList() {
-  try {
+  try { 
     const response = await api.get('/auth/postlist');
     console.log("you can use getPostList", response.data);
     return response.data;

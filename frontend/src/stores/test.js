@@ -2,7 +2,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import { findById, findPassword, login } from "@/api/user";
 import router from "@/router/index.js";
-import { getTestList, getPostList, getPostByNo, getLikesPostList, toggleLikePost } from '@/api/test';
+import { getTestList, getPostList, getPostByNo, getLikesPostList, toggleLikePost, getLikeByPostNo } from '@/api/test';
 
 //로그인 - lgt
 export const useTestStore = defineStore("test", () => {
@@ -55,6 +55,19 @@ export const usePostStore = defineStore('postByNo', () => {
     }
   }
   return { postone, fetchPostone };
+});
+
+//특정 게시글 에 대한 좋아요 수db 가져오는 상태
+export const useLikeCountStore = defineStore('likeByPostNo', () => {
+  const likeCount = ref(0);
+  async function fetchLikeCount(postNo) {
+    try {
+      likeCount.value = await getLikeByPostNo(postNo);
+    } catch (err) {
+      console.error('Error fetching post:', err);
+    }
+  }
+  return { likeCount, fetchLikeCount };
 });
 
 //userNo 관리
