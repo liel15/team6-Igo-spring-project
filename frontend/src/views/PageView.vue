@@ -91,14 +91,15 @@
                     </div>
                     <!--end::Info-->
                     <!--begin::Title-->
-                    <span class="fw-bold text-muted fs-5 ps-1 me-4">글 넘버 : {{ postone.postNo }} 작성자 넘버 : {{ postone.userNo }} 작성자 아이디 : {{ postone.userId }}</span>
+                    <span class="fw-bold text-muted fs-5 ps-1 me-4">글 넘버 : {{ postone.postNo }} 작성자 넘버 : {{
+                      postone.userNo }} 작성자 아이디 : {{ postone.userId }}</span>
                     <span class="text-gray-900 fs-1 fw-bold">{{ postone.postTitle }}</span>
                     <!--end::Title-->
                     <!--begin::Container-->
                     <div class="overlay mt-8">
                       <!--begin::Image-->
                       <div class="bgi-no-repeat bgi-position-center bgi-size-contain card-rounded min-h-400px"
-                      :style="{ backgroundImage: 'url(' + postone.img + ')', backgroundRepeat: 'no-repeat', width: '100%', height: 'auto' }">
+                        :style="{ backgroundImage: 'url(' + postone.img + ')', backgroundRepeat: 'no-repeat', width: '100%', height: 'auto' }">
                       </div>
                       <!--end::Image-->
                       <!--begin::Links-->
@@ -119,8 +120,10 @@
                   </div>
                   <!--end::Description-->
                   <div class="d-flex flex-center">
-                    <button type="button" @click="clickLike(postone.postNo)" class="btn btn-primary fs-5 p-2 me-2">좋아요</button>
-                    <p>{{ likenum }}</p>
+                    <button type="button" @click="clickLike(postone.postNo)" style="background-color: #0dcaf0; color: white;" class="btn fs-4 p-2 me-2 d-flex align-items-center">
+                      <i style="color: white; font-size: 20px;" class="fa-solid fa-thumbs-up ms-2"></i>
+                      <span class="ms-2 me-2">{{ likeCount }}</span>
+                    </button>
                   </div>
                   <button id="updateButton" @click="showUpdatePostModal(postone.postNo)"
                     class="btn btn-primary fs-6 p-1 me-2">수정</button>
@@ -308,109 +311,119 @@ import router from '@/router/index.js';
 import { deletePostByNo, updatePostByNo, insertLike } from '@/api/test';
 import { Modal } from 'bootstrap';
 
+
+onMounted(() => {
+  window.scrollTo(0, 0);
+  init();
+})
+
 // 글에 좋아요 관련 함수, 변수
-const likecount = useLikeCountStore();
-const likenum = storeToRefs(likecount);
+const likestore = useLikeCountStore();
+const { likeCount } = storeToRefs(likestore);
+
+async function init() {
+  await likestore.fetchLikeCount(postone.value.postNo);
+  console.log("좋아요 수 : " + likeCount.value);
+
+}
 
 const clickLike = async (id) => {
   //likenum.value++;
   const data = {
-    postNo: postone.value.postNo,
+    postNo: id,
     userNo: sessionStorage.getItem("userNo"),
   }
   console.log("좋아요 누른 사람 넘버 : " + data.userNo);
   console.log("좋아요 누른 글 넘버 : " + data.postNo);
-  await likecount.fetchLikeCount(id);
-  console.log("좋아요 수 : " + likenum);
   try {
-    const response = await insertLike(data); 
+    const response = await insertLike(data);
+
     console.log("서버 응답: ", response);
+    alert("좋아요가 추가되었습니다!");
+    init();
     //router.go(0);
   } catch (error) {
-    console.error(error);
+    alert("이미 좋아요를 누른 글입니다.");
   }
 }
 
-// 글 정보 가져오기 관련 함수, 변수
-const poststore = usePostStore();
-const { postone } = storeToRefs(poststore);
+  // 글 정보 가져오기 관련 함수, 변수
+  const poststore = usePostStore();
+  const { postone } = storeToRefs(poststore);
 
-console.log("Current post data:", postone);
-console.log("글번호 : ", postone.value.postNo);
+  console.log("Current post data:", postone);
+  console.log("글번호 : ", postone.value.postNo);
 
-onMounted(() => {
-  window.scrollTo(0, 0);
-})
 
-// 글 삭제하기 버튼 함수
-//const deleteButton = document.querySelector('#deleteButton');
-//deleteButton.addEventListener("click", function (postNo) {
-//console.log("삭제할 번호 : ", postNo);
-//deletePostByNo(postNo);
-//})
+  // 글 삭제하기 버튼 함수
+  //const deleteButton = document.querySelector('#deleteButton');
+  //deleteButton.addEventListener("click", function (postNo) {
+  //console.log("삭제할 번호 : ", postNo);
+  //deletePostByNo(postNo);
+  //})
 
-function deletePost(postNo) {
-  console.log("삭제할 번호 : ", postNo);
-  if (confirm("정말 삭제하시겠습니까??") == true) {
-    deletePostByNo(postNo);
+  function deletePost(postNo) {
+    console.log("삭제할 번호 : ", postNo);
+    if (confirm("정말 삭제하시겠습니까??") == true) {
+      deletePostByNo(postNo);
+      router.replace({ path: '/mainpage' });
+    } else {
+      return false;
+    }
+  }
+
+  // 글 업데이트하기 버튼 - 모달 함수
+  let titleInput = ref('');
+  let contentInput = ref('');
+
+  let updatePostModal;
+
+  // 수정 모달 만들기
+  function showUpdatePostModal(itemId) {
+    console.log(`showUpdate 호출됨 - 아이디 : ${itemId}`);
+
+    // 대화상자의 입력값 넣어주기
+    titleInput.value = postone.value.postTitle;
+    contentInput.value = postone.value.content;
+
+    // 선택한 아이템의 아이디
+    //selected.value = itemId;
+
+    // 대화상자 띄우기
+    const elem = document.querySelector('#kt_modal_new_target');
+    updatePostModal = new Modal(elem);
+    updatePostModal.show();
+
+  }
+
+  // 글 업데이트 함수
+  function updatePost(postNo) {
+    console.log("수정할 글번호 : ", postNo);
+    const data = {
+      postNo: postNo,
+      postTitle: titleInput.value,
+      content: contentInput.value
+    }
+    console.log("수정한 글제목 : " + titleInput.value);
+    postone.value.postTitle = titleInput.value;
+    postone.value.content = contentInput.value;
+    console.log("전달할 내용 : " + data);
+    updatePostByNo(postNo, data);
+    updatePostModal.hide();
+  }
+
+  // 반응형 변수 선언 (isHeartFilled는 하트가 채워졌는지 여부를 저장)
+  const isHeartFilled = ref(false);
+
+  // 하트를 클릭했을 때 상태를 토글하는 함수
+  function toggleHeart() {
+    isHeartFilled.value = !isHeartFilled.value;
+  }
+
+  // 메인페이지로 돌아가기 버튼 함수
+  function goHome() {
     router.replace({ path: '/mainpage' });
-  } else {
-    return false;
   }
-}
-
-// 글 업데이트하기 버튼 - 모달 함수
-let titleInput = ref('');
-let contentInput = ref('');
-
-let updatePostModal;
-
-// 수정 모달 만들기
-function showUpdatePostModal(itemId) {
-  console.log(`showUpdate 호출됨 - 아이디 : ${itemId}`);
-
-  // 대화상자의 입력값 넣어주기
-  titleInput.value = postone.value.postTitle;
-  contentInput.value = postone.value.content;
-
-  // 선택한 아이템의 아이디
-  //selected.value = itemId;
-
-  // 대화상자 띄우기
-  const elem = document.querySelector('#kt_modal_new_target');
-  updatePostModal = new Modal(elem);
-  updatePostModal.show();
-
-}
-
-// 글 업데이트 함수
-function updatePost(postNo) {
-  console.log("수정할 글번호 : ", postNo);
-  const data = {
-    postNo: postNo,
-    postTitle: titleInput.value,
-    content: contentInput.value
-  }
-  console.log("수정한 글제목 : " + titleInput.value);
-  postone.value.postTitle = titleInput.value;
-  postone.value.content = contentInput.value;
-  console.log("전달할 내용 : " + data);
-  updatePostByNo(postNo, data);
-  updatePostModal.hide();
-}
-
-// 반응형 변수 선언 (isHeartFilled는 하트가 채워졌는지 여부를 저장)
-const isHeartFilled = ref(false);
-
-// 하트를 클릭했을 때 상태를 토글하는 함수
-function toggleHeart() {
-  isHeartFilled.value = !isHeartFilled.value;
-}
-
-// 메인페이지로 돌아가기 버튼 함수
-function goHome() {
-  router.replace({ path: '/mainpage' });
-}
 
 </script>
 
