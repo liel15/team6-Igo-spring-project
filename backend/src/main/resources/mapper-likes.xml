@@ -2,8 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper-likes">
 
+	<!-- 게시글 추가 -->
+	<insert id="insertLike" parameterType="lx.team6.vo.LikeVO">
+		insert into likes
+		(created_at, updated_at, post_post_no, user_user_no) values
+		(now(), now(), #{postNo}, #{userNo})
+	</insert>
 
+	<!-- 좋아요 중복 여부 확인 -->
+	<select id="existsByUserNoAndPostNo" parameterType="lx.team6.vo.LikeVO" resultType="boolean">
+	    SELECT COUNT(*) > 0 
+	    FROM likes 
+	    WHERE user_user_no = #{userNo} 
+	      AND post_post_no = #{postNo}
+	</select>
+	
+	<select id="getLikeByPostNo" parameterType="int" resultType="int">
+		select count(*)
+		from likes
+		where post_post_no = #{postNo}
+	</select>
+	
 
-    </mapper>
+</mapper>
     
     

@@ -119,7 +119,8 @@
                   </div>
                   <!--end::Description-->
                   <div class="d-flex flex-center">
-                    <button type="button" class="btn btn-primary fs-5 p-2 me-2">좋아요</button>
+                    <button type="button" @click="clickLike(postone.postNo)" class="btn btn-primary fs-5 p-2 me-2">좋아요</button>
+                    <p>{{ likenum }}</p>
                   </div>
                   <button id="updateButton" @click="showUpdatePostModal(postone.postNo)"
                     class="btn btn-primary fs-6 p-1 me-2">수정</button>
@@ -300,12 +301,35 @@
 <script setup>
 
 import { ref, onMounted } from 'vue';
-import { usePostStore } from '@/stores/test';
+import { usePostStore, useLikeCountStore } from '@/stores/test';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import router from '@/router/index.js';
-import { deletePostByNo, updatePostByNo } from '@/api/test';
+import { deletePostByNo, updatePostByNo, insertLike } from '@/api/test';
 import { Modal } from 'bootstrap';
+
+// 글에 좋아요 관련 함수, 변수
+const likecount = useLikeCountStore();
+const likenum = storeToRefs(likecount);
+
+const clickLike = async (id) => {
+  //likenum.value++;
+  const data = {
+    postNo: postone.value.postNo,
+    userNo: sessionStorage.getItem("userNo"),
+  }
+  console.log("좋아요 누른 사람 넘버 : " + data.userNo);
+  console.log("좋아요 누른 글 넘버 : " + data.postNo);
+  await likecount.fetchLikeCount(id);
+  console.log("좋아요 수 : " + likenum);
+  try {
+    const response = await insertLike(data); 
+    console.log("서버 응답: ", response);
+    //router.go(0);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 // 글 정보 가져오기 관련 함수, 변수
 const poststore = usePostStore();

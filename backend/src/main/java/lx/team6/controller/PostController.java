@@ -39,19 +39,17 @@ public class PostController {
 		}
 	}
 
-	
-	//post 검색기능
+	// post 검색기능
 	@PostMapping("/serch")
-	public ResponseEntity<String> serch(@RequestBody String keyword) { 
+	public ResponseEntity<String> serch(@RequestBody String keyword) {
 		List<PostVO> postList = postservice.serchPostList(keyword);
-		if(postList != null) {
+		if (postList != null) {
 			return ResponseEntity.ok(keyword);
-		}else {
+		} else {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
 
-	
 	// 게시글 한개 불러오기 - 정은
 	@GetMapping("/post/{postNo}")
 	public ResponseEntity<PostVO> getpost(@PathVariable("postNo") Integer postNo) {
@@ -111,13 +109,14 @@ public class PostController {
 		}
 	}
 
-	
 	// 좋아요 토글
-		@PostMapping("/toggleLike/{postNo}/{userNo}")
-		public ResponseEntity<String> toggleLike(@PathVariable("postNo") Integer postNo, @PathVariable("userNo") Integer userNo) {
-			 System.out.println("좋아요 토글된 게시물 번호: " + postNo);
-			 postservice.toggleLike(postNo, userNo);
-			return ResponseEntity.ok("Like toggled");
-		}
-		
+	@PostMapping("/toggleLike/{postNo}/{userNo}")
+	public ResponseEntity<String> toggleLike(@PathVariable("postNo") Integer postNo,
+			@PathVariable("userNo") Integer userNo) {
+		System.out.println("좋아요 토글된 게시물 번호: " + postNo);
+		postservice.toggleLike(postNo, userNo);
+		return ResponseEntity.ok("Like toggled");
+	}
+
+	
 }
