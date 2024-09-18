@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lx.team6.vo.KeywordVo;
+import lx.team6.vo.UserKeywordVo;
 import lx.team6.vo.UserVo;
 
 @Component
@@ -34,8 +35,8 @@ public class UserDAO {
 		session.update("updateAddrbookList", vo);
 	}
 	
-	//아이디 찾기
-	public UserVo findById(String abId) {
+	//로그인 및 아이디 중복확인
+	public UserKeywordVo findById(String abId) {
 		return session.selectOne("findById", abId);
 	}
 	
@@ -48,4 +49,20 @@ public class UserDAO {
     public int createKeyword(KeywordVo keywordVo) {
         return session.insert("createKeyword", keywordVo);  // Keyword 테이블에 삽입 후 삽입된 행 수 반환
     }
+    
+    //비밀번호 찾기
+    public UserVo findByPassword(UserVo param) {
+        return session.selectOne("findByPassword", param);
+    }
+    
+    //아이디 찾기
+    public UserVo findUserId(UserVo param) {
+    	return session.selectOne("findUserId", param);
+    }
+    
+    //회원정보수정 통합
+    public int updateUserAndKeyword(UserKeywordVo userKeywordVo) {
+        return session.update("updateUserAndKeyword", userKeywordVo);
+    }
+
 }

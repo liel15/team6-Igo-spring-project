@@ -2,9 +2,10 @@ import { apiInstance } from "./index.js";
 
 const api = apiInstance();
 
+//로그인-이건 user에 다시 만들어서 지워도 될듯
 async function getTestList(id, password) {
   try {
-    const response = await api.get('/auth/login.do');
+    const response = await api.get('/auth/login');
     return response.data;
   } catch (err) {
     console.error(err);

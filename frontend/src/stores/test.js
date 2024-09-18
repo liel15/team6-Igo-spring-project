@@ -1,9 +1,10 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { login } from "@/api/user";
+import { findById, findPassword, login } from "@/api/user";
 import router from "@/router/index.js";
 import { getTestList, getPostList, getPostByNo, getLikesPostList, toggleLikePost } from '@/api/test';
 
+//로그인 - lgt
 export const useTestStore = defineStore("test", () => {
   const data = ref(null);  // 로그인 후 데이터를 저장할 상태?
   const error = ref(null); // 에러 메시지를 저장할 상태 => 이건 없어도 될 듯
@@ -15,15 +16,20 @@ export const useTestStore = defineStore("test", () => {
       console.log(response);
       error.value = null; // 에러 초기화
       sessionStorage.setItem("userNo", response.userNumber);
+      error.value = null; 
+      sessionStorage.setItem("userData", JSON.stringify(data.value)) // 문자열 또는 객체는 JSON형태로 받아와야 한다고 함
       alert("로그인 성공");
       console.log(data.value);
       router.push({ path: "/about"});
     } catch (err) {
-      error.value = err.message; // 에러 메시지를 상태에 저장
+      error.value = err.message;
+      alert(error.value); 
     }
   }
   return { data, error, handleLogin };
 });
+
+
 
 //게시글 목록 가져오는 상태
 export const usePostListStore = defineStore('postlist', () => {
@@ -106,3 +112,50 @@ export const useLikeStore = defineStore('likeStore', () => {
   }
   return { toggleLike };
 });
+
+//비밀번호찾기 -lgt
+export const usefindStore = defineStore("findpassword", () => {
+  const data = ref(null);  
+  const error = ref(null); 
+
+  async function findPw(id, name, email) {
+    try {
+      const response = await findPassword(id, name, email); 
+      console.log("입력된 데이터 : " + response)
+      data.value = response; 
+      error.value = null;
+      alert("설정된 비밀번호는" + data.value + "입니다");
+      console.log(data.value);
+      router.push({ path: "/login"});
+    } catch (err) {
+      error.value = err.message;
+      alert(error.value); 
+    }
+  }
+  return { data, error, findPw };
+})
+
+//아이디찾기 -lgt
+export const useFindIdStore = defineStore("findid", () => {
+  const data = ref(null);  
+  const error = ref(null); 
+
+  async function findId(name, email) {
+    try {
+      const response = await findById(name, email); 
+      console.log("입력된 데이터 : " + response);
+      
+
+      data.value = response; 
+      error.value = null;
+      alert("설정된 아이디는 " + data.value + "입니다");
+      router.push({ path: "/login" });
+    } catch (err) {
+
+      error.value = err.message;
+      alert(error.value);
+    }
+  }
+  
+  return { data, error, findId };
+})

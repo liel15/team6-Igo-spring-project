@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper-post">
 
-	<!-- 게시글리스트 불러오기 -->
 	<select id="getPostList" resultType="lx.team6.vo.PostVO">
 		select p.post_no postNo,
 	         p.post_title postTitle,

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lx.team6.dao.UserDAO;
 import lx.team6.vo.KeywordVo;
+import lx.team6.vo.UserKeywordVo;
 import lx.team6.vo.UserVo;
 
 @Service
@@ -29,11 +30,59 @@ public class UserService {
     }
 
     // 로그인 처리
-    public UserVo login(String userId, String userPw) {
-        UserVo user = userDAO.findById(userId);
+    public UserKeywordVo login(String userId, String userPw) {
+    	UserKeywordVo user = userDAO.findById(userId);
         if (user != null && user.getUserPw().equals(userPw)) {
             return user;
         }
         return null;
     }
+    
+    // 아이디 중복검사
+    public String findId(String userId) {
+    	UserKeywordVo Id = userDAO.findById(userId);
+    	if (Id != null && Id.getUserId() != null) {
+    		 return "중복된 아이디입니다.";
+        } else {
+            return "사용 가능한 아이디입니다.";
+        }
+    }
+    
+    // 비밀번호 찾기
+    public String findPassword(String userId, String userName, String userEmail) {	
+        UserVo param = new UserVo();
+        param.setUserId(userId);
+        param.setUserName(userName);
+        param.setUserEmail(userEmail);
+        
+        UserVo userVo = userDAO.findByPassword(param);
+        
+        if (userVo != null) {
+            return userVo.getUserPw();  
+        }       
+        return null;  
+
+     }
+    
+    // 아이디 찾기
+    public String findUserId(String userName, String userEmail) {	
+    	UserVo param = new UserVo();
+    	param.setUserName(userName);
+    	param.setUserEmail(userEmail);
+    	
+    	UserVo userVo = userDAO.findUserId(param);
+    	
+    	if (userVo != null) {
+    		return userVo.getUserId();  
+    	}       
+    	return null;  
+    	
+    }
+     
+    //회원정보 수정 통합
+    public UserKeywordVo updateUserAndKeyword(UserKeywordVo userKeywordVo) {
+        userDAO.updateUserAndKeyword(userKeywordVo);
+        return userDAO.findById(userKeywordVo.getUserId());
+    }
+
 }

@@ -5,8 +5,11 @@
   <form @submit.prevent="logout">
       <button type="submit">Logout</button>
   </form>
-
+  
+  <a @click="goToEditUser()" class="link-primary fw-bold">회원정보수정</a>
   </div>
+
+  
 
 </template>
 
@@ -26,7 +29,7 @@ import axios from 'axios';
     methods: {
  async logout() {
         try {
-          const response = await axios.post('http://localhost:9000/backend/api/auth/logout.do', {
+          const response = await axios.post('http://localhost:9000/backend/api/auth/logout', {
             abId: this.username,
             abPw: this.password
           });
@@ -35,7 +38,11 @@ import axios from 'axios';
         } catch (error) {
           this.error = '로그아웃 실패';
         }
-      }
+      },
+
+      goToEditUser() {
+      this.$router.push({ path: "/edituser" });
+    }
     }
   }
 </script>

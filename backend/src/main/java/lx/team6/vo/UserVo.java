@@ -9,7 +9,7 @@ public class UserVo {
 	public String userEmail;
 	public String userTel;
 	public String userBirth;
-	public String userGender;
+	public char userGender;
 	public String userImage;
 	
 	public int getUserNumber() {
@@ -54,10 +54,10 @@ public class UserVo {
 	public void setUserBirth(String userBirth) {
 		this.userBirth = userBirth;
 	}
-	public String getUserGender() {
+	public char getUserGender() {
 		return userGender;
 	}
-	public void setUserGender(String userGender) {
+	public void setUserGender(char userGender) {
 		this.userGender = userGender;
 	}
 	public String getUserImage() {
@@ -72,6 +72,8 @@ public class UserVo {
 				+ userName + ", userEmail=" + userEmail + ", userTel=" + userTel + ", userBirth=" + userBirth
 				+ ", userGender=" + userGender + ", userImage=" + userImage + "]";
 	}
+	
+	
 	
 	
 	
