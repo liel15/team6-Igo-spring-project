@@ -11,11 +11,33 @@ async function getTestList(id, password) {
   }
 }
 
+//userNo에 따른 postlikeslist를 요청
+export async function getLikesPostList(userNo) {
+  try {
+    const response = await api.get(`/auth/likesPostList/${userNo}`);
+    console.log("you can use getLikesPostList", response.data);
+    return response.data;
+  } catch (err) {
+    console.error(err); // 에러를 콘솔에 출력
+  }
+}
+
+// 좋아요 상태 토글
+export async function toggleLikePost(postNo, userNo) {
+  try {
+    const response = await api.post(`/auth/toggleLike/${postNo}/${userNo}`, {});  // userNo도 함께 전달
+    return response.data;
+  } catch (err) {
+    console.error('Error toggling like:', err);
+  }
+}
+
+
 //postlist를 가져오기 요청
 export async function getPostList() {
   try {
-    const response = await api.post('/auth/postlist');
-    console.log("you can use getPostList",response.data);
+    const response = await api.get('/auth/postlist');
+    console.log("you can use getPostList", response.data);
     return response.data;
   } catch (err) {
     console.error(err); // 에러를 콘솔에 출력

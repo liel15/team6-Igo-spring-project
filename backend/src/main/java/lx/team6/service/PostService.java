@@ -15,9 +15,8 @@ public class PostService {
     PostDAO dao;
 
     // 게시글 리스트 불러오기
-    public List<PostVO> getPostList() {
-        List<PostVO> postList = dao.getPostList();
-        return postList;
+    public List<PostVO> getPostList() { 
+        return dao.getPostList();
     };
     
     
@@ -48,6 +47,27 @@ public class PostService {
     public void deletePost(Integer postNo) {
     	dao.deletePost(postNo);
     }
+    
+    // 좋아요 리스트 불러오기
+    public List<PostVO> getLikesPostList(Integer userNo) {
+    	 return dao.getLikesPostList(userNo);
+    }
+
+
+	public void toggleLike(Integer postNo, Integer userNo) {
+		boolean isLiked = dao.checkIfLiked(postNo, userNo);
+		
+		        if (isLiked) {
+		            // 좋아요가 이미 눌렸으면 삭제
+		        	dao.removeLike(postNo, userNo);
+		        } else {
+		            // 좋아요가 없으면 추가
+		        	dao.addLike(postNo, userNo);
+		        }
+		    }
+
+    
+    
 }
 
    
