@@ -38,7 +38,7 @@ public class PostController {
 	@Autowired
 	PostService postservice;
 
-	// 게시글 리스트 불러오기
+	// 게시글 리스트 불러오기 - 정은
 	@PostMapping("/postlist")
 	public ResponseEntity<List<PostVO>> signup() {
 		List<PostVO> isgetpost = postservice.getPostList(); // 서비스에 넣을 함수 이름
@@ -48,30 +48,7 @@ public class PostController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
-	
-	// 이미지 저장하기
-	private static final String UPLOAD_DIR = "C:/lx/team6-spring-project/frontend/public/images/";
 
-    @PostMapping("/upload-image")
-    public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile file) {
-        try {
-            // 파일 저장 경로 설정
-            Path filePath = Paths.get(UPLOAD_DIR + file.getOriginalFilename());
-
-            // 파일 저장
-            Files.write(filePath, file.getBytes());
-
-            // 성공 메시지 반환
-            return ResponseEntity.ok("이미지가 성공적으로 저장되었습니다: " + file.getOriginalFilename());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 업로드 실패");
-        }
-    }
-
-	// 게시글 한개 불러오기
-		}
-	}
 	
 	//post 검색기능
 	@PostMapping("/serch")
@@ -83,7 +60,9 @@ public class PostController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
+
 	
+	// 게시글 한개 불러오기 - 정은
 	@GetMapping("/post/{postNo}")
 	public ResponseEntity<PostVO> getpost(@PathVariable("postNo") Integer postNo) {
 		System.out.println(postNo);
@@ -95,7 +74,7 @@ public class PostController {
 		}
 	}
 
-	// 게시글 추가
+	// 게시글 추가 - 정은
 	@PostMapping("/insert")
 	public ResponseEntity<String> insertPost(@RequestBody PostVO post) {
 		try {
@@ -107,7 +86,7 @@ public class PostController {
 		}
 	}
 
-	// 게시글 수정
+	// 게시글 수정 - 정은
 	@PatchMapping("/update/{postNo}")
 	public ResponseEntity<String> updatePost(@PathVariable("postNo") Integer postNo, @RequestBody PostVO post) {
 		try {
@@ -120,7 +99,7 @@ public class PostController {
 		}
 	}
 
-	// 게시글 삭제
+	// 게시글 삭제 - 정은
 	@DeleteMapping("/delete/{postNo}")
 	public ResponseEntity<String> deletePost(@PathVariable("postNo") Integer postNo) {
 		try {

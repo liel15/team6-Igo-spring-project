@@ -14,25 +14,29 @@
 		, p.user_user_no userNo
 		, u.id userId
 		from post p join USER u 
-		on p.user_user_no=u.user_no;
+		on p.user_user_no = u.user_no
 	</select>
 
 	<!-- 게시글 한개 불러오기 -->
-	<select id="getPostByNo" parameterType="int"
-		resultType="lx.team6.vo.PostVO">
-		select post_no postNo
-		, post_title postTitle
-		, content content
-		, created_at createdAt
-		from post
+	<select id="getPostByNo" parameterType="int" resultType="lx.team6.vo.PostVO">
+		select p.post_no postNo
+		, p.post_title postTitle
+		, p.content content
+		, p.created_at createdAt
+		, p.updated_at updatedAt
+		, p.img img
+		, p.user_user_no userNo
+		, u.id userId
+		from post p join USER u 
+		on p.user_user_no = u.user_no
 		where post_no = #{postNo}
 	</select>
 
 	<!-- 게시글 추가 -->
 	<insert id="insertPost" parameterType="lx.team6.vo.PostVO"> 
 		insert into post
-		(post_title, content, created_at, updated_at) values (#{postTitle},
-		#{content}, now(), now())
+		(post_title, content, created_at, updated_at, img, user_user_no) values (#{postTitle},
+		#{content}, now(), now(), #{img}, #{userNo})
 	</insert>
 	
 	<!-- 게시글 삭제 -->

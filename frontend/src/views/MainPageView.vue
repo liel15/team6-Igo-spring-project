@@ -169,7 +169,7 @@
         <div class="row">
           <div class="col-3" v-for="(card, index) in postlist" :key="index">
             <div class="card mb-3 mt-3" style="width: 18rem; height: 240px;" @click="getpostid(card.postNo)">
-              <img :src="'/images/' + card.img" class="card-img-top " alt="..." style="width: 18rem; height: 140px;" />
+              <img :src="card.img" class="card-img-top " alt="..." style="width: 18rem; height: 140px;" />
               <div class="card-body">
                 <a class="text-gray-700 fw-bold ">{{ card.userId }} - {{ card.postNo }}</a>
                 <p class="card-text">{{ card.postTitle }}</p>
@@ -278,7 +278,7 @@
             <!--end::내용 입력상자-->
             <!--begin::하단버튼-->
             <div class="text-center">
-              <button type="button" class="btn btn-primary" @click.prevent="createPost()">저장</button>
+              <button type="button" class="btn btn-primary" @click="createPost()">저장</button>
               <button type="reset" class="btn btn-light ms-3" @click="clearAll()">모두 지우기</button>
             </div>
             <!--end::하단버튼-->
@@ -303,6 +303,37 @@ import router from '@/router/index.js';
 import { insertPost } from '@/api/test';
 import { Modal } from 'bootstrap';
 import axios from 'axios';
+
+// 이미지 주소로 넘기기
+const selectedFile = ref(null);
+
+const onFileChange = (event) => {
+  selectedFile.value = event.target.files[0]
+}
+
+const uploadImage = async () => {
+  if (!selectedFile.value) {
+    return null; // 이미지가 없으면 null 반환
+  }
+
+  const formData = new FormData();
+  formData.append("file", selectedFile.value);
+
+  try {
+    const response = await axios.post("http://localhost:9000/backend/api/auth/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    return response.data // 서버에서 반환한 이미지 경로
+  } catch (error) {
+    console.error("Error uploading image", error)
+    return null
+  }
+}
+
+
+
 
 // db에서 posts들 데이터 가져오기
 onMounted(() => {
@@ -346,18 +377,26 @@ let titleInput = ref('');
 let contentInput = ref('');
 
 async function createPost() {
+   // 이미지 먼저 업로드하고 경로를 받음
+  const imagePath = await uploadImage();
+
   const data = {
     postTitle: titleInput.value,
     content: contentInput.value,
-    userNo: sessionStorage.getItem("userNo")
+    userNo: sessionStorage.getItem("userNo"),
+    img: imagePath || "" // 이미지 경로가 있으면 넣고 없으면 빈 값
   }
   console.log("작정자 넘버 : " + data.userNo);
   console.log("작성한 글제목 : " + titleInput.value);
-  console.log("전달할 내용 : " + data);
+  console.log("전달할 내용 : " + data.content);
+  console.log("전달할 이미지 경로:", data.img)
+
   try {
     const response = await insertPost(data); 
     console.log("서버 응답: ", response);
-    createPostModal.hide(); 
+
+    createPostModal.hide();
+    router.go(0);
   } catch (error) {
     console.error(error);
   }
@@ -378,28 +417,6 @@ function log() {
 function toggleHeart() {
   isHeartFilled.value = !isHeartFilled.value;
 }
-
-const user = ref(
-  {
-    id: 1,
-    name: '회원1',
-    mbit: 'tttt',
-    post: '5',
-  }
-
-)
-
-const type = ref({
-
-  mbit: 'mbit',
-  num: 'num',
-  location: 'seoul',
-  type: 'type',
-  mobility: 'car',
-  house: 'hotel',
-}
-
-)
 
 /*
 //이미지 처리 코드
