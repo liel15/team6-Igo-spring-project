@@ -1,5 +1,7 @@
 package lx.team6.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,14 @@ public class LikeDAO {
 	// 게시글 번호로 좋아요 수 찾기
 	public Integer getLikeByPostNo(Integer postNo) {
 		return session.selectOne("getLikeByPostNo", postNo);
+	}
+
+	public List<LikeVO> getLikesList(Integer userNo) {
+		return session.selectList("getLikesList", userNo);
+	}
+
+	public void deleteLike(Integer likeNo) {
+		session.delete("deleteLike", likeNo);
 	}
 	
 	

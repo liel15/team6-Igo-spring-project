@@ -304,18 +304,37 @@
 <script setup>
 
 import { ref, onMounted } from 'vue';
-import { usePostStore, useLikeCountStore } from '@/stores/test';
+import { usePostStore, useLikeCountStore, usePostLikesListStore, useLikesListStore } from '@/stores/test';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import router from '@/router/index.js';
-import { deletePostByNo, updatePostByNo, insertLike } from '@/api/test';
+import { deletePostByNo, updatePostByNo, insertLike, deleteLikeByNo } from '@/api/test';
 import { Modal } from 'bootstrap';
 
+// 좋아요 리스트 가져오기
+const likesstore = useLikesListStore();
+const { likesList } = storeToRefs(likesstore);
+
+let mode = 'no'; // 기본적으로 좋아요를 누르지 않은 상태
+let lnum = null; // 해당 글의 좋아요 번호 저장
+
+async function getlikes() {
+  await likesstore.fetchLikesList();
+  likesList.value.forEach((item) => {
+    console.log(`Post No: ${item.postNo}, User No: ${item.userNo}`);
+    if (postone.value.postNo == item.postNo) {
+      console.log('이 글에 좋아요를 눌렀습니다.');
+      mode = 'yes'; // 이미 좋아요를 누른 상태로 설정
+      lnum = item.likeNo; // 좋아요 번호 저장
+    }
+  });
+}
 
 onMounted(() => {
   window.scrollTo(0, 0);
   init();
-})
+  //getlikes(); // 좋아요 리스트 가져오기
+});
 
 // 글에 좋아요 관련 함수, 변수
 const likestore = useLikeCountStore();
@@ -324,28 +343,43 @@ const { likeCount } = storeToRefs(likestore);
 async function init() {
   await likestore.fetchLikeCount(postone.value.postNo);
   console.log("좋아요 수 : " + likeCount.value);
-
 }
 
 const clickLike = async (id) => {
-  //likenum.value++;
   const data = {
     postNo: id,
     userNo: sessionStorage.getItem("userNo"),
+  };
+  
+  if (mode == 'yes') {
+    // 이미 좋아요를 눌렀다면, 좋아요 취소
+    try {
+      await deleteLikeByNo(lnum); // 좋아요 삭제
+      console.log("좋아요가 취소되었습니다.");
+      alert("좋아요가 취소되었습니다.");
+      mode = 'no'; // 상태 변경
+      lnum = null; // 좋아요 번호 초기화
+      await init(); // 좋아요 수 업데이트
+      await getlikes(); // 좋아요 리스트 업데이트
+    } catch (error) {
+      console.error("좋아요 취소에 실패했습니다:", error);
+    }
+  } else {
+    // 좋아요 추가
+    try {
+      const response = await insertLike(data);
+      console.log("서버 응답: ", response);
+      alert("좋아요가 추가되었습니다!");
+      mode = 'yes'; // 상태 변경
+      await init(); // 좋아요 수 업데이트
+      await getlikes(); // 좋아요 리스트 업데이트
+    } catch (error) {
+      console.error("좋아요 추가에 실패했습니다:", error);
+    }
   }
-  console.log("좋아요 누른 사람 넘버 : " + data.userNo);
-  console.log("좋아요 누른 글 넘버 : " + data.postNo);
-  try {
-    const response = await insertLike(data);
+};
 
-    console.log("서버 응답: ", response);
-    alert("좋아요가 추가되었습니다!");
-    init();
-    //router.go(0);
-  } catch (error) {
-    alert("이미 좋아요를 누른 글입니다.");
-  }
-}
+
 
   // 글 정보 가져오기 관련 함수, 변수
   const poststore = usePostStore();

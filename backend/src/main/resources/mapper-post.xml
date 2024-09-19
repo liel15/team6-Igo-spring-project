@@ -96,7 +96,8 @@
 		p.created_at
 		createdAt,
 		u.id userId,
-		l.created_at likeCreatedAt
+		l.created_at likeCreatedAt,
+		u.user_no userNo
 		from post p
 		join likes
 		l on p.post_no = l.post_post_no
