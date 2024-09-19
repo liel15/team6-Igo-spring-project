@@ -9,5 +9,25 @@
 		(#{keywordMbti}, #{keywordSort}, #{keywordLocation}, #{keywordType}, #{keywordMobility}, #{keywordHouse}, #{postNo})
 	</insert>
 
-
+	<!-- 게시글 키워드 한세트 불러오기 -->
+	<select id="getPostKeywordByNo" parameterType="int" resultType="lx.team6.vo.PostKeywordVO">
+		select key_no keywordNumber,
+			mbti keywordMbti,
+			key_sort keywordSort,
+			key_location keywordLocation,
+			key_type keywordType,
+			mobility keywordMobility,
+			house keywordHouse,
+			post_post_no postNo
+		from post_keyword
+		where post_post_no = #{postNo}
+	</select>
+	
+	<!-- 게시글 키워드 수정 -->
+	<update id="updatePostKeyword" parameterType="lx.team6.vo.KeywordVo">
+		update post_keyword set
+		mbti = #{keywordMbti}, key_sort = #{keywordSort}, key_location = keywordLocation,
+		key_type = #{keywordType}, mobility = #{keywordMobility}, house = #{keywordHouse}
+		where post_post_no = #{postNo}
+	</update>
 </mapper>

@@ -687,6 +687,21 @@ const checkLoginStatus = () => {
 let createPostModal;
 
 function showCreatePostModal() {
+  // 내용 초기화 하기
+  titleInput.value = '';
+  contentInput.value = '';
+  mbtiInput.value = '';
+  sortInput.value = '';
+  locationInput.value = '';
+  typeInput.value = '';
+  mobilityInput.value = '';
+  houseInput.value = '';
+  // 파일 입력 요소 초기화
+  const fileInput = document.querySelector('input[type="file"]');
+  if (fileInput) {
+    fileInput.value = ''; // HTML 파일 입력 요소의 값 초기화
+  }
+  // 대화상자 띄우기
   const elem = document.querySelector('#kt_modal_new_target');
   createPostModal = new Modal(elem);
   createPostModal.show();

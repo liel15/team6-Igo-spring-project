@@ -54,9 +54,9 @@ public class LikeController {
 	@GetMapping("/likesList/{userNo}")
 	public ResponseEntity<List<LikeVO>> getLikesList(@PathVariable("userNo") Integer userNo) {
 		List<LikeVO> likes = likeservice.getLikesList(userNo); // 서비스에 넣을 함수 이름
-		System.out.println("좋아요 리스트 : " + likes);
+		//System.out.println("좋아요 리스트 : " + likes);
 		if (likes != null && !likes.isEmpty()) {
-			System.out.println("좋아요 리스트 : " + likes);
+			//System.out.println("좋아요 리스트 : " + likes);
 			return ResponseEntity.ok(likes);
 		} else {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
