@@ -13,14 +13,11 @@ export const useTestStore = defineStore("test", () => {
     try {
       const response = await login(id, password); // 로그인 함수 호출(import)
       data.value = response; // 입력받은 아이디와 비밀번호에 해당하는 값 저장(vo에 있는 것들..?)
-      console.log(response);
       error.value = null; // 에러 초기화
       sessionStorage.setItem("userData", JSON.stringify(data.value)) // 문자열 또는 객체는 JSON형태로 받아와야 한다고 함
       sessionStorage.setItem("userNo", response.userNumber);
       alert("로그인 성공");
-      console.log(data.value);
       router.push({ path: "/mainpage"});
-      const userId = sessionStorage.getItem(userId);
     } catch (err) {
       error.value = err.message;
       alert(error.value); 
@@ -245,11 +242,9 @@ export const usefindStore = defineStore("findpassword", () => {
   async function findPw(id, name, email) {
     try {
       const response = await findPassword(id, name, email); 
-      console.log("입력된 데이터 : " + response)
       data.value = response; 
       error.value = null;
       alert("설정된 비밀번호는" + data.value + "입니다");
-      console.log(data.value);
       router.push({ path: "/login"});
     } catch (err) {
       error.value = err.message;
@@ -267,15 +262,11 @@ export const useFindIdStore = defineStore("findid", () => {
   async function findId(name, email) {
     try {
       const response = await findById(name, email); 
-      console.log("입력된 데이터 : " + response);
-      
-
       data.value = response; 
       error.value = null;
       alert("설정된 아이디는 " + data.value + "입니다");
       router.push({ path: "/login" });
     } catch (err) {
-
       error.value = err.message;
       alert(error.value);
     }
