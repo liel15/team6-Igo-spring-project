@@ -55,6 +55,18 @@
     <script>
       // Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }
     </script>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <link rel="stylesheet" href="/src/css/style.css" />
   </head>
   <body
     id="kt_app_body"
@@ -71,25 +83,25 @@
   >
     <!--begin::Theme mode setup on page load-->
     <script>
-      var defaultThemeMode = "light";
+      var defaultThemeMode = 'light';
       var themeMode;
       if (document.documentElement) {
-        if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
+        if (document.documentElement.hasAttribute('data-bs-theme-mode')) {
           themeMode =
-            document.documentElement.getAttribute("data-bs-theme-mode");
+            document.documentElement.getAttribute('data-bs-theme-mode');
         } else {
-          if (localStorage.getItem("data-bs-theme") !== null) {
-            themeMode = localStorage.getItem("data-bs-theme");
+          if (localStorage.getItem('data-bs-theme') !== null) {
+            themeMode = localStorage.getItem('data-bs-theme');
           } else {
             themeMode = defaultThemeMode;
           }
         }
-        if (themeMode === "system") {
-          themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
+        if (themeMode === 'system') {
+          themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
         }
-        document.documentElement.setAttribute("data-bs-theme", themeMode);
+        document.documentElement.setAttribute('data-bs-theme', themeMode);
       }
     </script>
     <!--end::Theme mode setup on page load-->
@@ -6734,7 +6746,7 @@
 
     <!--begin::Javascript-->
     <script>
-      var hostUrl = "assets/";
+      var hostUrl = 'assets/';
     </script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script src="assets/plugins/global/plugins.bundle.js"></script>
@@ -6764,6 +6776,7 @@
     <script src="assets/js/custom/utilities/modals/new-target.js"></script>
     <script src="assets/js/custom/utilities/modals/users-search.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@4.31.1/dist/tagify.min.js"></script>
+
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
   </body>

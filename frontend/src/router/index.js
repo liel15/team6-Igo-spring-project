@@ -30,6 +30,11 @@ const router = createRouter({
       component: () => import("../views/PageView.vue")
     },
     {
+      path: '/schedule',
+      name: 'schedule',
+      component: () => import("../views/ScheduleView.vue")
+    },
+    {
       path: '/mainpage',
       name: 'mainpage',
       component: () => import("../views/MainPageView.vue")

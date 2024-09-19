@@ -3,23 +3,23 @@
 <mapper namespace="mapper-addrbook">
 
 	<!-- 댓글 쓰기 -->
-	<insert id="createComment" parameterType="lx.team6.vo.PostVO">
+<!-- 	<insert id="createComment" parameterType="lx.team6.vo.PostVO">
 		insert into comment(content)
 		values(#{content})
-	</insert>
+	</insert> -->
 	
 	
 	<!--댓글 가져오기 -->
-	<select id="getCommentList" resultType="lx.team6.vo.PostVO">
+<!-- 	<select id="getCommentList" resultType="lx.team6.vo.PostVO">
 			select content content
 			from post
-	</select>
+	</select> -->
 	
 	
 	<!-- 삭제 -->
-	<delete id="deleteComment" parameterType="int">
+<!-- 	<delete id="deleteComment" parameterType="int">
 		delete from comment where comment_no = #{commentNo}
-	</delete>
+	</delete> -->
 	
 	
 </mapper>

@@ -82,6 +82,8 @@
 		, email abEmail
 		,
 		tel_num abTel
+		,
+		tel_num abTel
 		, birth_date abBirth
 		from user
 		where id = #{abId}
