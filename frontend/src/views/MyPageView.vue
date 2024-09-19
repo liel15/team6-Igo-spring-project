@@ -15,7 +15,7 @@
                     <p>아이디</p>
                 </p>
                 <div class="fixed-button">
-                    <button class="btn btn-primary" @click="editPost(post.postNo)">수정</button>
+                    <button class="btn btn-primary" @click="goToEditUser()">수정</button>
                 </div>
             </div>
           </div>
@@ -77,6 +77,7 @@
 import { reactive , ref, onMounted } from 'vue';
 import { usePostListStore, usePostLikesListStore, useLikeStore } from '@/stores/test'; // Pinia store 가져오기
 import { storeToRefs } from 'pinia'; // store의 state 참조
+import router from '@/router';
 
 const postStore = usePostListStore();
 const likesStore = usePostLikesListStore();
@@ -164,6 +165,10 @@ async function toggleLike(post) {
   } catch (err) {
     console.error('Error toggling like:', err);
   }
+}
+
+function goToEditUser() {
+  router.push({path: "/edituser"})
 }
 
 

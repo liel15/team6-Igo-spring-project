@@ -72,8 +72,8 @@
 		from employees
 		where employeeId = #{employeeId}
 	</select>
-
-	<!--  아이디 찾기 
+	
+	<!-- 아이디 찾기 
 	<select id="findById" parameterType="String"
 		resultType="lx.team6.vo.AddrbookVo">
 		select id abId

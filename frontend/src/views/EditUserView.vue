@@ -8,7 +8,7 @@
         <!--begin::Form-->
         <div class="d-flex flex-center flex-column flex-lg-row-fluid">
           <!--begin::Wrapper-->
-          <div class="w-lg-500px p-10">
+          <div class="w-lg-400px p-10">
             <!--begin::Form-->
             <form
               class="form w-100"
@@ -50,23 +50,13 @@
                 <!--end::Col-->
                 <!--begin::Col-->
                 <div class="col-md-6">
-                  <!--begin::Google link=-->
-                  <a
-                    href="#"
-                    class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100"
-                  >
-                    <img
-                      alt="Logo"
-                      src="/images/cat_run.png"
-                      class="theme-light-show h-15px me-3"
-                    />
-                    <img
-                      alt="Logo"
-                      src="/images/cat_run.png"
-                      class="theme-dark-show h-15px me-3"
-                    />Sign in with Apple</a
-                  >
-                  <!--end::Google link=-->
+                  <!--begin::여행로고=-->               
+                  <img
+                    src="/images/travel_logo.jpg"
+                    alt="Travel Logo"
+                    class="logo-image ms-4"
+                  />                
+                  <!--end::여행로고=-->
                 </div>
                 <!--end::Col-->
               </div>
@@ -378,6 +368,49 @@
         <!--end::Footer-->
       </div>
       <!--end::Body-->
+
+<!--begin::Aside-->
+<div
+        class="d-flex flex-lg-row-fluid bgi-size-cover bgi-position-center order-1 order-lg-2"
+        style="background-image: url('/images/moonback.jpg'); width: 70%; background-size: cover; background-repeat: no-repeat; background-position: center;"
+      >
+        <!--begin::Content-->
+        <div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">
+
+          <!--begin::Image-->
+          <img
+            class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20"
+            src=""
+            alt=""
+          />
+          <!--end::Image-->
+          <!--begin::Title-->
+          <h1
+            class="d-none d-lg-block fs-2qx fw-bolder text-center mb-7"
+            style="color: black"
+          >
+            Fast, Efficient and Productive
+          </h1>
+          <!--end::Title-->
+          <!--begin::Text-->
+          <div class="d-none d-lg-block fs-base text-center" style="color: black">
+            In this kind of post,
+            <a href="#" class="opacity-75-hover text-warning fw-bold me-1">the blogger</a>
+            introduces a person they’ve interviewed <br />
+            and provides some background information about
+            <a href="#" class="opacity-75-hover text-warning fw-bold me-1"
+              >the interviewee</a
+            >
+            and their <br />
+            work following this is a transcript of the interview.
+          </div>
+          <!--end::Text-->
+        </div>
+        <!--end::Content-->
+      </div>
+
+      <!--end::Aside-->
+
     </div>
     <!--end::Authentication - Sign-up-->
   </div>
@@ -423,6 +456,7 @@ export default {
       console.log("가져온 데이터 : ", userData);
       
       this.img = userData.userImage;
+      this.previewUrl = `http://localhost:9000/backend/api/auth${userData.userImage}`;
       this.id = userData.userId;
       this.name = userData.userName;
       this.email = userData.userEmail;
@@ -593,4 +627,14 @@ export default {
   cursor:pointer;
   margin-left: 10px;
 }
+
+.logo-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-top: 30px;
+  border-radius: 20px;
+}
+
+
 </style>
