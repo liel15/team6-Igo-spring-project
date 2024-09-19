@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import lx.team6.service.PostService;
+import lx.team6.vo.KeywordVo;
+import lx.team6.vo.PostKeywordVO;
 import lx.team6.vo.PostVO;
 
 @RestController
@@ -70,12 +73,14 @@ public class PostController {
 	}
 
 	// 게시글 추가 - 정은
-	@PostMapping("/insert")
-	public ResponseEntity<String> insertPost(@RequestBody PostVO post) {
+	@PostMapping(value = "/insert", consumes = {"multipart/form-data"})
+	public ResponseEntity<String> insertPostAndKeyword(
+			@RequestPart("post") PostVO post,
+			@RequestPart("postkeyword") PostKeywordVO postkeywordVo) {
 		logger.info("info : MyBatis로 insertPost()기능 처리");
 		try {
-			postservice.insertPost(post);
-			return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 성공적으로 등록되었습니다.");
+			postservice.insertPostAndKeyword(post, postkeywordVo);
+			return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 키워드와 함께 성공적으로 등록되었습니다.");
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}

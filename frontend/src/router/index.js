@@ -64,7 +64,15 @@ const router = createRouter({
       name: 'edituser',
       component: () => import("../views/EditUserView.vue")
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    // 페이지를 이동할 때 항상 맨 위로 스크롤
+    if (savedPosition) {
+      return savedPosition; // 브라우저의 백 버튼을 눌렀을 때 이전 위치로 돌아가도록 설정
+    } else {
+      return { top: 0 }; // 페이지 맨 위로 스크롤
+    }
+  }
 })
 
 export default router

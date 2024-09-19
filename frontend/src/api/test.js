@@ -133,6 +133,16 @@ export async function insertPost(data) {
   }
 }
 
+// 글 키워드 추가 요청
+export async function insertPostKeyword(data) {
+  try {
+    const response = await api.post('/auth/insertkeyword', data);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 // 이미지 저장요청
 export async function saveImage(formData) {
   try {
