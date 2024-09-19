@@ -276,6 +276,96 @@
                 rows="5"></textarea>
             </div>
             <!--end::내용 입력상자-->
+            <!-- start::키워드 선택상자 -->
+            <!--begin::키워드-->
+            <div class="fv-row mb-8 mt-8">
+                  <fieldset
+                    style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px"
+                  >
+                    <!--begin::mbti-->
+                    <div class="form-group mt-3" >
+                      <label for="mbti">MBTI</label>
+                      <select v-model="mbtiInput" id="mbti" name="mbti" class="form-control" style="cursor:pointer">
+                        <option value="" disabled >선택하기</option>
+                        <option value="ISTJ">ISTJ</option>
+                        <option value="ISFJ">ISFJ</option>
+                        <option value="INFJ">INFJ</option>
+                        <option value="INTJ">INTJ</option>
+                        <option value="ISTP">ISTP</option>
+                        <option value="ISFP">ISFP</option>
+                        <option value="INFP">INFP</option>
+                        <option value="INTP">INTP</option>
+                        <option value="ESTP">ESTP</option>
+                        <option value="ESFP">ESFP</option>
+                        <option value="ENFP">ENFP</option>
+                        <option value="ENTP">ENTP</option>
+                        <option value="ESTJ">ESTJ</option>
+                        <option value="ESFJ">ESFJ</option>
+                        <option value="ENFJ">ENFJ</option>
+                        <option value="ENTJ">ENTJ</option>
+                      </select>
+                    </div>
+                    <!--end::mbti-->
+
+                    <div class="form-group mt-3">
+                      <label for="category">구분</label>
+                      <select v-model="sortInput" id="number" name="number" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="개인">개인</option>
+                        <option value="단체">단체</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <label for="region">선호 지역</label>
+                      <select v-model="locationInput" id="location" name="location" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="서울특별시">서울특별시</option>
+                        <option value="부산광역시">부산광역시</option>
+                        <option value="대구광역시">대구광역시</option>
+                        <option value="인천광역시">인천광역시</option>
+                        <option value="광주광역시">광주광역시</option>
+                        <option value="대전광역시">대전광역시</option>
+                        <option value="울산광역시">울산광역시</option>
+                        <option value="세종특별자치시">세종특별자치시</option>
+                        <option value="제주도">제주도</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group mt-3" >
+                      <label for="preference">여행 취향</label>
+                      <select v-model="typeInput" id="type" name="type" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="익스트림">익스트림</option>
+                        <option value="힐링">힐링</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <label for="transport">이동수단</label>
+                      <select v-model="mobilityInput" id="mobility" name="mobility" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="뚜벅이">뚜벅이</option>
+                        <option value="차">차</option>
+                        <option value="대중교통">대중교통</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <label for="accommodation">숙소</label>
+                      <select v-model="houseInput" id="house" name="house" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="게스트하우스">게스트하우스</option>
+                        <option value="호텔">호텔</option>
+                        <option value="펜션">펜션</option>
+                        <option value="캠핑">캠핑</option>
+                      </select>
+                    </div>
+                  </fieldset>
+                </div>
+
+                <!--end::키워드-->
+            <!-- end:: 키워드 선택상자 -->
             <!--begin::하단버튼-->
             <div class="text-center">
               <button type="button" class="btn btn-primary" @click="createPost()">저장</button>
@@ -332,9 +422,6 @@ const uploadImage = async () => {
   }
 }
 
-
-
-
 // db에서 posts들 데이터 가져오기
 onMounted(() => {
   init();
@@ -375,6 +462,12 @@ function showCreatePostModal() {
 // 글작성 함수 - create
 let titleInput = ref('');
 let contentInput = ref('');
+let mbtiInput = ref('');
+let sortInput = ref('');
+let locationInput = ref('');
+let typeInput = ref('');
+let mobilityInput = ref('');
+let houseInput = ref('');
 
 async function createPost() {
    // 이미지 먼저 업로드하고 경로를 받음

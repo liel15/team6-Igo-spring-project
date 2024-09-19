@@ -33,10 +33,10 @@ public class PostDAO {
 	public List<PostVO> serchPostList(String keyword) {
 		return session.selectList("serchPostList", keyword);
 	}
+	
 	// 게시글 등록
-	public void insertPost(PostVO post) {
-		session.insert("insertPost", post);
-
+	public int insertPost(PostVO post) {
+		return session.insert("insertPost", post);
 	}
 	
 	// 게시글 수정

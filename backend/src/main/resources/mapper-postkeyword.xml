@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper-postkeyword">
+
+	<!-- 게시글 키워드 추가 -->
+	<insert id="insertPostKeyword" parameterType="lx.team6.vo.PostKeywordVO">
+		insert into post_keyword
+		(mbti, key_sort, key_location, key_type, mobility, house, post_post_no) values
+		(#{keywordMbti}, #{keywordSort}, #{keywordLocation}, #{keywordType}, #{keywordMobility}, #{keywordHouse}, #{postNo})
+	</insert>
+
+
+</mapper>

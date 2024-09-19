@@ -39,7 +39,8 @@
 	</select>
 
 	<!-- 게시글 추가 -->
-	<insert id="insertPost" parameterType="lx.team6.vo.PostVO">
+	<insert id="insertPost" useGeneratedKeys="true"
+		keyProperty="postNo" parameterType="lx.team6.vo.PostVO">
 		insert into post
 		(post_title, content, created_at, updated_at, img,
 		user_user_no) values

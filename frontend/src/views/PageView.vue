@@ -310,6 +310,8 @@ import { useRoute } from 'vue-router';
 import router from '@/router/index.js';
 import { deletePostByNo, updatePostByNo, insertLike, deleteLikeByNo } from '@/api/test';
 import { Modal } from 'bootstrap';
+// 로그인한 유저 넘버
+let userNo = sessionStorage.getItem("userNo");
 
 // 좋아요 리스트 가져오기
 const likesstore = useLikesListStore();
@@ -331,9 +333,9 @@ async function getlikes() {
 }
 
 onMounted(() => {
-  window.scrollTo(0, 0);
+  
   init();
-  //getlikes(); // 좋아요 리스트 가져오기
+  getlikes(); // 좋아요 리스트 가져오기
 });
 
 // 글에 좋아요 관련 함수, 변수
@@ -348,7 +350,7 @@ async function init() {
 const clickLike = async (id) => {
   const data = {
     postNo: id,
-    userNo: sessionStorage.getItem("userNo"),
+    userNo: userNo,
   };
   
   if (mode == 'yes') {
@@ -396,13 +398,18 @@ const clickLike = async (id) => {
   //deletePostByNo(postNo);
   //})
 
+  // 글 삭제하기
   function deletePost(postNo) {
-    console.log("삭제할 번호 : ", postNo);
-    if (confirm("정말 삭제하시겠습니까??") == true) {
-      deletePostByNo(postNo);
-      router.replace({ path: '/mainpage' });
+    if(postone.value.userNo == userNo) {
+      console.log("삭제할 번호 : ", postNo);
+      if (confirm("정말 삭제하시겠습니까??") == true) {
+        deletePostByNo(postNo);
+        router.replace({ path: '/mainpage' });
+      } else {
+        return false;
+      }
     } else {
-      return false;
+      alert("글 작성자만 삭제가능합니다! 어딜 감히... 떽!");
     }
   }
 
@@ -414,19 +421,23 @@ const clickLike = async (id) => {
 
   // 수정 모달 만들기
   function showUpdatePostModal(itemId) {
-    console.log(`showUpdate 호출됨 - 아이디 : ${itemId}`);
-
-    // 대화상자의 입력값 넣어주기
-    titleInput.value = postone.value.postTitle;
-    contentInput.value = postone.value.content;
-
-    // 선택한 아이템의 아이디
-    //selected.value = itemId;
-
-    // 대화상자 띄우기
-    const elem = document.querySelector('#kt_modal_new_target');
-    updatePostModal = new Modal(elem);
-    updatePostModal.show();
+    if(postone.value.userNo == userNo) {
+      console.log(`showUpdate 호출됨 - 아이디 : ${itemId}`);
+  
+      // 대화상자의 입력값 넣어주기
+      titleInput.value = postone.value.postTitle;
+      contentInput.value = postone.value.content;
+  
+      // 선택한 아이템의 아이디
+      //selected.value = itemId;
+  
+      // 대화상자 띄우기
+      const elem = document.querySelector('#kt_modal_new_target');
+      updatePostModal = new Modal(elem);
+      updatePostModal.show();
+    } else {
+      alert("글 작성자만 수정가능합니다! 어딜 감히... 떽!");
+    }
 
   }
 
