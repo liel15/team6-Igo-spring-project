@@ -45,46 +45,16 @@
                   <!--begin::Wrapper-->
                   <div class="mb-8">
                     <!--begin::Info-->
-                    <div class="d-flex flex-wrap mb-6">
+                    <div class="d-flex flex-wrap mb-2">
                       <!--begin::Item-->
-                      <div class="me-9 my-1">
-                        <!--begin::Icon-->
-                        <i class="ki-duotone ki-element-11 text-primary fs-2 me-1">
-                          <span class="path1"></span>
-                          <span class="path2"></span>
-                          <span class="path3"></span>
-                          <span class="path4"></span>
-                        </i>
-                        <!--end::Icon-->
+                      <div>
                         <!--begin::Label-->
-                        <span class="fw-bold text-gray-500"> 글키워드1</span>
-                        <!--end::Label-->
-                      </div>
-                      <!--end::Item-->
-                      <!--begin::Item-->
-                      <div class="me-9 my-1">
-                        <!--begin::Icon-->
-                        <i class="ki-duotone ki-briefcase text-primary fs-2 me-1">
-                          <span class="path1"></span>
-                          <span class="path2"></span>
-                        </i>
-                        <!--end::Icon-->
-                        <!--begin::Label-->
-                        <span class="fw-bold text-gray-500"> 글키워드2</span>
-                        <!--begin::Label-->
-                      </div>
-                      <!--end::Item-->
-                      <!--begin::Item-->
-                      <div class="my-1">
-                        <!--begin::Icon-->
-                        <i class="ki-duotone ki-message-text-2 text-primary fs-2 me-1">
-                          <span class="path1"></span>
-                          <span class="path2"></span>
-                          <span class="path3"></span>
-                        </i>
-                        <!--end::Icon-->
-                        <!--begin::Label-->
-                        <span class="fw-bold text-gray-500"> 글키워드3</span>
+                        <span v-if="postkeyword.keywordMbti != null" class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordMbti }}</span>
+                        <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordSort }}</span>
+                        <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordLocation }}</span>
+                        <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordType }}</span>
+                        <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordMobility }}</span>
+                        <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordHouse }}</span>
                         <!--end::Label-->
                       </div>
                       <!--end::Item-->
@@ -266,6 +236,14 @@
               <input type="text" class="form-control form-control-solid" name="target_title" v-model="titleInput" />
             </div>
             <!--end::이름 입력상자-->
+            <!-- 이미지 선택 START -->
+            <div class="d-flex flex-column mb-8 fv-row">
+              <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                <span class="required">파일 선택</span>
+              </label>
+              <input type="file" id="image" @change="onFileChange" ref="image" />
+            </div>
+            <!-- 이미지 선택 END -->
             <!--begin::내용 입력상자-->
             <div class="d-flex flex-column mb-8 fv-row">
               <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
@@ -282,6 +260,96 @@
                 rows="5"></textarea>
             </div>
             <!--end::내용 입력상자-->
+            <!-- start::키워드 선택상자 -->
+            <!--begin::키워드-->
+            <div class="fv-row mb-8 mt-8">
+                  <fieldset
+                    style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px"
+                  >
+                    <!--begin::mbti-->
+                    <div class="form-group mt-3" >
+                      <label for="mbti">MBTI</label>
+                      <select v-model="mbtiInput" id="mbti" name="mbti" class="form-control" style="cursor:pointer">
+                        <option value="" disabled >선택하기</option>
+                        <option value="ISTJ">ISTJ</option>
+                        <option value="ISFJ">ISFJ</option>
+                        <option value="INFJ">INFJ</option>
+                        <option value="INTJ">INTJ</option>
+                        <option value="ISTP">ISTP</option>
+                        <option value="ISFP">ISFP</option>
+                        <option value="INFP">INFP</option>
+                        <option value="INTP">INTP</option>
+                        <option value="ESTP">ESTP</option>
+                        <option value="ESFP">ESFP</option>
+                        <option value="ENFP">ENFP</option>
+                        <option value="ENTP">ENTP</option>
+                        <option value="ESTJ">ESTJ</option>
+                        <option value="ESFJ">ESFJ</option>
+                        <option value="ENFJ">ENFJ</option>
+                        <option value="ENTJ">ENTJ</option>
+                      </select>
+                    </div>
+                    <!--end::mbti-->
+
+                    <div class="form-group mt-3">
+                      <label for="category">구분</label>
+                      <select v-model="sortInput" id="number" name="number" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="개인">개인</option>
+                        <option value="단체">단체</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <label for="region">선호 지역</label>
+                      <select v-model="locationInput" id="location" name="location" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="서울특별시">서울특별시</option>
+                        <option value="부산광역시">부산광역시</option>
+                        <option value="대구광역시">대구광역시</option>
+                        <option value="인천광역시">인천광역시</option>
+                        <option value="광주광역시">광주광역시</option>
+                        <option value="대전광역시">대전광역시</option>
+                        <option value="울산광역시">울산광역시</option>
+                        <option value="세종특별자치시">세종특별자치시</option>
+                        <option value="제주도">제주도</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group mt-3" >
+                      <label for="preference">여행 취향</label>
+                      <select v-model="typeInput" id="type" name="type" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="익스트림">익스트림</option>
+                        <option value="힐링">힐링</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <label for="transport">이동수단</label>
+                      <select v-model="mobilityInput" id="mobility" name="mobility" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="뚜벅이">뚜벅이</option>
+                        <option value="차">차</option>
+                        <option value="대중교통">대중교통</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <label for="accommodation">숙소</label>
+                      <select v-model="houseInput" id="house" name="house" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="게스트하우스">게스트하우스</option>
+                        <option value="호텔">호텔</option>
+                        <option value="펜션">펜션</option>
+                        <option value="캠핑">캠핑</option>
+                      </select>
+                    </div>
+                  </fieldset>
+                </div>
+
+                <!--end::키워드-->
+            <!-- end:: 키워드 선택상자 -->
             <!--begin::하단버튼-->
             <div class="text-center">
               <button type="button" class="btn btn-primary" @click.prevent="updatePost(postone.postNo)">저장</button>
@@ -304,11 +372,11 @@
 <script setup>
 
 import { ref, onMounted } from 'vue';
-import { usePostStore, useLikeCountStore, usePostLikesListStore, useLikesListStore } from '@/stores/test';
+import { usePostStore, useLikeCountStore, usePostLikesListStore, useLikesListStore, usePostKeywordStore } from '@/stores/test';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import router from '@/router/index.js';
-import { deletePostByNo, updatePostByNo, insertLike, deleteLikeByNo } from '@/api/test';
+import { deletePostByNo, updatePostByNo, insertLike, deleteLikeByNo, updatePostKeywordByNo } from '@/api/test';
 import { Modal } from 'bootstrap';
 // 로그인한 유저 넘버
 let userNo = sessionStorage.getItem("userNo");
@@ -332,10 +400,20 @@ async function getlikes() {
   });
 }
 
+// 글 키워드 가져오기
+const keywordstore = usePostKeywordStore();
+const { postkeyword } = storeToRefs(keywordstore);
+
+async function getPostKeywordByNo() {
+  await keywordstore.fetchpostkeyword(postone.value.postNo);
+  console.log("키워드들 : " + postkeyword.value);
+}
+
 onMounted(() => {
   
   init();
   getlikes(); // 좋아요 리스트 가져오기
+  getPostKeywordByNo();
 });
 
 // 글에 좋아요 관련 함수, 변수
@@ -416,6 +494,12 @@ const clickLike = async (id) => {
   // 글 업데이트하기 버튼 - 모달 함수
   let titleInput = ref('');
   let contentInput = ref('');
+  let mbtiInput = ref('');
+  let sortInput = ref('');
+  let locationInput = ref('');
+  let typeInput = ref('');
+  let mobilityInput = ref('');
+  let houseInput = ref('');
 
   let updatePostModal;
 
@@ -427,6 +511,12 @@ const clickLike = async (id) => {
       // 대화상자의 입력값 넣어주기
       titleInput.value = postone.value.postTitle;
       contentInput.value = postone.value.content;
+      mbtiInput.value = postkeyword.value.keywordMbti;
+      sortInput.value = postkeyword.value.keywordSort;
+      locationInput.value = postkeyword.value.keywordLocation;
+      typeInput.value = postkeyword.value.keywordType;
+      mobilityInput.value = postkeyword.value.keywordMobility;
+      houseInput.value = postkeyword.value.keywordHouse;
   
       // 선택한 아이템의 아이디
       //selected.value = itemId;
@@ -453,8 +543,23 @@ const clickLike = async (id) => {
     postone.value.postTitle = titleInput.value;
     postone.value.content = contentInput.value;
     console.log("전달할 내용 : " + data);
+    
     updatePostByNo(postNo, data);
+    updateKeywordByNo(postNo);
     updatePostModal.hide();
+  }
+
+  // 키워드 업데이트 함수
+  function updateKeywordByNo(postNo) {
+    const kdata = {
+      keywordMbti: mbtiInput.value,
+      keywordSort: sortInput.value,
+      keywordLocation: locationInput.value,
+      keywordType: typeInput.value,
+      keywordMobility: mobilityInput.value,
+      keywordHouse: houseInput.value
+    }
+    updatePostKeywordByNo(postNo, kdata);
   }
 
   // 반응형 변수 선언 (isHeartFilled는 하트가 채워졌는지 여부를 저장)
@@ -470,6 +575,22 @@ const clickLike = async (id) => {
     router.replace({ path: '/mainpage' });
   }
 
+  function clearAll() {
+    // 내용 초기화 하기
+    titleInput.value = '';
+    contentInput.value = '';
+    mbtiInput.value = '';
+    sortInput.value = '';
+    locationInput.value = '';
+    typeInput.value = '';
+    mobilityInput.value = '';
+    houseInput.value = '';
+    // 파일 입력 요소 초기화
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput) {
+      fileInput.value = ''; // HTML 파일 입력 요소의 값 초기화
+    }
+  }
 </script>
 
 <style scoped>

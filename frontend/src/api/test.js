@@ -203,15 +203,24 @@ export async function insertPostAndKeyword(postData, keywordData) {
   }
 } 
 
-
-
-// 글 키워드 추가 요청
-export async function insertPostKeyword(data) {
+//post_no에 따른 키워드 수정하기 요청
+export async function updatePostKeywordByNo(postNo, data) {
   try {
-    const response = await api.post('/auth/insertkeyword', data);
+    const response = await api.patch(`/auth/updatekeyword/${postNo}`, data);
     return response.data;
   } catch (err) {
     console.error(err);
+  }
+}
+
+//post_no에 따른 키워드한개 가져오기 요청
+export async function getPostKeywordByNo(postNo) {
+  try {
+    const response = await api.get(`/auth/postkeyword/${postNo}`);
+    console.log("API response:", response);
+    return response.data;
+  } catch (err) {
+    console.error(err); // 에러를 콘솔에 출력
   }
 }
 

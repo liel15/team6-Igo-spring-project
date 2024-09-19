@@ -28,6 +28,14 @@ public class PostKeywordService {
 		dao.insertPostKeyword(postkeyword);
 	}
 
+	public PostKeywordVO getPostKeywordByNo(Integer postNo) {
+		return dao.getPostKeywordByNo(postNo);
+	}
+
+	public void updatePostKeyword(PostKeywordVO postkeyword) {
+		dao.updatePostKeyword(postkeyword);
+	}
+
     
     
 }

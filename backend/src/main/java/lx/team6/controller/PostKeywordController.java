@@ -32,19 +32,19 @@ public class PostKeywordController {
 	PostKeywordService postkeywordservice;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-/*
+
 	// 키워드 한세트 불러오기 - 정은
 	@GetMapping("/postkeyword/{postNo}")
-	public ResponseEntity<PostVO> getpost(@PathVariable("postNo") Integer postNo) {
-		logger.info("info : MyBatis로 getpost()기능 처리");
-		System.out.println(postNo);
-		PostVO post = postkeywordservice.getPostByNo(postNo); // 서비스에 넣을 함수 이름
-		if (post != null) {
-			return ResponseEntity.ok(post);
+	public ResponseEntity<PostKeywordVO> getPostKeywordByNo(@PathVariable("postNo") Integer postNo) {
+		logger.info("info : MyBatis로 getPostKeywordByNo()기능 처리");
+		System.out.println("키워드 불러올 글번호 : " + postNo);
+		PostKeywordVO postkeword = postkeywordservice.getPostKeywordByNo(postNo);
+		if (postkeword != null) {
+			return ResponseEntity.ok(postkeword);
 		} else {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
-	}*/
+	}
 	
 	// 키워드 한세트 추가 - 정은
 	@PostMapping("/insertkeyword")
@@ -53,6 +53,18 @@ public class PostKeywordController {
 		try {
 			postkeywordservice.insertPostKeyword(postkeyword);
 			return ResponseEntity.status(HttpStatus.CREATED).body("키워드가 성공적으로 등록되었습니다.");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+	}
+	
+	// 키워드 수정 - 정은
+	@PatchMapping("/updatekeyword/{postNo}")
+	public ResponseEntity<String> updatePost(@PathVariable("postNo") Integer postNo, @RequestBody PostKeywordVO postkeyword) {
+		logger.info("info : MyBatis로 updatePost()기능 처리");
+		try {
+			postkeywordservice.updatePostKeyword(postkeyword);
+			return ResponseEntity.ok("키워드가 성공적으로 수정되었습니다.");
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}

@@ -2,7 +2,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import { findById, findPassword, login } from "@/api/user";
 import router from "@/router/index.js";
-import { getTestList, getPostList, getPostByNo, getLikesPostList, toggleLikePost, getLikeByPostNo, getLikesList, searchPostList, searchMyPostList, getUserPostList } from '@/api/test';
+import { getTestList, getPostList, getPostByNo, getLikesPostList, toggleLikePost, getLikeByPostNo, getLikesList, searchPostList, searchMyPostList, getUserPostList, getPostKeywordByNo } from '@/api/test';
 
 //로그인 - lgt
 export const useTestStore = defineStore("test", () => {
@@ -30,7 +30,6 @@ export const useTestStore = defineStore("test", () => {
 });
 
 
-
 //게시글 목록 가져오는 상태
 export const usePostListStore = defineStore('postlist', () => {
   const postlist = ref([]);
@@ -54,6 +53,19 @@ export const usePostStore = defineStore('postByNo', () => {
     }
   }
   return { postone, fetchPostone };
+});
+
+//특정 게시글 키워드 가져오는 상태
+export const usePostKeywordStore = defineStore('keywordByPostNo', () => {
+  const postkeyword = ref({});
+  async function fetchpostkeyword(postNo) {
+    try {
+      postkeyword.value = await getPostKeywordByNo(postNo);
+    } catch (err) {
+      console.error('Error fetching post:', err);
+    }
+  }
+  return { postkeyword, fetchpostkeyword };
 });
 
 // 특정 유저의 게시글 목록 가져오는 상태
