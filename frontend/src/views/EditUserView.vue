@@ -420,6 +420,9 @@
 <script>
 import axios from "axios";
 import { ref } from 'vue';
+import {useRouter} from 'vue-router';
+
+const router = useRouter();
 
 export default {
   data() {
@@ -592,11 +595,12 @@ export default {
         sessionStorage.setItem("userData", JSON.stringify(updateUserData));
 
         alert("회원정보 수정 성공!");
+        this.$router.push('/mypage');
         // 수정코드가 화면에 반영되게 설정
         this.loadUserData();
        
       } catch (error) {
-        this.error = "회원가입 실패: " + error.message;
+        this.error = "회원정보 수정 실패: " + error.message;
       }
     },
 

@@ -2,7 +2,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import { findById, findPassword, login } from "@/api/user";
 import router from "@/router/index.js";
-import { getTestList, getPostList, getPostByNo, getLikesPostList, toggleLikePost, getLikeByPostNo, getLikesList } from '@/api/test';
+import { getTestList, getPostList, getPostByNo, getLikesPostList, toggleLikePost, getLikeByPostNo, getLikesList, searchPostList, searchMyPostList, getUserPostList } from '@/api/test';
 
 //로그인 - lgt
 export const useTestStore = defineStore("test", () => {
@@ -15,9 +15,8 @@ export const useTestStore = defineStore("test", () => {
       data.value = response; // 입력받은 아이디와 비밀번호에 해당하는 값 저장(vo에 있는 것들..?)
       console.log(response);
       error.value = null; // 에러 초기화
-      sessionStorage.setItem("userNo", response.userNumber);
-      error.value = null; 
       sessionStorage.setItem("userData", JSON.stringify(data.value)) // 문자열 또는 객체는 JSON형태로 받아와야 한다고 함
+      sessionStorage.setItem("userNo", response.userNumber);
       alert("로그인 성공");
       console.log(data.value);
       router.push({ path: "/main"});
@@ -56,6 +55,29 @@ export const usePostStore = defineStore('postByNo', () => {
   }
   return { postone, fetchPostone };
 });
+
+// 특정 유저의 게시글 목록 가져오는 상태
+export const useUserPostListStore = defineStore('userpostlist', () => {
+  const userpostlist = ref([]);
+  async function fetchUserPost() {
+    const userNo = sessionStorage.getItem('userNo');
+    console.log(userNo);
+    if (!userNo) {
+      console.error('userNo is undefined or null');
+      return;
+    }
+    try {
+      console.log("userpostlist -- 유저 포스트 리스트");
+      userpostlist.value = await getUserPostList(userNo);
+      console.log("userpostlist--", userpostlist.value);
+    } catch (err) {
+      console.error('Error fetching userpostlist:', err);
+    }
+  }
+
+  return { userpostlist, fetchUserPost }
+})
+
 
 //특정 게시글 에 대한 좋아요 수db 가져오는 상태
 export const useLikeCountStore = defineStore('likeByPostNo', () => {
@@ -128,23 +150,80 @@ export const useLikesListStore = defineStore('likeslist', () => {
 
 // 좋아요 토글 상태
 export const useLikeStore = defineStore('likeStore', () => {
-  async function toggleLike(post) {
-    const userNo = sessionStorage.getItem('userNo');
-    console.log("userNo from sessionStorage:", userNo);
+  // 좋아요 추가
+  async function insertLike(postNo) {
+    try {
+      const data = {
+        postNo: postNo,
+        userNo: sessionStorage.getItem('userNo'), // 유저 번호 세션에서 가져옴
+      };
+      await apiInsertLike(data);
+      console.log('Like added successfully');
+    } catch (err) {
+      console.error('Error adding like:', err);
+      throw err; // 에러를 상위로 전달
+    }
+  }
+
+  // 좋아요 삭제
+  async function deleteLike(postNo) {
+    try {
+      const likeNo = await getLikeNoByPost(postNo); // 해당 포스트에 대한 likeNo를 가져오는 함수 필요
+      await apiDeleteLikeByNo(likeNo);
+      console.log('Like deleted successfully');
+    } catch (err) {
+      console.error('Error deleting like:', err);
+      throw err; // 에러를 상위로 전달
+    }
+  }
+
+  return {
+    insertLike,
+    deleteLike,
+  };
+})
+
+//메인화면 키워드 검색 상태
+export const useSearchPostListStore = defineStore('searchpostlist', () => {
+  const postlist = ref([]);
+  async function searchPost(keyword) {
+    console.log("searchpostlist --  키워드: ", keyword);
+    const response = await searchPostList(keyword);
+    if (response) {
+      postlist.value = response;  // 검색된 결과를 postlist에 저장
+    }
+    console.log("검색된 결과:", postlist.value);
+  }
+  return { postlist, searchPost };
+})
+
+//마이페이지 키워드 검색 상태
+export const useSearchMyPostListStore = defineStore('searchmypostlist', () => {
+  const userpostlist = ref([]);
+  async function searchMyPost(keyword) {
+    const jsonData = sessionStorage.getItem('userData');
+    
+    if (!jsonData) {
+      console.error('User data is missing in session storage');
+      return;
+    }
+    const userData = JSON.parse(jsonData);
+    const userNo = userData.userNumber;
     if (!userNo) {
       console.error('userNo is undefined or null');
       return;
     }
-    try {
-      await toggleLikePost(post.postNo, userNo);  // 좋아요 토글 API 호출
-      // post.isLiked가 하트 토글 상태에 맞게 업데이트됩니다.
-      post.isLiked = !post.isLiked; 
-    } catch (err) {
-      console.error('Error toggling like:', err);
+
+    console.log("searchmypostlist --  키워드: ", keyword);
+    const response = await searchMyPostList(keyword);
+    if (response) {
+      userpostlist.value = response;  // 검색된 결과를 postlist에 저장
     }
+    console.log("검색된 결과:", userpostlist.value);
   }
-  return { toggleLike };
-});
+  return { userpostlist, searchMyPost };
+})
+
 
 //비밀번호찾기 -lgt
 export const usefindStore = defineStore("findpassword", () => {

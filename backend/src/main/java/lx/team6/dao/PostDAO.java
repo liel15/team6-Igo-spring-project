@@ -1,5 +1,6 @@
 package lx.team6.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,13 @@ public class PostDAO {
 	        e.printStackTrace(); // 쿼리 실행 중 오류 발생 시 로그 출력
 	        return null;
 	    }
+	}
+	
+	// 특정 유저의 게시글 리스트 불러오기
+	public List<PostVO> getUserPostList(Integer userNo) {
+		List<PostVO> userpostlist =  session.selectList("getUserPostList");
+		System.out.println(userpostlist);
+		return session.selectList("getUserPostList", userNo);
 	}
 
 	// 게시글 한개 불러오기
@@ -72,6 +80,20 @@ public class PostDAO {
     // 좋아요 제거
     public void removeLike(Integer postNo, Integer userNo) {
         session.delete("removeLike", Map.of("postNo", postNo, "userNo", userNo));
+    }
+    
+    // 메인 페이지 검색하는 메서드
+    public List<PostVO> searchPostList(String keyword) {
+	      return session.selectList("searchPostList", keyword);
+	   }
+    
+    //마이페이지 검색
+    public List<PostVO> searchMyPostList(Integer userNo, String keyword) {
+    	Map<String, Object> params = new HashMap<>();
+        params.put("userNo", userNo);
+        params.put("keyword", keyword); 
+        
+        return session.selectList("searchMyPostList", params);
     }
 	
 	

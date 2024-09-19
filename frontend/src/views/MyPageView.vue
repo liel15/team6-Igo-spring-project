@@ -1,4 +1,6 @@
 <template>
+
+  <Header></Header>
   <div class="d-flex flex-column">
     <!-- 몸시작 -->
     <div class="d-flex flex-row mt-2" style="height: 1300px">
@@ -8,22 +10,34 @@
         style="width: 500px"
       >
         <div class="d-flex flex-column align-items-center mt-5">
-          <div
-            class="card"
-            style="width: 18rem; height: auto; margin-bottom: 10px"
-          >
-            <img
-              src="https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileImageView.do?wrtSn=9046601&filePath=L2Rpc2sxL25ld2RhdGEvMjAxNC8yMS9DTFM2L2FzYWRhbFBob3RvXzI0MTRfMjAxNDA0MTY=&thumbAt=Y&thumbSe=b_tbumb&wrtTy=10004"
-              class="card-img-top"
-              alt="..."
-            />
-            <div class="card-body">
+          <div class="card" style="width: 23rem; height: auto; margin-bottom: 10px;">
+            <img src="https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileImageView.do?wrtSn=9046601&filePath=L2Rpc2sxL25ld2RhdGEvMjAxNC8yMS9DTFM2L2FzYWRhbFBob3RvXzI0MTRfMjAxNDA0MTY=&thumbAt=Y&thumbSe=b_tbumb&wrtTy=10004" class="card-img-top" alt="..." />
+            <div class="card-body" v-if="userData">
                 <p class="card-text">
-                    <p>닉네임</p>
-                    <p>아이디</p>
+                    <p>이름: {{ userData.userName }}</p>
+                    <p>아이디: {{ userData.userId }}</p>
                 </p>
+
+                <div class="mt-4">
+              <div class="d-flex flex-wrap justify-content-start">
+                <p
+                  v-for="(value, key) in keywordData"
+                  :key="key"
+                  class="badge rounded-pill text-dark me-2 mb-3"
+                  style="
+                    font-size: 0.9em;
+                    padding: 8px 15px;
+                    background-color: #a7e6ff;
+                    flex-basis: calc(33.33% - 10px);
+                  "
+                >
+                  {{ value }}
+                </p>
+              </div>
+            </div>
+
                 <div class="fixed-button">
-                    <button class="btn btn-primary" @click="goToEditUser()">수정</button>
+                    <button class="btn btn-primary mt-3" @click="editProfile">프로필 수정</button>
                 </div>
             </div>
           </div>
@@ -46,42 +60,24 @@
             </select>
           </div>
 
-          <!-- 오른쪽 검색 입력 -->
-          <div class="d-flex p-3 me-5 mt-3">
-            <input class="form-control" placeholder="검색어 입력" />
-            <i type="submit" class="bi bi-search ms-2 mt-4"></i>
-          </div>
+            <!-- 오른쪽 검색 입력 -->
+            <div class="d-flex p-3 me-5 mt-3">
+            
+            <input class="form-control" v-model="keyword" placeholder="검색어 입력" />
+            <i class="bi bi-search ms-2 mt-2" style="cursor: pointer;" @click="searchMyPost"></i>
+            </div>
         </div>
 
         <div class="main align-items-center ms-10">
-          <div
-            class="d-flex flex-row align-items-center justify-content-start gap-15 mb-5 mt-4 flex-wrap"
-          >
-            <div v-for="(post, index) in postlist" :key="index">
-              <div
-                class="card elevate-card"
-                style="cursor: pointer; width: 18rem"
-              >
-                <img
-                  :src="'/images/' + post.img"
-                  class="card-img-top"
-                  alt="..."
-                />
+            <div class="d-flex flex-row align-items-center justify-content-start gap-15 mb-5 mt-4 flex-wrap">
+              <div v-for="(post, index) in userpostlist" :key="index" >
+              <div class="card elevate-card" style="cursor: pointer; width: 18rem">
+                <img :src="'/images/' + post.img" class="card-img-top" alt="..." />
                 <div class="card-body">
-                  <p class="card-text">
-                    {{ post.postTitle }}
-                  </p>
-                  <i
-                    :class="[post.isLiked ? 'bi-heart-fill' : 'bi-heart']"
-                    @click="toggleLike(post)"
-                    style="
-                      position: absolute;
-                      bottom: 10px;
-                      right: 10px;
-                      font-size: 1.5rem;
-                      cursor: pointer;
-                    "
-                  ></i>
+                <p class="card-text">
+                  {{ post.postTitle }}
+                </p>
+                <i :class="[isLiked ? 'bi-heart-fill' : 'bi-heart']"  @click="toggleLike(post)" style="position: absolute; bottom: 10px; right: 10px; font-size: 1.5rem; cursor: pointer;"></i>
                 </div>
               </div>
             </div>
@@ -92,82 +88,115 @@
     </div>
   </div>
 
+  <Footer></Footer>
+
   <!-- 몸1 -->
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue';
-import {
-  usePostListStore,
-  usePostLikesListStore,
-  useLikeStore,
-} from '@/stores/test'; // Pinia store 가져오기
-import { storeToRefs } from 'pinia'; // store의 state 참조
-import router from '@/router';
 
-const postStore = usePostListStore();
+import { reactive , ref, onMounted, computed } from 'vue';
+import { useUserPostListStore , usePostLikesListStore, useLikeStore, useSearchMyPostListStore } from '@/stores/test'; // Pinia store 가져오기
+import { storeToRefs } from 'pinia'; // store의 state 참조
+import {useRouter} from 'vue-router';
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
+
+const searchStore = useSearchMyPostListStore();
+const postStore = useUserPostListStore ();
 const likesStore = usePostLikesListStore();
 const likeStore = useLikeStore();
 
-const { postlist } = storeToRefs(postStore);
-const { postLikesList } = storeToRefs(likesStore); // Pinia 스토어의 posts 참조
+const { userpostlist } = storeToRefs(postStore);
+const { postLikesList } = storeToRefs(likesStore);
+const { postInLike } = storeToRefs(likeStore);
+
 
 const selectedOption = ref('myPosts'); // 기본으로 '내 글 보기'
 const displayedPosts = ref([]); // 보여질 게시물 목록
+const keyword = ref(''); //검색어
 
-// 기존 fetchPost 함수 대체
-async function fetchPost() {
-  // postlist.value를 가공해서 displayedPosts에 저장
-  displayedPosts.value = (postlist.value || []).map((post) => ({
-    ...post,
-    isLiked: post.isLiked || false, // 기본값 false로 설정
-  }));
+const router = useRouter();
+
+//검색
+async function searchMyPost() {
+  if (keyword.value.trim()) {
+    await searchStore.searchMyPost(keyword.value);  
+    userpostlist.value = searchStore.userpostlist;
+    console.log("검색된 포스트 목록:", userpostlist.value); 
+  } else {
+    // 검색어가 없으면 전체 포스트를 다시 불러옴
+    await postStore.fetchUserPost();
+  }
 }
 
-const post = reactive({
-  postTitle: '제목',
-  isLiked: false,
+
+function editProfile() {
+  router.push('/edituser');
+}
+
+// userData를 담을 ref 변수
+const userData = ref({});
+
+// 세션에서 유저 데이터를 불러오는 함수
+const loadUserData = () => {
+  const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
+  if (storedUserData) {
+    userData.value = storedUserData; // 데이터를 ref에 저장
+  }
+};
+
+//키워드만 가져오는 computed 생성 : 
+//computed 속성을 생성하여 필요한 키워드 데이터만 추출. 이 속성은 userData가 변경될 때마다 자동으로 업데이트
+const keywordData = computed(() => {
+  if (!userData.value) {
+    return {}; // userData가 null이면 빈 객체 반환
+  }
+
+  return {
+    MBTI: userData.value.keywordMbti,
+    여행유형: userData.value.keywordSort,
+    선호지역: userData.value.keywordLocation,
+    여행타입: userData.value.keywordType,
+    이동수단: userData.value.keywordMobility,
+    숙소유형: userData.value.keywordHouse
+  };
 });
 
-// 이후 객체 속성 변경 시 Vue가 이를 감지함
-post.isLiked = !post.isLiked;
 
-const init = async () => {
-  console.log(postlist.value);
-  await postStore.fetchPost();
-  // await fetchPost();
+const init = async() => {
+  console.log(userpostlist.value);
+  await postStore.fetchUserPost();
+  // await fetchUserPost();
   await filterContent();
 };
 
-// db에서 posts들 데이터 가져오기
-onMounted(() => {
-  sessionStorage.setItem('userNo', 1); // 가라로 userNo를 세팅
-  init();
-});
 
-// 카드 목록 필터링 로직을 메서드로 정의
-// const showPost = (post) => {
-//   if (selectedOption.value === 'myPosts') {
-//     return post.isMyPost; // 내 글만 표시
-//   } else if (selectedOption.value === 'likedPosts') {
-//     return post.isLiked; // 좋아요한 글만 표시
-//   }
-//   return true; // 기본적으로 모든 카드 표시
-// };
 
-// // 좋아요(하트) 토글 함수
-// const toggleLike = (post) => {
-//   post.isLiked = !post.isLiked;
-// };
+// 기존 fetchUserPost 함수 대체
+// async function fetchUserPost() {
+//   // postlist.value를 가공해서 displayedPosts에 저장
+//   displayedPosts.value = (postlist.value || []).map(post => ({
+//     ...post,
+//     isLiked: post.isLiked || false, // 기본값 false로 설정
+//   }));
+// }
+
+// 이후 객체 속성 변경 시 Vue가 이를 감지함
+// post.isLiked = !post.isLiked;
+
+
+
+
 
 // 게시물 목록 필터링
 async function filterContent() {
   if (selectedOption.value === 'myPosts') {
-    await postStore.fetchPost(); // 내 글 목록 가져오기
-    displayedPosts.value = postlist.value;
+    await postStore.fetchUserPost(); // 내 글 목록 가져오기
+    displayedPosts.value = userpostlist.value;
   } else if (selectedOption.value === 'likedPosts') {
     await likesStore.fetchLikesPost(); // 좋아요한 글 목록 가져오기
-    displayedPosts.value = likesStore.postLikesList.value;
+    displayedPosts.value = postLikesList.value;
   }
 }
 
@@ -180,18 +209,19 @@ async function toggleLike(post) {
   }
 
   try {
-    await likeStore.toggleLike(post);
-    post.isLiked = !post.isLiked; // isLiked 상태를 토글
-    console.log('After toggle, isLiked:', post.isLiked);
+    if (post.isLiked) {
+      // 이미 좋아요를 누른 상태라면, 좋아요 취소
+      await likeStore.deleteLike(post.postNo);
+      post.isLiked = false; // 상태 변경
+    } else {
+      // 좋아요 추가
+      await likeStore.insertLike(post.postNo);
+      post.isLiked = true; // 상태 변경
+    }
   } catch (err) {
     console.error('Error toggling like:', err);
   }
 }
-
-function goToEditUser() {
-  router.push({path: "/edituser"})
-}
-
 
 // 게시물 클릭 시 상세페이지로 이동
 // async function getPostId(id) {
@@ -199,38 +229,14 @@ function goToEditUser() {
 //   router.replace({ path: '/page', query: { postNo: id } });
 // }
 
-// async function init () {
-//   store.fetchPost();
-//   console.log(postlist);
-// }
 
-// const postList = ref(false);
-// const newPost = ref({
-//   postTitle: '',
+// 페이지가 마운트되면 유저 데이터를 불러옴
+onMounted(() => {
+  loadUserData();
+  init();
+});
 
-// });
 
-// 카드 데이터
-// const posts = ref([
-//   {
-//     img: '1.PNG',
-//     content: '내 첫 번째 글입니다.',
-//     isLiked: false, // 좋아요 여부
-//     isMyPost: true, // 내 글 여부
-//   },
-//   {
-//     img: '2.PNG',
-//     content: '내 두 번째 글입니다.',
-//     isLiked: true, // 좋아요 여부
-//     isMyPost: true, // 내 글 여부
-//   },
-//   {
-//     img: '3.PNG',
-//     content: '다른 사용자의 글입니다.',
-//     isLiked: true, // 좋아요 여부
-//     isMyPost: false, // 내 글 여부
-//   },
-// ]);
 </script>
 
 <style scoped>

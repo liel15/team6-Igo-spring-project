@@ -12,6 +12,40 @@ async function getTestList(id, password) {
   }
 }
 
+//메인화면 키워드에 따른 검색 요청
+export async function searchPostList(keyword) {
+  try {
+    const response = await api.get(`/auth/searchPostList`, {
+      params: { keyword }
+    });
+    console.log("you can use searchPostList :", response.data);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
+//마이페이지 키워드에 따른 검색 요청
+export async function searchMyPostList(keyword) {
+  try {
+    const userNo = sessionStorage.getItem('userNo'); // 세션에서 유저 번호를 가져옴
+    if (!userNo) {
+      throw new Error('userNo is missing from session.');
+    }
+    const response = await api.get(`/auth/searchMyPostList`, {
+      params: { 
+        userNo, 
+        keyword 
+      }
+    });
+    console.log("you can use searchMyPostList :", response.data);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
 
 //userNo에 따른 postlikeslist를 요청
 export async function getLikesPostList(userNo) {
@@ -72,13 +106,25 @@ export async function deleteLikeByNo(likeNo) {
 // 좋아요 상태 토글
 export async function toggleLikePost(postNo, userNo) {
   try {
-    const response = await api.post(`/auth/toggleLike/${postNo}/${userNo}`, {});  // userNo도 함께 전달
+    const response = await api.post(`/auth/toggleLike/${postNo}/${userNo}`);  // userNo도 함께 전달
+    console.log(response.data);
     return response.data;
   } catch (err) {
     console.error('Error toggling like:', err);
   }
 }
 
+//특정 유저의 postlist를 가져오기 요청
+export async function getUserPostList(userNo) {
+  try { 
+    const response = await api.get(`/auth/userpostlist/${userNo}`);
+    console.log(userNo);
+    console.log("you can use getUserPostList", response.data);
+    return response.data;
+  } catch (err) {
+    console.error(err); // 에러를 콘솔에 출력
+  }
+}
 
 //postlist를 가져오기 요청
 export async function getPostList() {

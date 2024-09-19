@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lx.team6.service.PostService;
@@ -46,18 +47,19 @@ public class PostController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
-
-	// post 검색기능
-	@PostMapping("/serch")
-	public ResponseEntity<String> serch(@RequestBody String keyword) {
-		logger.info("info : MyBatis로 serch()기능 처리");
-		List<PostVO> postList = postservice.serchPostList(keyword);
-		if (postList != null) {
-			return ResponseEntity.ok(keyword);
-		} else {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	
+	// 특정 유저의 게시글 리스트 불러오기
+		@GetMapping("/userpostlist/{userNo}")
+		public ResponseEntity<List<PostVO>> getUserPostList(@PathVariable("userNo") Integer userNo){
+			logger.info("info : MyBatis로 getuserPostList()기능 처리");
+			logger.debug("debug : userpostlist");
+			if (userNo == null) {
+		        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		    }
+		    List<PostVO> userpostlist = postservice.getUserPostList(userNo);
+		    return ResponseEntity.ok(userpostlist);
 		}
-	}
+
 
 	// 게시글 한개 불러오기 - 정은
 	@GetMapping("/post/{postNo}")
@@ -125,14 +127,30 @@ public class PostController {
 		}
 	}
 
-	// 좋아요 토글
-	@PostMapping("/toggleLike/{postNo}/{userNo}")
-	public ResponseEntity<String> toggleLike(@PathVariable("postNo") Integer postNo, @PathVariable("userNo") Integer userNo) {
-		logger.info("info : MyBatis로 toggleLike()기능 처리");
-		System.out.println("좋아요 토글된 게시물 번호: " + postNo);
-		postservice.toggleLike(postNo, userNo);
-		return ResponseEntity.ok("Like toggled");
-	}
-
 	
+		
+		 //메인페이지 검색기능
+		   @GetMapping("/searchPostList")
+		   public ResponseEntity<List<PostVO>> searchPostList(@RequestParam("keyword") String keyword) { 
+			   logger.info("info : MyBatis로 search()기능 처리");
+			   List<PostVO> searchList = postservice.searchPostList(keyword);
+		      if(searchList.isEmpty()) {
+		         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		      }else {
+		         return ResponseEntity.ok(searchList);
+		      }
+		   }
+		   
+		   //마이페이지 검색
+		   @GetMapping("/searchMyPostList")
+		   public ResponseEntity<List<PostVO>> searchMyPostList(@RequestParam("userNo") Integer userNo, @RequestParam("keyword") String keyword) { 
+			   logger.info("Received userNo: " + userNo + ", keyword: " + keyword);
+			   List<PostVO> searchMyList = postservice.searchMyPostList(userNo,keyword);
+		      if(searchMyList.isEmpty()) {
+		         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		      }else {
+		         return ResponseEntity.ok(searchMyList);
+		      }
+		   }
+		
 }
