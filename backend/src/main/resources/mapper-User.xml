@@ -105,10 +105,10 @@
 	<insert id="createUser" useGeneratedKeys="true"
 		keyProperty="userNumber" parameterType="lx.team6.vo.UserVo">
 		insert into User(id, password,
-		name, email, tel_num, birth_date, img, gender)
+		name, email, tel_num, birth_date, img, gender, user_type)
 		values(#{userId},
 		#{userPw}, #{userName}, #{userEmail}, #{userTel}, #{userBirth},
-		#{userImage}, #{userGender})
+		#{userImage}, #{userGender}, 2)
 	</insert>
 
 	<!-- 회원가입 2(keyword) -->

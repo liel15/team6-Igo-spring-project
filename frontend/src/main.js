@@ -17,6 +17,7 @@ axios.defaults.withCredentials = true;
 axios.interceptors.response.use(
     response => response, 
     error => {
+    console.log(error.response);
       if (error.response && error.response.status === 401) {
         // 로그인 페이지로 이동
         alert("로그인 후 이용하실 수 있습니다.")

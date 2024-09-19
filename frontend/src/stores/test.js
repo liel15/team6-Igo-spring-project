@@ -19,7 +19,7 @@ export const useTestStore = defineStore("test", () => {
       sessionStorage.setItem("userNo", response.userNumber);
       alert("로그인 성공");
       console.log(data.value);
-      router.push({ path: "/main"});
+      router.push({ path: "/mainpage"});
       const userId = sessionStorage.getItem(userId);
     } catch (err) {
       error.value = err.message;

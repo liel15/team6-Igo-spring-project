@@ -35,6 +35,7 @@ import axios from 'axios';
           });
           alert("로그아웃 성공");  // 로그아웃 성공 메시지
           sessionStorage.removeItem("userData", null);
+          sessionStorage.removeItem("userNo", null);
           this.$router.push({name : 'login'});
         } catch (error) {
           this.error = '로그아웃 실패';

@@ -564,22 +564,13 @@ export default {
           new Blob([JSON.stringify(userKeywordData)], { type: "application/json" })
         );
   
-        // 2. 이미지 파일이 선택된 경우 FormData에 이미지 추가
-        if (this.img) {
-          formData.append("userImage", this.img); // 이미지 파일 추가
-
-          // 이 코드는 없어도됨 (확인용)
-          // 값이 잘 넘어가는지 확인
-          for (let pair of formData.entries()) {
-            console.log(pair[0] + ": " + pair[1]); // key와 value 출력
-          }
-
-          // 파일 정보 출력
-          console.log("파일명:", this.img.name);
-          console.log("파일 크기:", this.img.size);
-          console.log("파일 타입:", this.img.type);
-        }
-        console.log("편집정보 잘 넘어가는 지 확인 : ", formData);
+       // 이미지가 변경된 경우에만 FormData에 추가
+      if (this.img && this.previewUrl !== `http://localhost:9000/backend/api/auth${this.img}`) {
+        formData.append("userImage", this.img); // 이미지 파일 추가
+      } else {
+        // 이미지가 변경되지 않았다면 기존 이미지 정보 추가
+        formData.append("existingImagePath", this.img);
+      }
 
         // 서버로 회원가입 정보 및 이미지 파일 전송
         const response = await axios.post(

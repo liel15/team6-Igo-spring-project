@@ -53,7 +53,7 @@ public class HomeController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 	}
-	
+
 	@GetMapping("/info")
 	public String print(HttpSession session) {
 		Object ab = session.getAttribute("user");
@@ -160,6 +160,10 @@ public class HomeController {
 
 				// 이미지 경로 설정
 				userKeywordVo.setUserImage("/images/" + fileName); // 이미지 경로를 UserVo에 설정
+			} else {
+				// 이미지가 없을 경우, 기존 이미지를 유지
+				UserKeywordVo existingUser = userservice.checkUserById(userKeywordVo.getUserId());
+				userKeywordVo.setUserImage(existingUser.getUserImage()); // 기존 이미지 유지
 			}
 
 			// 2. 회원 정보와 키워드 정보를 수정하는 서비스 호출
@@ -170,32 +174,32 @@ public class HomeController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 	}
-	
-	 // 이미지 서빙 컨트롤러 추가
-    @GetMapping("/images/{filename}")
-    public ResponseEntity<Resource> getImage(@PathVariable String filename) {
-        try {
-            Path filePath = Paths.get("C:/images/").resolve(filename).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
 
-            if (resource.exists()) {
-                return ResponseEntity.ok(resource);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+	// 이미지 서빙 컨트롤러 추가
+	@GetMapping("/images/{filename}")
+	public ResponseEntity<Resource> getImage(@PathVariable String filename) {
+		try {
+			Path filePath = Paths.get("C:/images/").resolve(filename).normalize();
+			Resource resource = new UrlResource(filePath.toUri());
 
-	 //user정보 가져오기 
-	 @GetMapping("/info/{userId}")
-	 public ResponseEntity<UserInfoDTO> showUserInfo(@PathVariable String userId) {
-		 UserInfoDTO userInfo = userservice.showUserInfo(userId);
-		 if(userInfo != null) {
-			 return ResponseEntity.ok(userInfo);
-		 }else {
-			 return ResponseEntity.notFound().build();
-		 }
-	 }
+			if (resource.exists()) {
+				return ResponseEntity.ok(resource);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
+	// user정보 가져오기
+	@GetMapping("/info/{userId}")
+	public ResponseEntity<UserInfoDTO> showUserInfo(@PathVariable String userId) {
+		UserInfoDTO userInfo = userservice.showUserInfo(userId);
+		if (userInfo != null) {
+			return ResponseEntity.ok(userInfo);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 }

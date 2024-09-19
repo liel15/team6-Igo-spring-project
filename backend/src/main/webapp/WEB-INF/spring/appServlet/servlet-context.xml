@@ -30,14 +30,17 @@
 		class="lx.team6.interceptor.LoginInterceptor"></beans:bean>
 	<interceptors>
 		<interceptor>
-			<mapping path="/api/auth/updateuser" />
+			<mapping path="/api/auth/insert" /> 
+			<mapping path="/api/auth/update/*" />
 			<beans:ref bean="LoginInterceptor" />
 		</interceptor>
+		
+		
 	</interceptors>
 
     <!-- CORS 설정 -->
     <cors>
-        <mapping path="/**" allowed-origins="http://localhost:9000" allow-credentials="true"/>
+        <mapping path="/**" allowed-origins="http://localhost:5173" allow-credentials="true"/>
     </cors>
 </beans:beans>
 
