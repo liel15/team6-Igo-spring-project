@@ -57,14 +57,42 @@
                   >
                     <img
                       alt="Logo"
-                      src="/images/cat_run.png"
+                      src="/images/google.png"
                       class="theme-light-show h-15px me-3"
-                    />
+                    />Sign up with Google</a
+                  >
+
+                  <a
+                    href="#"
+                    class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100 mt-4"
+                  >
                     <img
                       alt="Logo"
-                      src="/images/cat_run.png"
-                      class="theme-dark-show h-15px me-3"
-                    />Sign in with Apple</a
+                      src="/images/apple.png"
+                      class="theme-light-show h-15px me-3"
+                    />Sign up with Apple</a
+                  >
+
+                  <a
+                    href="#"
+                    class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100 mt-4"
+                  >
+                    <img
+                      alt="Logo"
+                      src="/images/kakao.jpg"
+                      class="theme-light-show h-15px me-3"
+                    />Sign up with kakao</a
+                  >
+
+                  <a
+                    href="#"
+                    class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100 mt-4"
+                  >
+                    <img
+                      alt="Logo"
+                      src="/images/facebook.png"
+                      class="theme-light-show h-15px me-3"
+                    />Sign up with Facebook</a
                   >
                   <!--end::Google link=-->
                 </div>
@@ -126,33 +154,9 @@
                     </span>
                   </div>
                   <!--end::비밀번호-->
-
-                  <!--begin::Meter-->
-                  <div
-                    class="d-flex align-items-center mb-3"
-                    data-kt-password-meter-control="highlight"
-                  >
-                    <div
-                      class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"
-                    ></div>
-                    <div
-                      class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"
-                    ></div>
-                    <div
-                      class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"
-                    ></div>
-                    <div
-                      class="flex-grow-1 bg-secondary bg-active-success rounded h-5px"
-                    ></div>
-                  </div>
-                  <!--end::Meter-->
                 </div>
                 <!--end::Wrapper-->
-                <!--begin::Hint-->
-                <div class="text-muted">
-                  Use 8 or more characters with a mix of letters, numbers & symbols.
-                </div>
-                <!--end::Hint-->
+                
               </div>
               <!--end::Input group=-->
               <!--end::Input group=-->
@@ -193,6 +197,7 @@
                     autocomplete="off"
                     class="form-control bg-transparent"
                     v-model="email"
+                    @input="validateEmail"
                   />
                   <!--end::이메일-->
                 </div>
@@ -394,15 +399,11 @@
  <!--begin::Aside-->
  <div
         class="d-flex flex-lg-row-fluid bgi-size-cover bgi-position-center order-1 order-lg-2"
-        style="background-image: url('/images/trip.jpg'); width: 100%"
+        style="background-image: url('/images/moonback.jpg'); width: 70%; background-size: cover; background-repeat: no-repeat; background-position: center;"
       >
         <!--begin::Content-->
         <div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">
-          <!--begin::Logo-->
-          <a href="index.html" class="mb-0 mb-lg-12">
-            <img alt="Logo" src="" class="h-60px h-lg-75px" />
-          </a>
-          <!--end::Logo-->
+
           <!--begin::Image-->
           <img
             class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20"

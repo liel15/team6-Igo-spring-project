@@ -9,7 +9,8 @@ export async function login(id, password) {
     const response = await api.post("/auth/login", {     
         userId: id,
         userPw: password   
-    });
+    }, 
+    );
     return response.data;
   } catch (error) {
     throw new Error("잘못된 정보입니다. 다시 입력하세요");

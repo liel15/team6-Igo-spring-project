@@ -34,6 +34,7 @@ import axios from 'axios';
             abPw: this.password
           });
           alert("로그아웃 성공");  // 로그아웃 성공 메시지
+          sessionStorage.removeItem("userData", null);
           this.$router.push({name : 'login'});
         } catch (error) {
           this.error = '로그아웃 실패';
