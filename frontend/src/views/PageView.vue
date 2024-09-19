@@ -306,7 +306,7 @@
 import { ref, onMounted } from 'vue';
 import { usePostStore, useLikeCountStore, usePostLikesListStore, useLikesListStore } from '@/stores/test';
 import { storeToRefs } from 'pinia';
-import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import router from '@/router/index.js';
 import { deletePostByNo, updatePostByNo, insertLike, deleteLikeByNo } from '@/api/test';
 import { Modal } from 'bootstrap';
@@ -366,7 +366,7 @@ const clickLike = async (id) => {
     } catch (error) {
       console.error("좋아요 취소에 실패했습니다:", error);
     }
-  } else {
+    } else {
     // 좋아요 추가
     try {
       const response = await insertLike(data);

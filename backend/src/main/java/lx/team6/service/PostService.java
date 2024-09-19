@@ -27,8 +27,12 @@ public class PostService {
         return dao.getPostList();
     };
     
+    // 특정 유저의 게시글 리스트 불러오기
+    public List<PostVO> getUserPostList(Integer userNo) {
+   	 return dao.getUserPostList(userNo);
+   }
     
-    // 포스트 검색하는 메서드
+    // 메인페이지 검색하는 메서드
     public List<PostVO> serchPostList(String keyword) {
     	List<PostVO> resultPost = dao.serchPostList(keyword);
     	return resultPost;
@@ -77,23 +81,20 @@ public class PostService {
     }
 
 
-	public void toggleLike(Integer postNo, Integer userNo) {
-		boolean isLiked = dao.checkIfLiked(postNo, userNo);
-		
-		        if (isLiked) {
-		            // 좋아요가 이미 눌렸으면 삭제
-		        	dao.removeLike(postNo, userNo);
-		        } else {
-		            // 좋아요가 없으면 추가
-		        	dao.addLike(postNo, userNo);
-		        }
-		    }
 
+	 // 메인페이지 검색하는 메서드
+    public List<PostVO> searchPostList(String keyword) {
+    	return dao.searchPostList(keyword);
+
+    }
     
+    //마이페이지 검색
+    public List<PostVO> searchMyPostList(Integer userNo, String keyword) {
+    	return dao.searchMyPostList(userNo, keyword);
+
+    }
     
 }
 
    
-
-
 

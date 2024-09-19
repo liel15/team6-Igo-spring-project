@@ -17,6 +17,23 @@
 		on p.user_user_no = u.user_no
 		order by p.created_at DESC;
 	</select>
+	
+	<!-- 특정 유저의 게시글 리스트 -->
+	<select id="getUserPostList" resultType="lx.team6.vo.PostVO">
+		select p.post_no postNo
+		,
+		p.post_title postTitle
+		, p.content content
+		, p.created_at createdAt
+		, p.updated_at updatedAt
+		, p.img img
+		, p.user_user_no userNo
+		, u.id userId
+		from post p join USER u
+		on p.user_user_no = u.user_no
+		where u.user_no = #{userNo}
+		order by p.created_at DESC;
+	</select>
 
 
 	<!-- 게시글 한개 불러오기 -->
@@ -72,23 +89,7 @@
 		from employees
 		where employeeId = #{employeeId}
 	</select>
-	
-	<!-- 아이디 찾기 
-	<select id="findById" parameterType="String"
-		resultType="lx.team6.vo.AddrbookVo">
-		select id abId
-		, password abPw
-		, name abName
-		, email abEmail
-		,
-		tel_num abTel
-		,
-		tel_num abTel
-		, birth_date abBirth
-		from user
-		where id = #{abId}
-	</select>
- -->
+
 
 	<!-- 좋아요 리스트 가져오기 -->
 	<select id="getLikesPostList" resultType="lx.team6.vo.PostVO">
@@ -127,13 +128,49 @@
 		NOW())
 	</insert>
 
-	<!-- 좋아요 삭제 -->
-	<delete id="removeLike" parameterType="map">
-		DELETE FROM likes
-		WHERE
-		post_post_no = #{postNo}
-		AND user_user_no = #{userNo}
-	</delete>
-
-
+    <!-- 좋아요 삭제 -->
+	    <delete id="removeLike" parameterType="map">
+	        DELETE FROM likes 
+	        WHERE post_post_no = #{postNo} 
+	        AND user_user_no = #{userNo}
+	    </delete>
+	    
+	    <!-- 메인페이지 검색 -->
+		<select id="searchPostList" resultType="lx.team6.vo.PostVO">
+			select p.post_no postNo
+			, p.post_title postTitle
+			, p.content content
+			, p.created_at createdAt
+			, p.updated_at updatedAt
+			, p.img img
+			, p.user_user_no userNo
+			, u.id userId
+			from post p
+			join user u on p.user_user_no = u.user_no
+			where p.post_title like concat('%', #{keyword}, '%')
+				or p.content like concat('%', #{keyword}, '%')
+			order by p.created_at DESC
+		</select>
+		
+		
+		<!-- 마이페이지 검색 -->
+		<select id="searchMyPostList" resultType="lx.team6.vo.PostVO">
+			select p.post_no postNo
+		    , p.post_title postTitle
+		    , p.content content
+		    , p.created_at createdAt
+		    , p.updated_at updatedAt
+		    , p.img img
+		    , p.user_user_no userNo
+		    , u.id userId
+		    from post p
+		    join user u on p.user_user_no = u.user_no
+		    left join likes l on p.post_no = l.post_post_no
+		    where (p.user_user_no = #{userNo} 
+		    or l.user_user_no = #{userNo}) 
+		    and ((p.post_title like concat('%', #{keyword}, '%')) 
+		    or (p.content like concat('%', #{keyword}, '%'))) 
+		    order by p.created_at DESC
+		</select>
+	
 </mapper>
