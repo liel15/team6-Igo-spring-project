@@ -103,34 +103,10 @@
                       <i class="ki-duotone ki-eye fs-2 d-none"></i>
                     </span>
                   </div>
-                  <!--end::비밀번호-->
-
-                  <!--begin::Meter-->
-                  <div
-                    class="d-flex align-items-center mb-3"
-                    data-kt-password-meter-control="highlight"
-                  >
-                    <div
-                      class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"
-                    ></div>
-                    <div
-                      class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"
-                    ></div>
-                    <div
-                      class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"
-                    ></div>
-                    <div
-                      class="flex-grow-1 bg-secondary bg-active-success rounded h-5px"
-                    ></div>
-                  </div>
-                  <!--end::Meter-->
+                  <!--end::비밀번호-->               
                 </div>
                 <!--end::Wrapper-->
-                <!--begin::Hint-->
-                <div class="text-muted">
-                  Use 8 or more characters with a mix of letters, numbers & symbols.
-                </div>
-                <!--end::Hint-->
+               
               </div>
               <!--end::Input group=-->
               <!--end::Input group=-->
@@ -192,6 +168,7 @@
                 <!--begin::Input group=-->
                 <div class="fv-row mb-8 mt-8">
                   <!--begin::생일-->
+                  <label for="birth" class="placeholder-label">생년월일을 입력하세요</label>
                   <input
                     type="date"
                     class="form-control bg-transparent"
@@ -384,27 +361,6 @@
             alt=""
           />
           <!--end::Image-->
-          <!--begin::Title-->
-          <h1
-            class="d-none d-lg-block fs-2qx fw-bolder text-center mb-7"
-            style="color: black"
-          >
-            Fast, Efficient and Productive
-          </h1>
-          <!--end::Title-->
-          <!--begin::Text-->
-          <div class="d-none d-lg-block fs-base text-center" style="color: black">
-            In this kind of post,
-            <a href="#" class="opacity-75-hover text-warning fw-bold me-1">the blogger</a>
-            introduces a person they’ve interviewed <br />
-            and provides some background information about
-            <a href="#" class="opacity-75-hover text-warning fw-bold me-1"
-              >the interviewee</a
-            >
-            and their <br />
-            work following this is a transcript of the interview.
-          </div>
-          <!--end::Text-->
         </div>
         <!--end::Content-->
       </div>
@@ -458,8 +414,10 @@ export default {
     if (userData) {
       console.log("가져온 데이터 : ", userData);
       
-      this.img = userData.userImage;
-      this.previewUrl = `http://localhost:9000/backend/api/auth${userData.userImage}`;
+      this.img = userData.userImage || '/images/user.png';
+      this.previewUrl = this.img != '/images/user.png' 
+                        ? `http://localhost:9000/backend/api/auth${userData.userImage}`
+                        : this.img;
       this.id = userData.userId;
       this.name = userData.userName;
       this.email = userData.userEmail;

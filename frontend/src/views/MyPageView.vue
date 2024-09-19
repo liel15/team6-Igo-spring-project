@@ -11,7 +11,7 @@
       >
         <div class="d-flex flex-column align-items-center mt-5">
           <div class="card" style="width: 23rem; height: auto; margin-bottom: 10px;">
-            <img src="https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileImageView.do?wrtSn=9046601&filePath=L2Rpc2sxL25ld2RhdGEvMjAxNC8yMS9DTFM2L2FzYWRhbFBob3RvXzI0MTRfMjAxNDA0MTY=&thumbAt=Y&thumbSe=b_tbumb&wrtTy=10004" class="card-img-top" alt="..." />
+            <img :src="getImageUrl"  class="card-img-top" alt="..." />
             <div class="card-body" v-if="userData">
                 <p class="card-text">
                     <p>이름: {{ userData.userName }}</p>
@@ -136,7 +136,13 @@ function editProfile() {
 }
 
 // userData를 담을 ref 변수
-const userData = ref({});
+const userData = ref({
+  userImage:'',
+  userName:'',
+  userId:''
+});
+
+
 
 // 세션에서 유저 데이터를 불러오는 함수
 const loadUserData = () => {
@@ -144,7 +150,15 @@ const loadUserData = () => {
   if (storedUserData) {
     userData.value = storedUserData; // 데이터를 ref에 저장
   }
+console.log("불러온 값:" , userData.value.userImage);
+
+// 프로필에 이미지 띄우기 (수정된 값 갱신가능)
 };
+const getImageUrl = computed(() => {
+  console.log('userImage:', userData.value.userImage);
+  return userData.value.userImage ? `http://localhost:9000/backend/api/auth${userData.value.userImage}` : '/images/user.png';
+  
+});
 
 //키워드만 가져오는 computed 생성 : 
 //computed 속성을 생성하여 필요한 키워드 데이터만 추출. 이 속성은 userData가 변경될 때마다 자동으로 업데이트
