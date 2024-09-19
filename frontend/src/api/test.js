@@ -133,6 +133,27 @@ export async function insertPost(data) {
   }
 }
 
+// 게시글과 키워드를 함께 추가하기
+export async function insertPostAndKeyword(postData, keywordData) {
+  const formData = new FormData();
+  formData.append('post', new Blob([JSON.stringify(postData)], { type: 'application/json' }));
+  formData.append('postkeyword', new Blob([JSON.stringify(keywordData)], { type: 'application/json' }));
+
+  try {
+    const response = await api.post('/auth/insert', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
+
+
 // 글 키워드 추가 요청
 export async function insertPostKeyword(data) {
   try {
