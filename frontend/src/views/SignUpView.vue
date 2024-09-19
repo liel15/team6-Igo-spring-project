@@ -52,7 +52,7 @@
                 <div class="col-md-6">
                   <!--begin::Google link=-->
                   <a
-                    href="#"
+                    href="https://accounts.google.com/o/oauth2/auth/oauthchooseaccount?response_type=code&access_type=offline&client_id=622686756548-j87bjniqthcq1e4hbf1msh3fikqn892p.apps.googleusercontent.com&state=UPJIYRYIJHUGKCQZWYMSZRWVTLWQLT&scope=profile%20email&redirect_uri=https%3A%2F%2Fwww.airbnb.co.kr%2Foauth_callback&service=lso&o2v=1&ddm=1&flowName=GeneralOAuthFlow"
                     class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100"
                   >
                     <img
@@ -63,7 +63,7 @@
                   >
 
                   <a
-                    href="#"
+                    href="https://www.icloud.com"
                     class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100 mt-4"
                   >
                     <img
@@ -74,7 +74,7 @@
                   >
 
                   <a
-                    href="#"
+                    href="https://accounts.kakao.com/weblogin/create_account/?continue=https%3A%2F%2Fcs.kakao.com%2Fhelps%3Fservice%3D52%26locale%3Dko%26category%3D168&lang=ko#selectVerifyMethod"
                     class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100 mt-4"
                   >
                     <img
@@ -85,7 +85,7 @@
                   >
 
                   <a
-                    href="#"
+                    href="https://ko-kr.facebook.com/reg/"
                     class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100 mt-4"
                   >
                     <img
@@ -219,6 +219,7 @@
                 <!--begin::Input group=-->
                 <div class="fv-row mb-8 mt-8">
                   <!--begin::생일-->
+                  <label for="birth" class="placeholder-label">생년월일을 입력하세요</label>
                   <input
                     type="date"
                     class="form-control bg-transparent"
@@ -411,27 +412,6 @@
             alt=""
           />
           <!--end::Image-->
-          <!--begin::Title-->
-          <h1
-            class="d-none d-lg-block fs-2qx fw-bolder text-center mb-7"
-            style="color: black"
-          >
-            Fast, Efficient and Productive
-          </h1>
-          <!--end::Title-->
-          <!--begin::Text-->
-          <div class="d-none d-lg-block fs-base text-center" style="color: black">
-            In this kind of post,
-            <a href="#" class="opacity-75-hover text-warning fw-bold me-1">the blogger</a>
-            introduces a person they’ve interviewed <br />
-            and provides some background information about
-            <a href="#" class="opacity-75-hover text-warning fw-bold me-1"
-              >the interviewee</a
-            >
-            and their <br />
-            work following this is a transcript of the interview.
-          </div>
-          <!--end::Text-->
         </div>
         <!--end::Content-->
       </div>
@@ -606,6 +586,8 @@ export default {
           console.log("파일명:", this.img.name);
           console.log("파일 크기:", this.img.size);
           console.log("파일 타입:", this.img.type);
+        } else {
+
         }
 
         console.log("회원가입정보: ", formData);
