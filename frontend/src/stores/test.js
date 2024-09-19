@@ -2,7 +2,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import { findById, findPassword, login } from "@/api/user";
 import router from "@/router/index.js";
-import { getTestList, getPostList, getPostByNo, getLikesPostList, toggleLikePost, getLikeByPostNo } from '@/api/test';
+import { getTestList, getPostList, getPostByNo, getLikesPostList, toggleLikePost, getLikeByPostNo, getLikesList } from '@/api/test';
 
 //로그인 - lgt
 export const useTestStore = defineStore("test", () => {
@@ -105,6 +105,25 @@ export const usePostLikesListStore = defineStore('postlikeslist', () => {
     }
   }
   return { postLikesList, fetchLikesPost };
+});
+
+// 좋아요 리스트 정보 가져오는 상태
+export const useLikesListStore = defineStore('likeslist', () => {
+  const likesList = ref([]);
+  async function fetchLikesList() {
+    const userNo = sessionStorage.getItem('userNo');
+    if (!userNo) {
+      console.error('userNo is undefined or null');
+      return; // userNo가 없는 경우 중단
+    }
+    try {
+      likesList.value = await getLikesList(userNo);
+      console.log("likeslist--", likesList.value);
+    } catch (err) {
+      console.error('Error fetching likes :', err);
+    }
+  }
+  return { likesList, fetchLikesList };
 });
 
 // 좋아요 토글 상태

@@ -3,17 +3,51 @@
  "https://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-  <!-- Appenders -->
+<!-- Console Appender -->
   <appender name="console" class="org.apache.log4j.ConsoleAppender">
     <param name="Target" value="System.out" />
     <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="%-5p: %c - %m%n" />
+      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%c] %m%n" />
     </layout>
   </appender>
+
+  <!-- Rolling File Appender -->
+  <appender name="RollingFile" class="org.apache.log4j.RollingFileAppender">
+    <!-- 절대 경로로 설정 -->
+    <param name="File" value="C:/lx/team6-spring-project/backend/src/main/resources/logexample.log" />
+    <param name="MaxBackupIndex" value="30" />
+    
+    <!-- rollingPolicy는 layout 앞에 있어야 함 -->
+    <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+      <param name="FileNamePattern" value="C:/lx/team6-spring-project/backend/src/main/resources/%d{yyyy-MM-dd}_example.log" />
+    </rollingPolicy>
+    
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p [%c] %m%n" />
+    </layout>
+  </appender>
+
+  <!-- Rolling File Error Appender -->
+  <appender name="RollingFileError" class="org.apache.log4j.RollingFileAppender">
+    <!-- 절대 경로로 설정 -->
+    <param name="File" value="C:/lx/team6-spring-project/backend/src/main/resources/example_error.log" />
+    <param name="MaxBackupIndex" value="30" />
+    
+    <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+      <param name="FileNamePattern" value="C:/lx/team6-spring-project/backend/src/main/resources/%d{yyyy-MM-dd}_example_error.log" />
+    </rollingPolicy>
+    
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p [%c] %m%n" />
+    </layout>
+  </appender>
+
 
   <!-- Application Loggers -->
   <logger name="lx.team6">
     <level value="info" />
+    <appender-ref ref="RollingFile" /> <!-- 로그 파일로 저장 -->
+    <appender-ref ref="RollingFileError" /> <!-- 에러 로그 파일로 저장 -->
   </logger>
   
     <!-- Application Loggers -->

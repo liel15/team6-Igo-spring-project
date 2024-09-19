@@ -23,7 +23,23 @@
 		where post_post_no = #{postNo}
 	</select>
 	
-
+	<!-- 좋아요 삭제 -->
+	<delete id="deleteLike" parameterType="int">
+		DELETE FROM likes
+		WHERE
+		like_no = #{likeNo}
+	</delete>
+	
+	<!-- 좋아요 리스트 불러오기 -->
+	<select id="getLikesList" parameterType="int" resultType="lx.team6.vo.LikeVO">
+		select like_no likeNo,
+			created_at createdAt,
+			updated_at updatedAt,
+			post_post_no postNo,
+			user_user_no userNo
+		from likes
+		where user_user_no = #{userNo}
+	</select>
 </mapper>
     
     

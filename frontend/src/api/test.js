@@ -24,6 +24,17 @@ export async function getLikesPostList(userNo) {
   }
 }
 
+//userNo에 따른 likesliest 요청
+export async function getLikesList(userNo) {
+  try {
+    const response = await api.get(`/auth/likesList/${userNo}`);
+    console.log("you can use getLikesList", response.data);
+    return response.data;
+  } catch (err) {
+    console.error(err); // 에러를 콘솔에 출력
+  }
+}
+
 //post_no에 따른 좋아요수 가져오기 요청
 export async function getLikeByPostNo(postNo) {
   try {
@@ -46,6 +57,17 @@ export async function insertLike(data) {
     throw err;
   }
 }
+
+// 좋아요 삭제하기
+export async function deleteLikeByNo(likeNo) {
+  try {
+    const response = await api.delete(`/auth/deleteLike/${likeNo}`);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 
 // 좋아요 상태 토글
 export async function toggleLikePost(postNo, userNo) {

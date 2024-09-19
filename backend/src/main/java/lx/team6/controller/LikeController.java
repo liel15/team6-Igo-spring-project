@@ -1,9 +1,12 @@
 package lx.team6.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +49,31 @@ public class LikeController {
 			System.out.printf("좋아요 수 : "+ likeCount);
 			return ResponseEntity.ok(likeCount);
 		}
+	
+	// 이 유저의 해당 글 좋아요 정보 불러오기 유/무 - 정은
+	@GetMapping("/likesList/{userNo}")
+	public ResponseEntity<List<LikeVO>> getLikesList(@PathVariable("userNo") Integer userNo) {
+		List<LikeVO> likes = likeservice.getLikesList(userNo); // 서비스에 넣을 함수 이름
+		System.out.println("좋아요 리스트 : " + likes);
+		if (likes != null && !likes.isEmpty()) {
+			System.out.println("좋아요 리스트 : " + likes);
+			return ResponseEntity.ok(likes);
+		} else {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		}
+	}
+		
+	// 좋아요 삭제 - 정은
+	@DeleteMapping("/deleteLike/{likeNo}")
+	public ResponseEntity<String> deletePost(@PathVariable("likeNo") Integer likeNo) {
+		try {
+			System.out.println("삭제할 좋아요번호 : " + likeNo);
+			likeservice.deleteLike(likeNo);
+			return ResponseEntity.ok("좋아요가 성공적으로 삭제되었습니다.");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+	}
 
 
 }

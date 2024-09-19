@@ -1,5 +1,7 @@
 package lx.team6.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,14 @@ public class LikeService {
     // 글번호로 좋아요수 찾기
 	public Integer getLikeByPostNo(Integer postNo) {
 		return dao.getLikeByPostNo(postNo);
+	}
+
+	public List<LikeVO> getLikesList(Integer userNo) {
+		return dao.getLikesList(userNo);
+	}
+
+	public void deleteLike(Integer likeNo) {
+		dao.deleteLike(likeNo);
 	}
     
     
