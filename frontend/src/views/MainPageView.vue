@@ -390,7 +390,7 @@ import { ref, onMounted } from 'vue';
 import { usePostListStore, usePostStore } from '@/stores/test';
 import { storeToRefs } from 'pinia';
 import router from '@/router/index.js';
-import { insertPost } from '@/api/test';
+import { insertPost, insertPostAndKeyword } from '@/api/test';
 import { Modal } from 'bootstrap';
 import axios from 'axios';
 
@@ -473,19 +473,30 @@ async function createPost() {
    // 이미지 먼저 업로드하고 경로를 받음
   const imagePath = await uploadImage();
 
-  const data = {
+  const postData = {
     postTitle: titleInput.value,
     content: contentInput.value,
     userNo: sessionStorage.getItem("userNo"),
     img: imagePath || "" // 이미지 경로가 있으면 넣고 없으면 빈 값
   }
-  console.log("작정자 넘버 : " + data.userNo);
+
+  const keywordData = {
+    keywordMbti: mbtiInput.value,
+    keywordSort: sortInput.value,
+    keywordLocation: locationInput.value,
+    keywordType: typeInput.value,
+    keywordMobility: mobilityInput.value,
+    keywordHouse: houseInput.value
+  }
+
+  console.log("작정자 넘버 : " + postData.userNo);
   console.log("작성한 글제목 : " + titleInput.value);
-  console.log("전달할 내용 : " + data.content);
-  console.log("전달할 이미지 경로:", data.img)
+  console.log("전달할 내용 : " + postData.content);
+  console.log("전달할 이미지 경로:", postData.img)
+  console.log("전달할 키워드: " + keywordData.keywordMbti);
 
   try {
-    const response = await insertPost(data); 
+    const response = await insertPostAndKeyword(postData, keywordData); 
     console.log("서버 응답: ", response);
 
     createPostModal.hide();

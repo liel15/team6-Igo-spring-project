@@ -72,7 +72,7 @@ public class PostController {
 		}
 	}
 
-	// 게시글 추가 - 정은
+	// 게시글과 키워드 추가 - 정은
 	@PostMapping(value = "/insert", consumes = {"multipart/form-data"})
 	public ResponseEntity<String> insertPostAndKeyword(
 			@RequestPart("post") PostVO post,
