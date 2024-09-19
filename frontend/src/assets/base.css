@@ -1,7 +1,14 @@
 :root {
   --color-bg-white: #fff;
-  --color-bg-blue1: #050C9C;
-  --color-bg-blue2: #3572EF;
-  --color-bg-blue3: #3ABEF9;
-  --color-bg-blue4: #A7E6FF;
+  --color-text-grey: #808080;
+  --color-bg-blue1: #050c9c;
+  --color-bg-blue2: #3572ef;
+  --color-bg-blue3: #3abef9;
+  --color-bg-blue4: #a7e6ff;
+}
+
+ a {
+  color: #fff;
+  text-decoration: none;
+  outline: none;
 }
