@@ -90,5 +90,11 @@ public class UserService {
     public UserInfoDTO showUserInfo(String userId) {
     	return userDAO.showUserInfo(userId);
     }
+    
+ // UserService 클래스에 사용자 정보를 조회하는 메서드 추가
+    public UserKeywordVo checkUserById(String userId) {
+        return userDAO.findById(userId);  // UserDAO를 통해 사용자 정보를 조회
+    }
+
 
 }

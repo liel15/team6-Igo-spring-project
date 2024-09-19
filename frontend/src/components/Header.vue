@@ -11,8 +11,9 @@
               height="50"
               src="https://img.icons8.com/stickers/50/airplane-take-off.png"
               alt="airplane-take-off"
+              @click="goToMain()"
             />
-            <a class="navbar-brand ms-2 fw-bold" style="font-size: 30px" href="#"
+            <a class="navbar-brand ms-2 fw-bold" style="font-size: 30px" @click="goToMain()"
               >I.GO!</a
             >
           </div>
@@ -60,6 +61,7 @@ import { storeToRefs } from "pinia";
 
 const storeLog = useTestStore();
 const { startBt } = storeToRefs(storeLog);
+
 
 
 </script>

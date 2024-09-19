@@ -179,7 +179,7 @@ export async function insertPost(data) {
   }
 }
 
-// 게시글과 키워드를 함께 추가하기
+//게시글 추가 및 
 export async function insertPostAndKeyword(postData, keywordData) {
   const formData = new FormData();
   formData.append('post', new Blob([JSON.stringify(postData)], { type: 'application/json' }));
@@ -194,9 +194,14 @@ export async function insertPostAndKeyword(postData, keywordData) {
     return response.data;
   } catch (err) {
     console.error(err);
+    if (err.response && err.response.status === 401) {
+      // 로그인 페이지로 이동
+      alert("로그인 후 이용하실 수 있습니다.")
+      router.push({ path: '/login' });
+    }
     throw err;
   }
-}
+} 
 
 
 

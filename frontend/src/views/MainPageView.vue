@@ -16,6 +16,7 @@
               class="navbar-brand ms-2 fw-bold"
               style="font-size: 30px"
               href="#"
+              @click="goToMain()"
               >I.GO!</a
             >
           </div>
@@ -85,7 +86,7 @@
             class="d-flex flex-column justify-content-center align-items-start flex-grow-1 ms-4"
           >
             <h2 class="fw-bold">{{ user.name }}님!</h2>
-            <p style="font-size: 12px; color: gray">{{ user.id }}</p>
+            <p style="font-size: 12px; color: gray">{{ user.Id }}</p>
             <div class="d-flex align-items-center mt-2">
               <p class="me-2 mb-0">나의 여행:</p>
               <p class="mb-0">{{ user.post }} 개</p>
@@ -318,7 +319,7 @@
       </div>
       <!-- v-for END -->
       <div>
-        <button @click="showCreatePostModal()" class="btn btn-primary fs-6 p-2">
+        <button @click="checkLoginStatus" class="btn btn-primary fs-6 p-2">
           글쓰기
         </button>
       </div>
@@ -605,10 +606,13 @@
 import { ref, onMounted } from 'vue';
 import { usePostListStore, usePostStore } from '@/stores/test';
 import { storeToRefs } from 'pinia';
-import router from '@/router/index.js';
+import { useRouter } from 'vue-router'; // 이미 useRouter로 가져옴
 import { insertPost, insertPostAndKeyword } from '@/api/test';
 import { Modal } from 'bootstrap';
 import axios from 'axios';
+
+// useRouter 선언
+const router = useRouter();
 
 // 이미지 주소로 넘기기
 const selectedFile = ref(null);
@@ -657,28 +661,38 @@ const { postlist } = storeToRefs(store);
 // 포스트 번호에따라 포스트 정보 받아오기
 const poststore = usePostStore();
 const postone = storeToRefs(poststore);
-//const result = ref({});
 
 async function getpostid(id) {
   console.log('Clicked post ID:', id);
-  //result.value = await getPostByNo(id);
   await poststore.fetchPostone(id);
   console.log('Fetched post data:', postone);
   router.replace({ path: '/page' });
-  //router.replace({path:'/page', query: { postNo: result.value.postNo, postTitle: result.value.postTitle, content: result.value.content }});
 }
 
-// 글작성 모달 열기 함수, 변수
+// 로그인 상태를 확인하는 함수
+const checkLoginStatus = () => {
+  const userData = sessionStorage.getItem("userData");
+
+  if (!userData) {
+    // 로그인 되어 있지 않은 경우
+    alert("로그인 후 이용 가능합니다.");
+    router.push({ path: "/login" }); // 로그인 페이지로 이동
+  } else {
+    // 로그인 되어 있는 경우 글쓰기 모달을 띄움
+    showCreatePostModal();
+  }
+};
+
+// 글쓰기 모달 열기 함수, 변수
 let createPostModal;
 
 function showCreatePostModal() {
-  // 대화상자 띄우기
   const elem = document.querySelector('#kt_modal_new_target');
   createPostModal = new Modal(elem);
   createPostModal.show();
 }
 
-// 글작성 함수 - create
+// 글쓰기 함수 - create
 let titleInput = ref('');
 let contentInput = ref('');
 let mbtiInput = ref('');
@@ -689,14 +703,13 @@ let mobilityInput = ref('');
 let houseInput = ref('');
 
 async function createPost() {
-  // 이미지 먼저 업로드하고 경로를 받음
   const imagePath = await uploadImage();
 
   const postData = {
     postTitle: titleInput.value,
     content: contentInput.value,
     userNo: sessionStorage.getItem('userNo'),
-    img: imagePath || '', // 이미지 경로가 있으면 넣고 없으면 빈 값
+    img: imagePath || '',
   };
 
   const keywordData = {
@@ -707,12 +720,6 @@ async function createPost() {
     keywordMobility: mobilityInput.value,
     keywordHouse: houseInput.value,
   };
-
-  console.log('작정자 넘버 : ' + postData.userNo);
-  console.log('작성한 글제목 : ' + titleInput.value);
-  console.log('전달할 내용 : ' + postData.content);
-  console.log('전달할 이미지 경로:', postData.img);
-  console.log('전달할 키워드: ' + keywordData.keywordMbti);
 
   try {
     const response = await insertPostAndKeyword(postData, keywordData);
@@ -741,56 +748,11 @@ function toggleHeart() {
   isHeartFilled.value = !isHeartFilled.value;
 }
 
-/*
-//이미지 처리 코드
-// 파일 이름과 파일 데이터를 저장할 변수
-const fileName = ref('');
-const selectedFile = ref(null);
-
-// 파일이 변경될 때 호출되는 함수
-const onFileChange = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    fileName.value = file.name; // 파일 이름 추출
-    console.log("선택한 파일 이름:", fileName.value);
-    selectedFile.value = file;  // 선택한 파일 저장
-  }
-};
-
-if (!selectedFile.value) {
-    alert('파일을 선택해주세요.');
-  }
-
-  const formData = new FormData();
-  formData.append('image', selectedFile.value); // 파일 추가
-
-  const response = saveImage(formData);
-  console.log("서버 응답 : ", response.data);
-*/
-// 서버로 이미지를 업로드하는 함수
-/*
-const uploadImage = async () => {
-  if (!selectedFile.value) {
-    alert('파일을 선택해주세요.');
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append('image', selectedFile.value); // 파일 추가
-
-  try {
-    const response = await axios.post('/upload-image', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    console.log('서버 응답:', response.data);
-  } catch (error) {
-    console.error('이미지 업로드 중 오류 발생:', error);
-  }
-};
-*/
+function goToMain() {
+  router.push({ path: "/mainpage" });
+}
 </script>
+
 
 <style scoped>
 .bi-heart {
