@@ -76,6 +76,7 @@ public class PostController {
 			postservice.insertPostAndKeyword(post, postkeywordVo);
 			return ResponseEntity.status(HttpStatus.CREATED).body("게시글이 키워드와 함께 성공적으로 등록되었습니다.");
 		} catch (Exception e) {
+			System.out.println(e);
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
@@ -101,6 +102,7 @@ public class PostController {
 			postservice.deletePost(postNo);
 			return ResponseEntity.ok("게시글이 성공적으로 삭제되었습니다.");
 		} catch (Exception e) {
+			System.out.println(e);
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}

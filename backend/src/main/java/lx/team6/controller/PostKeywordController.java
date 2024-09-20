@@ -60,7 +60,7 @@ public class PostKeywordController {
 	
 	// 키워드 수정 - 정은
 	@PostMapping("/updatekeyword")
-	public ResponseEntity<String> updatePost(@RequestBody PostKeywordVO postkeyword) {
+	public ResponseEntity<String> updatePostKeyword(@RequestBody PostKeywordVO postkeyword) {
 	    logger.info("info : MyBatis로 updateKeyword() 기능 처리");
 	    try {
 	        postkeywordservice.updatePostKeyword(postkeyword);
@@ -69,6 +69,19 @@ public class PostKeywordController {
 	    	System.out.println(e);
 	    	return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	    }
+	}
+	
+	// 키워드 삭제
+	@DeleteMapping("/deletekeyword/{keywordNumber}")
+	public ResponseEntity<String> deletePostKeyword(@PathVariable("keywordNumber") Integer keywordNumber) {
+		try {
+			System.out.println("삭제할 키워드번호 : " + keywordNumber);
+			postkeywordservice.deletePostKeyword(keywordNumber);
+			return ResponseEntity.ok("게시글이 성공적으로 삭제되었습니다.");
+		} catch (Exception e) {
+			System.out.println(e);
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
 	}
 
 	

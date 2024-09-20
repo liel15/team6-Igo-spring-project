@@ -74,6 +74,17 @@ public class LikeController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
+	
+	@DeleteMapping("/deleteLikeByPostNo/{postNo}")
+	public ResponseEntity<String> deleteLikeByPostNo(@PathVariable("postNo") Integer postNo) {
+		try {
+			System.out.println("삭제할 좋아요 글번호 : " + postNo);
+			likeservice.deleteLikeByPostNo(postNo);
+			return ResponseEntity.ok("좋아요가 성공적으로 삭제되었습니다.");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+	}
 
 
 }

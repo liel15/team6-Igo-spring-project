@@ -30,6 +30,13 @@
 		like_no = #{likeNo}
 	</delete>
 	
+	<!-- 좋아요 삭제 -->
+	<delete id="deleteLikeByPostNo" parameterType="int">
+		DELETE FROM likes
+		WHERE
+		post_post_no = #{postNo}
+	</delete>
+	
 	<!-- 좋아요 리스트 불러오기 -->
 	<select id="getLikesList" parameterType="int" resultType="lx.team6.vo.LikeVO">
 		select like_no likeNo,

@@ -30,4 +30,10 @@
 		key_type = #{keywordType}, mobility = #{keywordMobility}, house = #{keywordHouse}
 		where key_no = #{keywordNumber}
 	</update>
+	
+	<!-- 게시글 키워드 삭제 -->
+	<delete id="deletePostKeyword" parameterType="int">
+		delete from post_keyword
+		where key_no = #{keywordNumber}
+	</delete>
 </mapper>

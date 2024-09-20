@@ -39,8 +39,7 @@
                     </div>
                     <!--end::Info-->
                     <!--begin::Title-->
-                    <span class="fw-bold text-muted fs-5 ps-1 me-4">글 넘버 : {{ postone.postNo }} 작성자 넘버 : {{
-                      postone.userNo }} 작성자 아이디 : {{ postone.userId }}</span>
+                    <span class="fw-bold text-muted fs-5 ps-1 me-4">작성자 아이디 : {{ postone.userId }}</span>
                     <span class="text-gray-900 fs-1 fw-bold">{{ postone.postTitle }}</span>
                     <!--end::Title-->
                     <!--begin::Container-->
@@ -355,7 +354,7 @@ import { usePostStore, useLikeCountStore, usePostLikesListStore, useLikesListSto
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import router from '@/router/index.js';
-import { deletePostByNo, updatePostByNo, insertLike, deleteLikeByNo, updatePostKeywordByNo } from '@/api/test';
+import { deletePostByNo, updatePostByNo, insertLike, deleteLikeByNo, updatePostKeywordByNo, deletePostKeywordByNo, deleteLikeByPostNo } from '@/api/test';
 import { Modal } from 'bootstrap';
 import Header from '@/components/Header.vue';
 // 로그인한 유저 넘버
@@ -447,13 +446,15 @@ const { postkeyword } = storeToRefs(postkeywordstore);
     if(postone.value.userNo == userNo) {
       console.log("삭제할 번호 : ", postNo);
       if (confirm("정말 삭제하시겠습니까??") == true) {
+        deleteLikeByPostNo(postNo);
+        deletePostKeywordByNo(postkeyword.value.keywordNumber);
         deletePostByNo(postNo);
         router.replace({ path: '/mainpage' });
       } else {
         return false;
       }
     } else {
-      alert("글 작성자만 삭제가능합니다! 어딜 감히... 떽!");
+      alert("글 작성자만 삭제가능합니다!");
     }
   }
 
@@ -494,7 +495,7 @@ const houseInput = ref('');
       updatePostModal = new Modal(elem);
       updatePostModal.show();
     } else {
-      alert("글 작성자만 수정가능합니다! 어딜 감히... 떽!");
+      alert("글 작성자만 수정가능합니다!");
     }
 
   }

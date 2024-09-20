@@ -246,7 +246,7 @@
               />
               <div class="card-body">
                 <a class="text-gray-700 fw-bold"
-                  >{{ card.userId }} - {{ card.postNo }}</a
+                  >{{ card.userId }}</a
                 >
                 <p class="card-text">{{ card.postTitle }}</p>
                 <i
@@ -681,7 +681,7 @@ async function createPost() {
   const postData = {
     postTitle: titleInput.value,
     content: contentInput.value,
-    userNo: sessionStorage.getItem('userData'),
+    userNo: Number(sessionStorage.getItem("userNo")),
     img: imagePath || '',
   };
 

@@ -28,6 +28,10 @@ public class PostKeywordDAO {
 	public int updatePostKeyword(PostKeywordVO postkeyword) {
 		return session.update("updatePostKeyword", postkeyword);
 	}
+
+	public void deletePostKeyword(Integer keywordNumber) {
+		session.delete("deletePostKeyword", keywordNumber);
+	}
 	
 	
 }

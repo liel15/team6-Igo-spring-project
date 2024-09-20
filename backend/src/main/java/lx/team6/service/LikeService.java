@@ -39,6 +39,10 @@ public class LikeService {
 	public void deleteLike(Integer likeNo) {
 		dao.deleteLike(likeNo);
 	}
+
+	public void deleteLikeByPostNo(Integer postNo) {
+		dao.deleteLikeByPostNo(postNo);
+	}
     
     
 }

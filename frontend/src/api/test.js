@@ -102,6 +102,16 @@ export async function deleteLikeByNo(likeNo) {
   }
 }
 
+// 좋아요 글번호로 삭제하기
+export async function deleteLikeByPostNo(postNo) {
+  try {
+    const response = await api.delete(`/auth/deleteLikeByPostNo/${postNo}`);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 
 // 좋아요 상태 토글
 export async function toggleLikePost(postNo, userNo) {
@@ -149,10 +159,20 @@ export async function getPostByNo(postNo) {
   }
 }
 
-// DELETE 요청
+// DELETE 글 삭제 요청
 export async function deletePostByNo(postNo) {
   try {
     const response = await api.delete(`/auth/delete/${postNo}`);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// 키워드 삭제 요청
+export async function deletePostKeywordByNo(keywordNumber) {
+  try {
+    const response = await api.delete(`/auth/deletekeyword/${keywordNumber}`);
     return response.data;
   } catch (err) {
     console.error(err);

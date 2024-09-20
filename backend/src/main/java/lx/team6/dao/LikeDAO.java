@@ -37,6 +37,10 @@ public class LikeDAO {
 	public void deleteLike(Integer likeNo) {
 		session.delete("deleteLike", likeNo);
 	}
+
+	public void deleteLikeByPostNo(Integer postNo) {
+		session.delete("deleteLikeByPostNo", postNo);
+	}
 	
 	
 }

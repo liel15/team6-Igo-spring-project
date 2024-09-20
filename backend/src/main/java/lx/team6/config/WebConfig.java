@@ -11,14 +11,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableAspectJAutoProxy
 public class WebConfig {
 
-    @Bean
+	@Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setMaxUploadSize(10 * 1024 * 1024);  // 최대 10MB 설정
         return multipartResolver;
     }
-    
-    @Override
+
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:5173") // Vue 앱의 주소
@@ -27,6 +26,5 @@ public class WebConfig {
                 .allowCredentials(true);
     }
 }
-
 
 

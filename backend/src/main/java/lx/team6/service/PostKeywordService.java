@@ -31,6 +31,10 @@ public class PostKeywordService {
 		dao.updatePostKeyword(postkeyword);
 	}
 
+	public void deletePostKeyword(Integer keywordNumber) {
+		dao.deletePostKeyword(keywordNumber);
+	}
+
     
     
 }
