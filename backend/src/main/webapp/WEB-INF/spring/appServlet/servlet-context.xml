@@ -31,7 +31,6 @@
 	<interceptors>
 		<interceptor>
 			<mapping path="/api/auth/insert" /> 
-			<mapping path="/api/auth/update/*" />
 			<beans:ref bean="LoginInterceptor" />
 		</interceptor>
 		

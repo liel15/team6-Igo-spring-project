@@ -36,11 +36,9 @@
           <div
             class="d-flex flex-column justify-content-center align-items-start flex-grow-1 ms-4"
           >
-            <h2 class="fw-bold">{{ user.name }}님!</h2>
-            <p style="font-size: 12px; color: gray">{{ user.Id }}</p>
+            <h2 class="fw-bold">{{ userData.userName }}님!</h2>
+            <p style="font-size: 12px; color: gray">{{ userData.userId }}</p>
             <div class="d-flex align-items-center mt-2">
-              <p class="me-2 mb-0">나의 여행:</p>
-              <p class="mb-0">{{ user.post }} 개</p>
             </div>
 
             <div class="mt-4">
@@ -603,6 +601,7 @@ const uploadImage = async () => {
 // db에서 posts들 데이터 가져오기
 onMounted(() => {
   init();
+  
 });
 
 // 스토어 가져와서 리스트 받아오기
@@ -634,6 +633,7 @@ const checkLoginStatus = () => {
   } else {
     // 로그인 되어 있는 경우 글쓰기 모달을 띄움
     showCreatePostModal();
+    console.log("불러온데이터: ", userData);
   }
 };
 
@@ -677,7 +677,7 @@ async function createPost() {
   const postData = {
     postTitle: titleInput.value,
     content: contentInput.value,
-    userNo: sessionStorage.getItem('userNo'),
+    userNo: sessionStorage.getItem('userData'),
     img: imagePath || '',
   };
 

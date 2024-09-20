@@ -180,13 +180,6 @@
 		house = #{keywordHouse}
 		where u.id = #{userId}
 	</update>
-	
-	<!-- 회원탈퇴 
-	<delete id="deleteAddrbookList" parameterType="int">
-		delete k.user_keyword, u.user 
-		from User u join user_keyword k on
-				u.user_no = k.user_user_no
-		where u.id = #{userId};
-	</delete>-->
+
 
 </mapper>
