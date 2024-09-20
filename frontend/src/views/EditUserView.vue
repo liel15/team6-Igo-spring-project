@@ -23,9 +23,10 @@
                 <!--begin::Title-->
                 <h1 class="text-gray-900 fw-bolder mb-3">회원정보수정</h1>
                 <!--end::Title-->
-                <!--begin::Subtitle-->
-                <div class="text-gray-500 fw-semibold fs-6">Igo</div>
-                <!--end::Subtitle=-->
+                <div class="d-flex align-items-center">
+                  <button class="styled-button" @click="goToMainPage()">뒤로가기</button>
+               </div>
+
               </div>
               <!--begin::Heading-->
               <!--begin::Login options-->
@@ -329,11 +330,6 @@
 
               <!--end::Submit button-->
               <!--begin::Sign up-->
-              <div class="text-gray-500 text-center fw-semibold fs-6">
-                우리와의 여행을 끝내고 싶은신가요?
-                <a @click="" class="link-primary fw-semibold" style="cursor:pointer">탈퇴하기</a>
-              </div>
-              <!--end::Sign up-->
             </form>
             <!--end::Form-->
           </div>
@@ -409,6 +405,11 @@ export default {
   },
 
   methods: {
+
+    goToMainPage() {
+      this.$router.push({ path: "/mainpage" });
+    },
+
     loadUserData() {
       const userData = JSON.parse(sessionStorage.getItem("userData"));
     if (userData) {
@@ -587,6 +588,19 @@ export default {
   object-fit: cover;
   margin-top: 30px;
   border-radius: 20px;
+}
+
+.styled-button {
+  background: linear-gradient(#d3d3d3, #a9a9a9); 
+  color: white;
+  padding: 10px 20px;
+  border: none; 
+  border-radius: 25px; 
+  font-size: 16px;
+  font-weight: bold; 
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 

@@ -1,31 +1,8 @@
 <template>
-  <div class="d-flex flex-column">
-    <!-- 헤더 시작 -->
-    <div class="header" style="height: 8vh; background-color: #3abef9">
-      <!-- 네비바 -->
-      <nav class="navbar navbar-expand-lg navbar-dark w-100 h-100">
-        <div class="container-fluid">
-          <div class="d-flex align-items-center">
-            <img width="50" height="50" src="https://img.icons8.com/stickers/50/airplane-take-off.png"
-              alt="airplane-take-off" />
-            <a class="navbar-brand ms-2 fw-bold" style="font-size: 30px" href="#">I.GO!</a>
-          </div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
 
-          <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-            <div class="navbar-nav justify-content-center align-items-center">
-              <a class="nav-link" href="#">마이페이지</a>
-              <span>{{ name }}</span>
-            </div>
-          </div>
-        </div>
-      </nav>
-      <!-- 네비바 -->
-    </div>
-    <!-- 헤더 끝 -->
+  <Header></Header>
+  <div class="d-flex flex-column">
+   
 
     <!-- 블로그 포스트 형식 가져온거 START -->
     <!--begin::Content-->
@@ -48,6 +25,7 @@
                     <div class="d-flex flex-wrap mb-2">
                       <!--begin::Item-->
                       <div>
+                        <button class="styled-button" @click="goToMainPage()">뒤로가기</button></br>
                         <!--begin::Label-->
                         <span v-if="postkeyword.keywordMbti != null" class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordMbti }}</span>
                         <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordSort }}</span>
@@ -378,6 +356,7 @@ import { useRouter } from 'vue-router';
 import router from '@/router/index.js';
 import { deletePostByNo, updatePostByNo, insertLike, deleteLikeByNo, updatePostKeywordByNo } from '@/api/test';
 import { Modal } from 'bootstrap';
+import Header from '@/components/Header.vue';
 // 로그인한 유저 넘버
 let userNo = sessionStorage.getItem("userNo");
 
@@ -591,6 +570,10 @@ const clickLike = async (id) => {
       fileInput.value = ''; // HTML 파일 입력 요소의 값 초기화
     }
   }
+
+  function goToMainPage() {
+  router.push({ path: "/mainpage" });
+}
 </script>
 
 <style scoped>
@@ -620,4 +603,18 @@ const clickLike = async (id) => {
   color: red;
   /* 하트가 채워졌을 때 색상 */
 }
+
+.styled-button {
+  background: linear-gradient(#d3d3d3, #a9a9a9); 
+  color: white;
+  padding: 10px 20px;
+  border: none; 
+  border-radius: 25px; 
+  font-size: 16px;
+  font-weight: bold; 
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
 </style>
