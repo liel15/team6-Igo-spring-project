@@ -64,6 +64,32 @@ public class PostService {
         return postInsertResult + postkeywordInsertResult;  // 두 테이블 삽입 결과를 더한 값 반환 (성공한 삽입 수)
     }
     
+    // 포스트와 키워드 수정 트랜잭션
+    @Transactional
+    public void updatePostAndKeyword(Integer postNo, PostVO postVo, PostKeywordVO postkeywordVo) {
+        try {
+            // 1. 게시글 업데이트
+            postVo.setPostNo(postNo); // 게시글의 식별자를 설정
+            int postUpdateResult = dao.updatePost(postVo);
+
+            if (postUpdateResult == 0) {
+                throw new RuntimeException("게시글 업데이트 실패");
+            }
+
+            // 2. 키워드 업데이트
+            postkeywordVo.setPostNo(postNo); // 키워드와 관련된 게시글 식별자 설정
+            int keywordUpdateResult = keydao.updatePostKeyword(postkeywordVo);
+
+            if (keywordUpdateResult == 0) {
+                throw new RuntimeException("키워드 업데이트 실패");
+            }
+        } catch (Exception e) {
+            // 예외 처리 및 로그 기록
+            throw e; // 트랜잭션 롤백을 위해 예외를 다시 던짐
+        }
+    }
+
+    
 
     // 게시글 수정
     public void updatePost(PostVO post) {

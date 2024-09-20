@@ -25,8 +25,8 @@ public class PostKeywordDAO {
 		return session.selectOne("getPostKeywordByNo", postNo);
 	}
 
-	public void updatePostKeyword(PostKeywordVO postkeyword) {
-		session.update("updatePostKeyword", postkeyword);
+	public int updatePostKeyword(PostKeywordVO postkeyword) {
+		return session.update("updatePostKeyword", postkeyword);
 	}
 	
 	

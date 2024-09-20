@@ -59,15 +59,17 @@ public class PostKeywordController {
 	}
 	
 	// 키워드 수정 - 정은
-	@PatchMapping("/updatekeyword/{postNo}")
-	public ResponseEntity<String> updatePost(@PathVariable("postNo") Integer postNo, @RequestBody PostKeywordVO postkeyword) {
-		logger.info("info : MyBatis로 updatePost()기능 처리");
-		try {
-			postkeywordservice.updatePostKeyword(postkeyword);
-			return ResponseEntity.ok("키워드가 성공적으로 수정되었습니다.");
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-		}
+	@PostMapping("/updatekeyword")
+	public ResponseEntity<String> updatePost(@RequestBody PostKeywordVO postkeyword) {
+	    logger.info("info : MyBatis로 updateKeyword() 기능 처리");
+	    try {
+	        postkeywordservice.updatePostKeyword(postkeyword);
+	        return ResponseEntity.ok("키워드가 성공적으로 수정되었습니다.");
+	    } catch (Exception e) {
+	    	System.out.println(e);
+	    	return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	    }
 	}
+
 	
 }

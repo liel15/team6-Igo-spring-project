@@ -553,7 +553,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { usePostListStore, usePostStore } from '@/stores/test';
+import { usePostListStore, usePostStore, usePostKeywordStore } from '@/stores/test';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router'; // 이미 useRouter로 가져옴
 import { insertPost, insertPostAndKeyword } from '@/api/test';
@@ -614,10 +614,14 @@ const { postlist } = storeToRefs(store);
 // 포스트 번호에따라 포스트 정보 받아오기
 const poststore = usePostStore();
 const postone = storeToRefs(poststore);
+//키워드
+const keywordstore = usePostKeywordStore();
+const { postkeyword } = storeToRefs(keywordstore);
 
 async function getpostid(id) {
   console.log('Clicked post ID:', id);
   await poststore.fetchPostone(id);
+  await keywordstore.fetchpostkeyword(id);
   console.log('Fetched post data:', postone);
   router.replace({ path: '/page' });
 }

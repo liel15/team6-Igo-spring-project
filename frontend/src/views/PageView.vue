@@ -27,8 +27,8 @@
                       <div>
                         <button class="styled-button" @click="goToMainPage()">뒤로가기</button></br>
                         <!--begin::Label-->
-                        <span v-if="postkeyword.keywordMbti != null" class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordMbti }}</span>
-                        <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordSort }}</span>
+                        <span class="fw-bold text-gray-500 fs-4"> # {{ postkeyword.keywordMbti }}</span>
+                        <span class="fw-bold text-gray-500 fs-4"> # {{ postkeyword.keywordSort }}</span>
                         <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordLocation }}</span>
                         <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordType }}</span>
                         <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordMobility }}</span>
@@ -187,7 +187,7 @@
         </div>
 
         <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
-          <form id="kt_modal_new_target_form" class="form" action="#">
+          <form id="kt_modal_new_target_form" class="form">
             <!--begin::제목-->
             <div class="mb-13 text-center">
               <!--begin::Title-->
@@ -325,12 +325,13 @@
                     </div>
                   </fieldset>
                 </div>
-
+                <button type="button" class="btn btn-primary" @click="updatePostKeyword(postone.postNo)">키워드저장</button>
+                <span class="ms-2" style="color: red;">키워드 저장을 먼저 누르십시오.</span>
                 <!--end::키워드-->
             <!-- end:: 키워드 선택상자 -->
             <!--begin::하단버튼-->
             <div class="text-center">
-              <button type="button" class="btn btn-primary" @click.prevent="updatePost(postone.postNo)">저장</button>
+              <button type="button" class="btn btn-primary" @click="updatePost(postone.postNo)">저장</button>
               <button type="reset" class="btn btn-light ms-3" @click="clearAll()">모두 지우기</button>
             </div>
             <!--end::하단버튼-->
@@ -380,19 +381,11 @@ async function getlikes() {
 }
 
 // 글 키워드 가져오기
-const keywordstore = usePostKeywordStore();
-const { postkeyword } = storeToRefs(keywordstore);
-
-async function getPostKeywordByNo() {
-  await keywordstore.fetchpostkeyword(postone.value.postNo);
-  console.log("키워드들 : " + postkeyword.value);
-}
 
 onMounted(() => {
   
   init();
   getlikes(); // 좋아요 리스트 가져오기
-  getPostKeywordByNo();
 });
 
 // 글에 좋아요 관련 함수, 변수
@@ -437,7 +430,9 @@ const clickLike = async (id) => {
     }
   }
 };
-
+//키워드 가져오기
+const postkeywordstore = usePostKeywordStore();
+const { postkeyword } = storeToRefs(postkeywordstore);
 
 
   // 글 정보 가져오기 관련 함수, 변수
@@ -446,14 +441,6 @@ const clickLike = async (id) => {
 
   console.log("Current post data:", postone);
   console.log("글번호 : ", postone.value.postNo);
-
-
-  // 글 삭제하기 버튼 함수
-  //const deleteButton = document.querySelector('#deleteButton');
-  //deleteButton.addEventListener("click", function (postNo) {
-  //console.log("삭제할 번호 : ", postNo);
-  //deletePostByNo(postNo);
-  //})
 
   // 글 삭제하기
   function deletePost(postNo) {
@@ -471,14 +458,15 @@ const clickLike = async (id) => {
   }
 
   // 글 업데이트하기 버튼 - 모달 함수
-  let titleInput = ref('');
-  let contentInput = ref('');
-  let mbtiInput = ref('');
-  let sortInput = ref('');
-  let locationInput = ref('');
-  let typeInput = ref('');
-  let mobilityInput = ref('');
-  let houseInput = ref('');
+const titleInput = ref('');
+const contentInput = ref('');
+
+const mbtiInput = ref('');
+const sortInput = ref('');
+const locationInput = ref('');
+const typeInput = ref('');
+const mobilityInput = ref('');
+const houseInput = ref('');
 
   let updatePostModal;
 
@@ -490,6 +478,7 @@ const clickLike = async (id) => {
       // 대화상자의 입력값 넣어주기
       titleInput.value = postone.value.postTitle;
       contentInput.value = postone.value.content;
+
       mbtiInput.value = postkeyword.value.keywordMbti;
       sortInput.value = postkeyword.value.keywordSort;
       locationInput.value = postkeyword.value.keywordLocation;
@@ -510,8 +499,8 @@ const clickLike = async (id) => {
 
   }
 
-  // 글 업데이트 함수
-  function updatePost(postNo) {
+   // 글 업데이트 함수
+    function updatePost(postNo) {
     console.log("수정할 글번호 : ", postNo);
     const data = {
       postNo: postNo,
@@ -524,22 +513,31 @@ const clickLike = async (id) => {
     console.log("전달할 내용 : " + data);
     
     updatePostByNo(postNo, data);
-    updateKeywordByNo(postNo);
+    //updateKeywordByNo(postNo);
     updatePostModal.hide();
   }
 
   // 키워드 업데이트 함수
-  function updateKeywordByNo(postNo) {
-    const kdata = {
+  function updatePostKeyword(postNo) {
+    const data = {
+      keywordNumber: postkeyword.value.keywordNumber,
       keywordMbti: mbtiInput.value,
       keywordSort: sortInput.value,
       keywordLocation: locationInput.value,
       keywordType: typeInput.value,
       keywordMobility: mobilityInput.value,
-      keywordHouse: houseInput.value
+      keywordHouse: houseInput.value,
+      postNo: postNo
     }
-    updatePostKeywordByNo(postNo, kdata);
+    postkeyword.value.keywordMbti = mbtiInput.value;
+    postkeyword.value.keywordSort = sortInput.value;
+    postkeyword.value.keywordLocation = locationInput.value;
+    postkeyword.value.keywordType = typeInput.value;
+    postkeyword.value.keywordMobility = mobilityInput.value;
+    postkeyword.value.keywordHouse = houseInput.value;
+    updatePostKeywordByNo(data);
   }
+
 
   // 반응형 변수 선언 (isHeartFilled는 하트가 채워졌는지 여부를 저장)
   const isHeartFilled = ref(false);

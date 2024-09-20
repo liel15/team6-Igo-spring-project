@@ -58,6 +58,7 @@ export const usePostKeywordStore = defineStore('keywordByPostNo', () => {
   async function fetchpostkeyword(postNo) {
     try {
       postkeyword.value = await getPostKeywordByNo(postNo);
+      console.log("가져온키워드 : " + postkeyword.value.keywordMbti);
     } catch (err) {
       console.error('Error fetching post:', err);
     }

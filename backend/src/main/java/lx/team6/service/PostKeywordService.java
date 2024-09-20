@@ -16,22 +16,17 @@ public class PostKeywordService {
     @Autowired
     PostKeywordDAO dao;
 
-    /*
-    // 게시글 한개 불러오기
-    public PostVO getPostByNo(Integer postNo) {
-        PostVO post = dao.getPostByNo(postNo);
-        return post;
-    }*/
-
     // 키워드 추가
 	public void insertPostKeyword(PostKeywordVO postkeyword) {
 		dao.insertPostKeyword(postkeyword);
 	}
 
+	// 키워드 한개 불러오기
 	public PostKeywordVO getPostKeywordByNo(Integer postNo) {
 		return dao.getPostKeywordByNo(postNo);
 	}
 
+	// 키워드 업데이트
 	public void updatePostKeyword(PostKeywordVO postkeyword) {
 		dao.updatePostKeyword(postkeyword);
 	}
