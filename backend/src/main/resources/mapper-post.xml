@@ -1,35 +1,176 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper-post">
-	
+
+
 	<select id="getPostList" resultType="lx.team6.vo.PostVO">
-			select post_no postNo
-				, post_title postTitle
-				, post_content postContent
-				, post_date postDate
-			from post
+		select p.post_no postNo
+		,
+		p.post_title postTitle
+		, p.content content
+		, p.created_at createdAt
+		, p.updated_at updatedAt
+		, p.img img
+		, p.user_user_no userNo
+		, u.id userId
+		from post p join USER u
+		on p.user_user_no = u.user_no
+		order by p.created_at DESC;
 	</select>
 	
-	<select id="getTestById"  parameterType="int" resultType="lx.team6.vo.TestVO">
-			select employee_id employeeId, first_name firstName, salary
-			from employees
-			where employeeId = #{employeeId}
+	<!-- 특정 유저의 게시글 리스트 -->
+	<select id="getUserPostList" resultType="lx.team6.vo.PostVO">
+		select p.post_no postNo
+		,
+		p.post_title postTitle
+		, p.content content
+		, p.created_at createdAt
+		, p.updated_at updatedAt
+		, p.img img
+		, p.user_user_no userNo
+		, u.id userId
+		from post p join USER u
+		on p.user_user_no = u.user_no
+		where u.user_no = #{userNo}
+		order by p.created_at DESC;
 	</select>
-	
-	<delete id="deleteTest" parameterType="int">
-		delete from addrbook where ab_id = #{abId}
+
+
+	<!-- 게시글 한개 불러오기 -->
+	<select id="getPostByNo" parameterType="int"
+		resultType="lx.team6.vo.PostVO">
+		select p.post_no postNo
+		, p.post_title postTitle
+		, p.content
+		content
+		, p.created_at createdAt
+		, p.updated_at updatedAt
+		, p.img img
+		,
+		p.user_user_no userNo
+		, u.id userId
+		from post p join USER u
+		on
+		p.user_user_no = u.user_no
+		where post_no = #{postNo}
+	</select>
+
+	<!-- 게시글 추가 -->
+	<insert id="insertPost" useGeneratedKeys="true"
+		keyProperty="postNo" parameterType="lx.team6.vo.PostVO">
+		insert into post
+		(post_title, content, created_at, updated_at, img,
+		user_user_no) values
+		(#{postTitle},
+		#{content}, now(), now(), #{img},
+		#{userNo})
+	</insert>
+
+	<!-- 게시글 삭제 -->
+	<delete id="deletePost" parameterType="int">
+		delete from post
+		where
+		post_no = #{postNo}
 	</delete>
-	
-	<!-- 아이디 찾기 -->
-	<select id="findById" parameterType="String" resultType="lx.team6.vo.AddrbookVo"> 
-		select id abId
-			 , password abPw
-		 	 , name abName
-		 	 , email abEmail
-		 	 , tel_num abTel
-		 	 , birth_date abBirth
-		from user
-		where id = #{abId}
+
+	<!-- 게시글 수정 -->
+	<update id="updatePost" parameterType="lx.team6.vo.PostVO">
+		update post set
+		post_title
+		= #{postTitle}, content = #{content}, updated_at =
+		now()
+		where post_no =
+		#{postNo}
+	</update>
+
+	<select id="getTestById" parameterType="int"
+		resultType="lx.team6.vo.TestVO">
+		select employee_id employeeId, first_name firstName, salary
+		from employees
+		where employeeId = #{employeeId}
 	</select>
+
+
+	<!-- 좋아요 리스트 가져오기 -->
+	<select id="getLikesPostList" resultType="lx.team6.vo.PostVO">
+		select p.post_no
+		postNo,
+		p.post_title postTitle,
+		p.content content,
+		p.created_at
+		createdAt,
+		u.id userId,
+		l.created_at likeCreatedAt,
+		u.user_no userNo
+		from post p
+		join likes
+		l on p.post_no = l.post_post_no
+		join user u on l.user_user_no =
+		u.user_no
+		where u.user_no = #{userNo}
+	</select>
+
+	<!-- 좋아요 여부 체크 -->
+	<select id="checkIfLiked" parameterType="map" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM likes
+		WHERE post_post_no = #{postNo}
+		AND user_user_no =
+		#{userNo}
+	</select>
+
+	<!-- 좋아요 추가 -->
+	<insert id="addLike" parameterType="map">
+		INSERT INTO likes
+		(post_post_no, user_user_no, created_at)
+		VALUES (#{postNo}, #{userNo},
+		NOW())
+	</insert>
+
+    <!-- 좋아요 삭제 -->
+	    <delete id="removeLike" parameterType="map">
+	        DELETE FROM likes 
+	        WHERE post_post_no = #{postNo} 
+	        AND user_user_no = #{userNo}
+	    </delete>
+	    
+	    <!-- 메인페이지 검색 -->
+		<select id="searchPostList" resultType="lx.team6.vo.PostVO">
+			select p.post_no postNo
+			, p.post_title postTitle
+			, p.content content
+			, p.created_at createdAt
+			, p.updated_at updatedAt
+			, p.img img
+			, p.user_user_no userNo
+			, u.id userId
+			from post p
+			join user u on p.user_user_no = u.user_no
+			where p.post_title like concat('%', #{keyword}, '%')
+				or p.content like concat('%', #{keyword}, '%')
+			order by p.created_at DESC
+		</select>
+		
+		
+		<!-- 마이페이지 검색 -->
+		<select id="searchMyPostList" resultType="lx.team6.vo.PostVO">
+			select p.post_no postNo
+		    , p.post_title postTitle
+		    , p.content content
+		    , p.created_at createdAt
+		    , p.updated_at updatedAt
+		    , p.img img
+		    , p.user_user_no userNo
+		    , u.id userId
+		    from post p
+		    join user u on p.user_user_no = u.user_no
+		    left join likes l on p.post_no = l.post_post_no
+		    where (p.user_user_no = #{userNo} 
+		    or l.user_user_no = #{userNo}) 
+		    and ((p.post_title like concat('%', #{keyword}, '%')) 
+		    or (p.content like concat('%', #{keyword}, '%'))) 
+		    order by p.created_at DESC
+		</select>
 	
 </mapper>

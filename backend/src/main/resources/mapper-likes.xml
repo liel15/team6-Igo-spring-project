@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper-likes">
+
+	<!-- 게시글 추가 -->
+	<insert id="insertLike" parameterType="lx.team6.vo.LikeVO">
+		insert into likes
+		(created_at, updated_at, post_post_no, user_user_no) values
+		(now(), now(), #{postNo}, #{userNo})
+	</insert>
+
+	<!-- 좋아요 중복 여부 확인 -->
+	<select id="existsByUserNoAndPostNo" parameterType="lx.team6.vo.LikeVO" resultType="boolean">
+	    SELECT COUNT(*) > 0 
+	    FROM likes 
+	    WHERE user_user_no = #{userNo} 
+	      AND post_post_no = #{postNo}
+	</select>
+	
+	<select id="getLikeByPostNo" parameterType="int" resultType="int">
+		select count(*)
+		from likes
+		where post_post_no = #{postNo}
+	</select>
+	
+	<!-- 좋아요 삭제 -->
+	<delete id="deleteLike" parameterType="int">
+		DELETE FROM likes
+		WHERE
+		like_no = #{likeNo}
+	</delete>
+	
+	<!-- 좋아요 삭제 -->
+	<delete id="deleteLikeByPostNo" parameterType="int">
+		DELETE FROM likes
+		WHERE
+		post_post_no = #{postNo}
+	</delete>
+	
+	<!-- 좋아요 리스트 불러오기 -->
+	<select id="getLikesList" parameterType="int" resultType="lx.team6.vo.LikeVO">
+		select like_no likeNo,
+			created_at createdAt,
+			updated_at updatedAt,
+			post_post_no postNo,
+			user_user_no userNo
+		from likes
+		where user_user_no = #{userNo}
+	</select>
+</mapper>
+    
+    

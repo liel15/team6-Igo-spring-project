@@ -1,14 +1,35 @@
-import './assets/main.css'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+import 'bootstrap';
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import App from './App.vue';
+import router from './router';
+import './assets/main.css';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import axios from 'axios';
 
-import App from './App.vue'
-import router from './router'
 
-const app = createApp(App)
+// Axios 인터셉터 설정
+axios.defaults.withCredentials = true;
 
-app.use(createPinia())
-app.use(router)
+axios.interceptors.response.use(
+    response => response, 
+    error => {
+    console.log(error.response);
+      if (error.response && error.response.status === 401) {
+        // 로그인 페이지로 이동
+        alert("로그인 후 이용하실 수 있습니다.")
+        router.push({ path: '/login' });
+      }
+      return Promise.reject(error);
+    }
+  );
 
-app.mount('#app')
+const app = createApp(App);
+
+app.use(createPinia());
+app.use(router);
+
+app.mount('#app');

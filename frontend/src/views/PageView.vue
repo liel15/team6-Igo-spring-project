@@ -1,31 +1,8 @@
 <template>
-  <div class="d-flex flex-column">
-    <!-- 헤더 시작 -->
-    <div class="header" style="height: 8vh; background-color: #3abef9">
-      <!-- 네비바 -->
-      <nav class="navbar navbar-expand-lg navbar-dark w-100 h-100">
-        <div class="container-fluid">
-          <div class="d-flex align-items-center">
-            <img width="50" height="50" src="https://img.icons8.com/stickers/50/airplane-take-off.png"
-              alt="airplane-take-off" />
-            <a class="navbar-brand ms-2 fw-bold" style="font-size: 30px" href="#">I.GO!</a>
-          </div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
 
-          <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-            <div class="navbar-nav justify-content-center align-items-center">
-              <a class="nav-link" href="#">마이페이지</a>
-              <span>{{ name }}</span>
-            </div>
-          </div>
-        </div>
-      </nav>
-      <!-- 네비바 -->
-    </div>
-    <!-- 헤더 끝 -->
+  <Header></Header>
+  <div class="d-flex flex-column">
+   
 
     <!-- 블로그 포스트 형식 가져온거 START -->
     <!--begin::Content-->
@@ -33,7 +10,7 @@
       <!--begin::Content container-->
       <div id="kt_app_content_container" class="app-container container-xxl">
         <!--begin::Post card-->
-        <div v-for="item in postlist" class="card">
+        <div class="card">
           <!--begin::Body-->
           <div class="card-body p-lg-20 pb-lg-0">
             <!--begin::Layout-->
@@ -45,65 +22,37 @@
                   <!--begin::Wrapper-->
                   <div class="mb-8">
                     <!--begin::Info-->
-                    <div class="d-flex flex-wrap mb-6">
+                    <div class="d-flex flex-wrap mb-2">
                       <!--begin::Item-->
-                      <div class="me-9 my-1">
-                        <!--begin::Icon-->
-                        <i class="ki-duotone ki-element-11 text-primary fs-2 me-1">
-                          <span class="path1"></span>
-                          <span class="path2"></span>
-                          <span class="path3"></span>
-                          <span class="path4"></span>
-                        </i>
-                        <!--end::Icon-->
+                      <div>
+                        <button class="styled-button" @click="goToMainPage()">뒤로가기</button></br>
                         <!--begin::Label-->
-                        <span class="fw-bold text-gray-500"> 글키워드1</span>
-                        <!--end::Label-->
-                      </div>
-                      <!--end::Item-->
-                      <!--begin::Item-->
-                      <div class="me-9 my-1">
-                        <!--begin::Icon-->
-                        <i class="ki-duotone ki-briefcase text-primary fs-2 me-1">
-                          <span class="path1"></span>
-                          <span class="path2"></span>
-                        </i>
-                        <!--end::Icon-->
-                        <!--begin::Label-->
-                        <span class="fw-bold text-gray-500"> 글키워드2</span>
-                        <!--begin::Label-->
-                      </div>
-                      <!--end::Item-->
-                      <!--begin::Item-->
-                      <div class="my-1">
-                        <!--begin::Icon-->
-                        <i class="ki-duotone ki-message-text-2 text-primary fs-2 me-1">
-                          <span class="path1"></span>
-                          <span class="path2"></span>
-                          <span class="path3"></span>
-                        </i>
-                        <!--end::Icon-->
-                        <!--begin::Label-->
-                        <span class="fw-bold text-gray-500"> 글키워드3</span>
+                        <span class="fw-bold text-gray-500 fs-4"> # {{ postkeyword.keywordMbti }}</span>
+                        <span class="fw-bold text-gray-500 fs-4"> # {{ postkeyword.keywordSort }}</span>
+                        <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordLocation }}</span>
+                        <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordType }}</span>
+                        <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordMobility }}</span>
+                        <span class="fw-bold text-gray-500 fs-4"> #{{ postkeyword.keywordHouse }}</span>
                         <!--end::Label-->
                       </div>
                       <!--end::Item-->
                     </div>
                     <!--end::Info-->
                     <!--begin::Title-->
-                    <span class="fw-bold text-muted fs-5 ps-1 me-4">유저 아이디 자리</span>
-                    <span class="text-gray-900 fs-1 fw-bold">여행 후기 글 제목 - 정말기억에남는 여행이었어요! 왕추천~</span>
+                    <span class="fw-bold text-muted fs-5 ps-1 me-4">작성자 아이디 : {{ postone.userId }}</span>
+                    <span class="text-gray-900 fs-1 fw-bold">{{ postone.postTitle }}</span>
                     <!--end::Title-->
                     <!--begin::Container-->
                     <div class="overlay mt-8">
                       <!--begin::Image-->
-                      <div class="bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-400px"
-                        style="background-image: url(src/assets/img_trip.png);"></div>
+                      <div class="bgi-no-repeat bgi-position-center bgi-size-contain card-rounded min-h-400px"
+                        :style="{ backgroundImage: 'url(' + postone.img + ')', backgroundRepeat: 'no-repeat', width: '100%', height: 'auto' }">
+                      </div>
                       <!--end::Image-->
                       <!--begin::Links-->
                       <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
-                        <a href="pages/about.html" class="btn btn-primary">About Us</a>
-                        <a href="pages/careers/apply.html" class="btn btn-light-primary ms-3">Join Us</a>
+                        <a @click="goHome()" class="btn btn-primary">홈으로</a>
+                        <a href="pages/careers/apply.html" class="btn btn-light-primary ms-3">일정보기</a>
                       </div>
                       <!--end::Links-->
                     </div>
@@ -113,21 +62,27 @@
                   <!--begin::Description-->
                   <div class="fs-5 fw-semibold text-gray-600">
                     <!--begin::Text-->
-                    <p class="mb-8">
-                      안녕하세요. 오늘 가입한 신규회원입니다! 작년 이맘때쯤 이탈리아 남부에 있는 살레르노를 거점으로 하여 아말피, 포지타노, 카프리를 다녀왔습니다.
-                      한적했지만 친절했던 살레르노도 마음에 들고, 바다를 보는 것만으로도 시원했던 아말피, 포지타노, 카프리도 기억에 남네요!
-                      전 특히 이 동네의 바다 색이 마음에 듭니다. 대도시 여행도 좋았지만, 소매치기 걱정도 많이 없고 한가했던 이곳들을 여행하면서 더 행복했던 것 같아요.
-                    </p>
+                    <p class="mb-8">{{ postone.content }}</p>
                     <!--end::Text-->
                   </div>
                   <!--end::Description-->
-
+                  <div class="d-flex flex-center">
+                    <button type="button" @click="clickLike(postone.postNo)" style="background-color: #0dcaf0; color: white;" class="btn fs-4 p-2 me-2 d-flex align-items-center">
+                      <i style="color: white; font-size: 20px;" class="fa-solid fa-thumbs-up ms-2"></i>
+                      <span class="ms-2 me-2">{{ likeCount }}</span>
+                    </button>
+                  </div>
+                  <button id="updateButton" @click="showUpdatePostModal(postone.postNo)"
+                    class="btn btn-primary fs-6 p-1 me-2">수정</button>
+                  <button id="deleteButton" @click="deletePost(postone.postNo)"
+                    class="btn btn-primary fs-6 p-1">삭제</button>
                 </div>
                 <!--end::Post content-->
               </div>
               <!--end::Content-->
             </div>
             <!--end::Layout-->
+
             <!-- 댓글 내용 START -->
             <!--begin::Section-->
             <div class="mb-17">
@@ -193,7 +148,7 @@
               <!--end::Block-->
               <!-- 댓글 2 END -->
               <!-- 댓글 작성 END -->
-            
+
             </div>
             <!--end::Section-->
           </div>
@@ -210,33 +165,414 @@
   </div>
 
   <!-- 몸1 -->
+
+  <!-- 글 수정 모달 START -->
+  <!--begin::대화상자 - 검사일정수정 -->
+  <div class="modal fade" id="kt_modal_new_target" tabindex="-1" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+
+      <div class="modal-content rounded">
+
+        <div class="modal-header pb-0 border-0 justify-content-end">
+          <!--begin::닫기 아이콘-->
+          <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+            <i class="ki-duotone ki-cross fs-1">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>
+          </div>
+          <!--end::닫기 아이콘-->
+        </div>
+
+        <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+          <form id="kt_modal_new_target_form" class="form">
+            <!--begin::제목-->
+            <div class="mb-13 text-center">
+              <!--begin::Title-->
+              <h1 class="mb-3">후기 글 수정</h1>
+              <!--end::Title-->
+              <!--begin::Description-->
+              <div class="text-muted fw-semibold fs-5">글의 제목, 이미지, 내용을 수정해보세요.</div>
+              <!--end::Description-->
+            </div>
+            <!--end::제목-->
+
+            <!--begin::이름 입력상자-->
+            <div class="d-flex flex-column mb-8 fv-row">
+              <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                <span class="required">제목</span>
+                <span class="ms-1" data-bs-toggle="tooltip" title="제목을 입력하세요. 필수랍니다~">
+                  <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                    <span class="path3"></span>
+                  </i>
+                </span>
+              </label>
+              <input type="text" class="form-control form-control-solid" name="target_title" v-model="titleInput" />
+            </div>
+            <!--end::이름 입력상자-->
+            <!-- 이미지 선택 START -->
+            <div class="d-flex flex-column mb-8 fv-row">
+              <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                <span class="required">파일 선택</span>
+              </label>
+              <input type="file" id="image" @change="onFileChange" ref="image" />
+            </div>
+            <!-- 이미지 선택 END -->
+            <!--begin::내용 입력상자-->
+            <div class="d-flex flex-column mb-8 fv-row">
+              <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                <span class="required">내용</span>
+                <span class="ms-1" data-bs-toggle="tooltip" title="내용을 입력하세요. 필수랍니다~">
+                  <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                    <span class="path3"></span>
+                  </i>
+                </span>
+              </label>
+              <textarea class="form-control form-control-solid" name="target_content" v-model="contentInput"
+                rows="5"></textarea>
+            </div>
+            <!--end::내용 입력상자-->
+            <!-- start::키워드 선택상자 -->
+            <!--begin::키워드-->
+            <div class="fv-row mb-8 mt-8">
+                  <fieldset
+                    style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px"
+                  >
+                    <!--begin::mbti-->
+                    <div class="form-group mt-3" >
+                      <label for="mbti">MBTI</label>
+                      <select v-model="mbtiInput" id="mbti" name="mbti" class="form-control" style="cursor:pointer">
+                        <option value="" disabled >선택하기</option>
+                        <option value="ISTJ">ISTJ</option>
+                        <option value="ISFJ">ISFJ</option>
+                        <option value="INFJ">INFJ</option>
+                        <option value="INTJ">INTJ</option>
+                        <option value="ISTP">ISTP</option>
+                        <option value="ISFP">ISFP</option>
+                        <option value="INFP">INFP</option>
+                        <option value="INTP">INTP</option>
+                        <option value="ESTP">ESTP</option>
+                        <option value="ESFP">ESFP</option>
+                        <option value="ENFP">ENFP</option>
+                        <option value="ENTP">ENTP</option>
+                        <option value="ESTJ">ESTJ</option>
+                        <option value="ESFJ">ESFJ</option>
+                        <option value="ENFJ">ENFJ</option>
+                        <option value="ENTJ">ENTJ</option>
+                      </select>
+                    </div>
+                    <!--end::mbti-->
+
+                    <div class="form-group mt-3">
+                      <label for="category">구분</label>
+                      <select v-model="sortInput" id="number" name="number" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="개인">개인</option>
+                        <option value="단체">단체</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <label for="region">선호 지역</label>
+                      <select v-model="locationInput" id="location" name="location" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="서울특별시">서울특별시</option>
+                        <option value="부산광역시">부산광역시</option>
+                        <option value="대구광역시">대구광역시</option>
+                        <option value="인천광역시">인천광역시</option>
+                        <option value="광주광역시">광주광역시</option>
+                        <option value="대전광역시">대전광역시</option>
+                        <option value="울산광역시">울산광역시</option>
+                        <option value="세종특별자치시">세종특별자치시</option>
+                        <option value="제주도">제주도</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group mt-3" >
+                      <label for="preference">여행 취향</label>
+                      <select v-model="typeInput" id="type" name="type" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="익스트림">익스트림</option>
+                        <option value="힐링">힐링</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <label for="transport">이동수단</label>
+                      <select v-model="mobilityInput" id="mobility" name="mobility" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="뚜벅이">뚜벅이</option>
+                        <option value="차">차</option>
+                        <option value="대중교통">대중교통</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <label for="accommodation">숙소</label>
+                      <select v-model="houseInput" id="house" name="house" class="form-control" style="cursor:pointer">
+                        <option value="" disabled>선택하기</option>
+                        <option value="게스트하우스">게스트하우스</option>
+                        <option value="호텔">호텔</option>
+                        <option value="펜션">펜션</option>
+                        <option value="캠핑">캠핑</option>
+                      </select>
+                    </div>
+                  </fieldset>
+                </div>
+                <button type="button" class="btn btn-primary" @click="updatePostKeyword(postone.postNo)">키워드저장</button>
+                <span class="ms-2" style="color: red;">키워드 저장을 먼저 누르십시오.</span>
+                <!--end::키워드-->
+            <!-- end:: 키워드 선택상자 -->
+            <!--begin::하단버튼-->
+            <div class="text-center">
+              <button type="button" class="btn btn-primary" @click="updatePost(postone.postNo)">저장</button>
+              <button type="reset" class="btn btn-light ms-3" @click="clearAll()">모두 지우기</button>
+            </div>
+            <!--end::하단버튼-->
+          </form>
+          <!--end:Form-->
+        </div>
+        <!--end::Modal body-->
+      </div>
+      <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+  </div>
+  <!--end::대화상자 - 검사일정수정-->
+  <!-- 글 수정 모달 END -->
 </template>
 
 <script setup>
 
 import { ref, onMounted } from 'vue';
-import { usePostStore } from '@/stores/test';
+import { usePostStore, useLikeCountStore, usePostLikesListStore, useLikesListStore, usePostKeywordStore } from '@/stores/test';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
+import router from '@/router/index.js';
+import { deletePostByNo, updatePostByNo, insertLike, deleteLikeByNo, updatePostKeywordByNo, deletePostKeywordByNo, deleteLikeByPostNo } from '@/api/test';
+import { Modal } from 'bootstrap';
+import Header from '@/components/Header.vue';
+// 로그인한 유저 넘버
+let userNo = sessionStorage.getItem("userNo");
 
-// db에서 posts들 데이터 가져오기
+// 좋아요 리스트 가져오기
+const likesstore = useLikesListStore();
+const { likesList } = storeToRefs(likesstore);
+
+let mode = 'no'; // 기본적으로 좋아요를 누르지 않은 상태
+let lnum = null; // 해당 글의 좋아요 번호 저장
+
+async function getlikes() {
+  await likesstore.fetchLikesList();
+  likesList.value.forEach((item) => {
+    console.log(`Post No: ${item.postNo}, User No: ${item.userNo}`);
+    if (postone.value.postNo == item.postNo) {
+      console.log('이 글에 좋아요를 눌렀습니다.');
+      mode = 'yes'; // 이미 좋아요를 누른 상태로 설정
+      lnum = item.likeNo; // 좋아요 번호 저장
+    }
+  });
+}
+
+// 글 키워드 가져오기
+
 onMounted(() => {
+  
   init();
-})
+  getlikes(); // 좋아요 리스트 가져오기
+});
 
-const store = usePostStore();
-async function init () {
-  store.fetchPost();
-  console.log(postlist);
-}
-const { postlist } = storeToRefs(store);
-// 반응형 변수 선언 (isHeartFilled는 하트가 채워졌는지 여부를 저장)
-const isHeartFilled = ref(false);
+// 글에 좋아요 관련 함수, 변수
+const likestore = useLikeCountStore();
+const { likeCount } = storeToRefs(likestore);
 
-// 하트를 클릭했을 때 상태를 토글하는 함수
-function toggleHeart() {
-  isHeartFilled.value = !isHeartFilled.value;
+async function init() {
+  await likestore.fetchLikeCount(postone.value.postNo);
+  console.log("좋아요 수 : " + likeCount.value);
 }
 
+const clickLike = async (id) => {
+  const data = {
+    postNo: id,
+    userNo: userNo,
+  };
+  
+  if (mode == 'yes') {
+    // 이미 좋아요를 눌렀다면, 좋아요 취소
+    try {
+      await deleteLikeByNo(lnum); // 좋아요 삭제
+      console.log("좋아요가 취소되었습니다.");
+      alert("좋아요가 취소되었습니다.");
+      mode = 'no'; // 상태 변경
+      lnum = null; // 좋아요 번호 초기화
+      await init(); // 좋아요 수 업데이트
+      await getlikes(); // 좋아요 리스트 업데이트
+    } catch (error) {
+      console.error("좋아요 취소에 실패했습니다:", error);
+    }
+    } else {
+    // 좋아요 추가
+    try {
+      const response = await insertLike(data);
+      console.log("서버 응답: ", response);
+      alert("좋아요가 추가되었습니다!");
+      mode = 'yes'; // 상태 변경
+      await init(); // 좋아요 수 업데이트
+      await getlikes(); // 좋아요 리스트 업데이트
+    } catch (error) {
+      console.error("좋아요 추가에 실패했습니다:", error);
+    }
+  }
+};
+//키워드 가져오기
+const postkeywordstore = usePostKeywordStore();
+const { postkeyword } = storeToRefs(postkeywordstore);
+
+
+  // 글 정보 가져오기 관련 함수, 변수
+  const poststore = usePostStore();
+  const { postone } = storeToRefs(poststore);
+
+  console.log("Current post data:", postone);
+  console.log("글번호 : ", postone.value.postNo);
+
+  // 글 삭제하기
+  function deletePost(postNo) {
+    if(postone.value.userNo == userNo) {
+      console.log("삭제할 번호 : ", postNo);
+      if (confirm("정말 삭제하시겠습니까??") == true) {
+        deleteLikeByPostNo(postNo);
+        deletePostKeywordByNo(postkeyword.value.keywordNumber);
+        deletePostByNo(postNo);
+        router.replace({ path: '/mainpage' });
+      } else {
+        return false;
+      }
+    } else {
+      alert("글 작성자만 삭제가능합니다!");
+    }
+  }
+
+  // 글 업데이트하기 버튼 - 모달 함수
+const titleInput = ref('');
+const contentInput = ref('');
+
+const mbtiInput = ref('');
+const sortInput = ref('');
+const locationInput = ref('');
+const typeInput = ref('');
+const mobilityInput = ref('');
+const houseInput = ref('');
+
+  let updatePostModal;
+
+  // 수정 모달 만들기
+  function showUpdatePostModal(itemId) {
+    if(postone.value.userNo == userNo) {
+      console.log(`showUpdate 호출됨 - 아이디 : ${itemId}`);
+  
+      // 대화상자의 입력값 넣어주기
+      titleInput.value = postone.value.postTitle;
+      contentInput.value = postone.value.content;
+
+      mbtiInput.value = postkeyword.value.keywordMbti;
+      sortInput.value = postkeyword.value.keywordSort;
+      locationInput.value = postkeyword.value.keywordLocation;
+      typeInput.value = postkeyword.value.keywordType;
+      mobilityInput.value = postkeyword.value.keywordMobility;
+      houseInput.value = postkeyword.value.keywordHouse;
+  
+      // 선택한 아이템의 아이디
+      //selected.value = itemId;
+  
+      // 대화상자 띄우기
+      const elem = document.querySelector('#kt_modal_new_target');
+      updatePostModal = new Modal(elem);
+      updatePostModal.show();
+    } else {
+      alert("글 작성자만 수정가능합니다!");
+    }
+
+  }
+
+   // 글 업데이트 함수
+    function updatePost(postNo) {
+    console.log("수정할 글번호 : ", postNo);
+    const data = {
+      postNo: postNo,
+      postTitle: titleInput.value,
+      content: contentInput.value
+    }
+    console.log("수정한 글제목 : " + titleInput.value);
+    postone.value.postTitle = titleInput.value;
+    postone.value.content = contentInput.value;
+    console.log("전달할 내용 : " + data);
+    
+    updatePostByNo(postNo, data);
+    //updateKeywordByNo(postNo);
+    updatePostModal.hide();
+  }
+
+  // 키워드 업데이트 함수
+  function updatePostKeyword(postNo) {
+    const data = {
+      keywordNumber: postkeyword.value.keywordNumber,
+      keywordMbti: mbtiInput.value,
+      keywordSort: sortInput.value,
+      keywordLocation: locationInput.value,
+      keywordType: typeInput.value,
+      keywordMobility: mobilityInput.value,
+      keywordHouse: houseInput.value,
+      postNo: postNo
+    }
+    postkeyword.value.keywordMbti = mbtiInput.value;
+    postkeyword.value.keywordSort = sortInput.value;
+    postkeyword.value.keywordLocation = locationInput.value;
+    postkeyword.value.keywordType = typeInput.value;
+    postkeyword.value.keywordMobility = mobilityInput.value;
+    postkeyword.value.keywordHouse = houseInput.value;
+    updatePostKeywordByNo(data);
+  }
+
+
+  // 반응형 변수 선언 (isHeartFilled는 하트가 채워졌는지 여부를 저장)
+  const isHeartFilled = ref(false);
+
+  // 하트를 클릭했을 때 상태를 토글하는 함수
+  function toggleHeart() {
+    isHeartFilled.value = !isHeartFilled.value;
+  }
+
+  // 메인페이지로 돌아가기 버튼 함수
+  function goHome() {
+    router.replace({ path: '/mainpage' });
+  }
+
+  function clearAll() {
+    // 내용 초기화 하기
+    titleInput.value = '';
+    contentInput.value = '';
+    mbtiInput.value = '';
+    sortInput.value = '';
+    locationInput.value = '';
+    typeInput.value = '';
+    mobilityInput.value = '';
+    houseInput.value = '';
+    // 파일 입력 요소 초기화
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput) {
+      fileInput.value = ''; // HTML 파일 입력 요소의 값 초기화
+    }
+  }
+
+  function goToMainPage() {
+  router.push({ path: "/mainpage" });
+}
 </script>
 
 <style scoped>
@@ -266,4 +602,18 @@ function toggleHeart() {
   color: red;
   /* 하트가 채워졌을 때 색상 */
 }
+
+.styled-button {
+  background: linear-gradient(#d3d3d3, #a9a9a9); 
+  color: white;
+  padding: 10px 20px;
+  border: none; 
+  border-radius: 25px; 
+  font-size: 16px;
+  font-weight: bold; 
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
 </style>
